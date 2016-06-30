@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include "gonc_list.h"
+
+struct integer
+{
+    int value;
+    GONC_LIST_ELEMENT(struct integer);
+};
+
+int main()
+{
+    GONC_LIST(struct integer) list = GONC_LIST_INITIALIZER;
+    struct integer element1 = GONC_LIST_ELEMENT_INITIALIZER;
+    element1.value = 100;
+    struct integer element2 = GONC_LIST_ELEMENT_INITIALIZER;
+    element2.value = 200;
+
+    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element1);
+    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element2);
+
+    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    {
+        printf("%d\n", item->value);
+    }
+    printf("\n");
+    GONC_LIST_REVERSE_FOR_EACH(&list, struct integer, item)
+    {
+        printf("%d\n", item->value);
+    }
+    printf("\n");
+    GONC_LIST_REMOVE(&list, (&list)->first);
+    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    {
+        printf("%d\n", item->value);
+    }
+    printf("\n");
+    GONC_LIST_REMOVE(&list, (&list)->first);
+    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    {
+        printf("%d\n", item->value);
+    }
+
+    return 0;
+}
