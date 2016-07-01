@@ -9,8 +9,13 @@ struct                  \
     size_t size;        \
 }                       
 
-#define GONC_LIST_INITIALIZER            \
-{.first = NULL, .last = NULL, .size = 0} 
+#define GONC_LIST_INIT(list)             \
+do                                       \
+{                                        \
+    (list)->first = (list)->last = NULL; \
+    (list)->size = 0;                    \
+}                                        \
+while(0)
 
 #define GONC_LIST_ELEMENT(type) \
 struct                          \
@@ -19,8 +24,8 @@ struct                          \
     type* next;                 \
 }                               
 
-#define GONC_LIST_ELEMENT_INITIALIZER \
-{.previous = NULL, .next = NULL}      
+#define GONC_LIST_ELEMENT_INIT(element)      \
+(element)->previous = (element)->next = NULL
 
 #define GONC_LIST_INSERT_BEFORE(list, element, new_element) \
 do                                                          \

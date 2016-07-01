@@ -9,10 +9,13 @@ struct integer
 
 int main()
 {
-    GONC_LIST(struct integer) list = GONC_LIST_INITIALIZER;
-    struct integer element1 = GONC_LIST_ELEMENT_INITIALIZER;
+    GONC_LIST(struct integer) list;
+    GONC_LIST_INIT(&list);
+    struct integer element1;
+    GONC_LIST_ELEMENT_INIT(&element1);
     element1.value = 100;
-    struct integer element2 = GONC_LIST_ELEMENT_INITIALIZER;
+    struct integer element2;
+    GONC_LIST_ELEMENT_INIT(&element2);
     element2.value = 200;
 
     GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element1);
