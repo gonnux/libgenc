@@ -1,1 +1,1 @@
-pkginclude_HEADERS = gonc_list.h
+pkginclude_HEADERS = gonc_list.h gonc_array.h
