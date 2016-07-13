@@ -12,4 +12,8 @@ int main()
         GONC_ARRAY_SET(&ia, i, i * 100);
         printf("element: %d size: %u capacity: %u\n", GONC_ARRAY_GET(&ia, i), (&ia)->size, (&ia)->capacity);
     }
+    GONC_ARRAY_FOR_EACH(&ia, i)
+    {
+        printf("%d\n", GONC_ARRAY_GET(&ia, i));
+    }
 }

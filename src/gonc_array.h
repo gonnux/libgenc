@@ -34,4 +34,10 @@ do                                            \
 }                                             \
 while(0)
 
+#define GONC_ARRAY_FOR_EACH(array, index) \
+for(size_t index = 0; index < (array)->size; ++index)
+
+#define GONC_ARRAY_REVERSE_FOR_EACH(array, index) \
+for(size_t index = (array)->size - 1; index >= 0; --index)
+
 #endif
