@@ -4,15 +4,15 @@
 #define GONC_LIST(name, type) \
 struct name                   \
 {                             \
-    type* first;              \
-    type* last;               \
+    type* head;              \
+    type* tail;               \
     size_t size;              \
 }
 
 #define GONC_LIST_INIT(list)             \
 do                                       \
 {                                        \
-    (list)->first = (list)->last = NULL; \
+    (list)->head = (list)->tail = NULL; \
     (list)->size = 0;                    \
 }                                        \
 while(0)
@@ -48,11 +48,11 @@ do                                                          \
         else                                                \
         {                                                   \
             (element)->previous = new_element;              \
-            (list)->first = new_element;                    \
+            (list)->head = new_element;                    \
         }                                                   \
     }                                                       \
     else                                                    \
-        (list)->first = (list)->last = new_element;         \
+        (list)->head = (list)->tail = new_element;         \
     ++((list)->size);                                       \
 }                                                           \
 while(0)
@@ -72,11 +72,11 @@ do                                                         \
         else                                               \
         {                                                  \
             (element)->next = new_element;                 \
-            (list)->last = new_element;                    \
+            (list)->tail = new_element;                    \
         }                                                  \
     }                                                      \
     else                                                   \
-        (list)->first = (list)->last = new_element;        \
+        (list)->head = (list)->tail = new_element;        \
     ++((list)->size);                                      \
 }                                                          \
 while(0)
@@ -93,30 +93,30 @@ do                                                                  \
     else if((element)->previous != NULL && (element)->next == NULL) \
     {                                                               \
         (element)->previous->next = (element)->next;                \
-        (list)->last = (element)->previous;                         \
+        (list)->tail = (element)->previous;                         \
         (element)->previous = NULL;                                 \
     }                                                               \
     else if((element)->previous == NULL && (element)->next != NULL) \
     {                                                               \
         (element)->next->previous = (element)->previous;            \
-        (list)->first = (element)->next;                            \
+        (list)->head = (element)->next;                            \
         (element)->next = NULL;                                     \
     }                                                               \
     else if((element)->previous == NULL && (element)->next == NULL) \
     {                                                               \
-        (list)->first = (list)->last = NULL;                        \
+        (list)->head = (list)->tail = NULL;                        \
     }                                                               \
     --((list)->size);                                               \
 }                                                                   \
 while(0)
 
 #define GONC_LIST_FOR_EACH(list, type, element) \
-for(type* element = (list)->first;              \
+for(type* element = (list)->head;              \
      element != NULL;                           \
      element = element->next)
 
 #define GONC_LIST_REVERSE_FOR_EACH(list, type, element) \
-for(type* element = (list)->last;                       \
+for(type* element = (list)->tail;                       \
      element != NULL;                                   \
      element = element->previous)
 

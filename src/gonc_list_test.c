@@ -20,8 +20,8 @@ int main()
     GONC_LIST_ELEMENT_INIT(&element2);
     element2.value = 200;
 
-    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element1);
-    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element2);
+    GONC_LIST_INSERT_AFTER(&list, (&list)->head, &element1);
+    GONC_LIST_INSERT_AFTER(&list, (&list)->head, &element2);
 
     GONC_LIST_FOR_EACH(&list, struct integer, item)
     {
@@ -33,22 +33,22 @@ int main()
         printf("%d\n", item->value);
     }
     printf("\n");
-    GONC_LIST_REMOVE(&list, (&list)->first);
+    GONC_LIST_REMOVE(&list, (&list)->head);
     GONC_LIST_FOR_EACH(&list, struct integer, item)
     {
         printf("%d\n", item->value);
     }
     printf("\n");
-    GONC_LIST_REMOVE(&list, (&list)->first);
+    GONC_LIST_REMOVE(&list, (&list)->head);
     GONC_LIST_FOR_EACH(&list, struct integer, item)
     {
         printf("%d\n", item->value);
     }
 
-    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element1);
-    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element2);
+    GONC_LIST_INSERT_AFTER(&list, (&list)->head, &element1);
+    GONC_LIST_INSERT_AFTER(&list, (&list)->head, &element2);
 
-    struct integer* element = (&list)->first;
+    struct integer* element = (&list)->head;
 
     GONC_LIST_AFTER(&list, struct integer, element, 1);
     
