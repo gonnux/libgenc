@@ -24,8 +24,14 @@ struct                          \
     type* next;                 \
 }                               
 
-#define GONC_LIST_ELEMENT_INIT(element)      \
+#define GONC_LIST_ELEMENT_INIT(element) \
 (element)->previous = (element)->next = NULL
+
+#define GONC_LIST_PREVIOUS(list, element) \
+    (element)->previous
+
+#define GONC_LIST_NEXT(list, element) \
+    (element)->next
 
 #define GONC_LIST_INSERT_BEFORE(list, element, new_element) \
 do                                                          \
@@ -107,11 +113,19 @@ while(0)
 #define GONC_LIST_FOR_EACH(list, type, element) \
 for(type* element = (list)->first;              \
      element != NULL;                           \
-     element = element->next)                         
+     element = element->next)
 
 #define GONC_LIST_REVERSE_FOR_EACH(list, type, element) \
 for(type* element = (list)->last;                       \
      element != NULL;                                   \
-     element = element->previous)                             
+     element = element->previous)
+
+#define GONC_LIST_GET(list, type, _index)                             \
+({                                                                    \
+    type* element = (list)->first;                                    \
+    for(size_t index = 0; index < _index && element != NULL; ++index) \
+        element = element->next;                                      \
+    element;                                                          \
+})
 
 #endif

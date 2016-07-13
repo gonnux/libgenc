@@ -45,5 +45,14 @@ int main()
         printf("%d\n", item->value);
     }
 
+    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element1);
+    GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element2);
+
+    struct integer* element;
+
+    element = GONC_LIST_GET(&list, struct integer, 1);
+    
+    printf("%d\n", element->value);
+
     return 0;
 }
