@@ -20,6 +20,9 @@ do                                                        \
 }                                                         \
 while(0)
 
+#define GONC_ARRAY_GET(array, index) \
+(array)->elements[index]
+
 #define GONC_ARRAY_SET(array, index, element) \
 do                                            \
 {                                             \

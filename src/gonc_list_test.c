@@ -48,9 +48,9 @@ int main()
     GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element1);
     GONC_LIST_INSERT_AFTER(&list, (&list)->first, &element2);
 
-    struct integer* element;
+    struct integer* element = (&list)->first;
 
-    element = GONC_LIST_GET(&list, struct integer, 1);
+    GONC_LIST_AFTER(&list, struct integer, element, 1);
     
     printf("%d\n", element->value);
 

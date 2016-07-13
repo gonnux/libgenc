@@ -120,12 +120,8 @@ for(type* element = (list)->last;                       \
      element != NULL;                                   \
      element = element->previous)
 
-#define GONC_LIST_GET(list, type, _index)                             \
-({                                                                    \
-    type* element = (list)->first;                                    \
+#define GONC_LIST_AFTER(list, type, element, _index)                  \
     for(size_t index = 0; index < _index && element != NULL; ++index) \
         element = element->next;                                      \
-    element;                                                          \
-})
 
 #endif

@@ -10,6 +10,6 @@ int main()
     for(int i = 0; i < (&ia)->capacity; ++i)
     {
         GONC_ARRAY_SET(&ia, i, i * 100);
-        printf("element: %d size: %u capacity: %u\n", (&ia)->elements[i], (&ia)->size, (&ia)->capacity);
+        printf("element: %d size: %u capacity: %u\n", GONC_ARRAY_GET(&ia, i), (&ia)->size, (&ia)->capacity);
     }
 }
