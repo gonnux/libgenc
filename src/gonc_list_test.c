@@ -54,5 +54,17 @@ int main()
     
     printf("%d\n", element->value);
 
+    while((&list)->size > 0)
+    {
+        GONC_LIST_REMOVE(&list, (&list)->head);
+    }
+
+    printf("After destroy:\n");
+
+    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    {
+        printf("%d\n", item->value);
+    }
+
     return 0;
 }
