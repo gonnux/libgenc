@@ -110,25 +110,49 @@ do                                                                  \
 }                                                                   \
 while(0)
 
-#define GONC_LIST_FOR_EACH(list, element) \
-for(element = (list)->head;               \
-     element != NULL;                     \
+#define GONC_LIST_FOR_EACH(list, type, element) \
+for(type* element = (list)->head;               \
+     element != NULL;                           \
      element = element->next)
 
-#define GONC_LIST_REVERSE_FOR_EACH(list, element) \
-for(element = (list)->tail;                       \
-     element != NULL;                             \
+#define GONC_LIST_REVERSE_FOR_EACH(list, type, element) \
+for(type* element = (list)->tail;                       \
+     element != NULL;                                   \
      element = element->previous)
 
-#define GONC_LIST_FOR_EACH2(list, type, element) \
-for(type* element = (list)->head;                \
-     element != NULL;                            \
+#define GONC_LIST_FOR_EACH2(list, element) \
+for(element = (list)->head;                \
+     element != NULL;                      \
      element = element->next)
 
-#define GONC_LIST_REVERSE_FOR_EACH2(list, type, element) \
-for(type* element = (list)->tail;                        \
-     element != NULL;                                    \
+#define GONC_LIST_REVERSE_FOR_EACH2(list, element) \
+for(element = (list)->tail;                        \
+     element != NULL;                              \
      element = element->previous)
+
+#define GONC_LIST_SUBSET_FOR_EACH(list, type, element, start, end) \
+for(type* element = start;                                         \
+     element != end;                                               \
+     element = element->next)
+
+#define GONC_LIST_REVERSE_SUBSET_FOR_EACH(list, type, element, end, start) \
+for(type* element = end;                                                   \
+     element != start;                                                     \
+     element = element->previous)
+
+#define GONC_LIST_SUBSET_FOR_EACH2(list, element, start, end) \
+for(element = start;                                          \
+     element != end;                                          \
+     element = element->next)
+
+#define GONC_LIST_REVERSE_SUBSET_FOR_EACH2(list, element, end, start) \
+for(element = end;                                                    \
+     element != start;                                                \
+     element = element->previous)
+
+#define GONC_LIST_BEFORE(list, element, _offset)                      \
+for(size_t offset = 0; offset < _offset && element != NULL; ++offset) \
+    element = element->previous;
 
 #define GONC_LIST_AFTER(list, element, _offset)                       \
 for(size_t offset = 0; offset < _offset && element != NULL; ++offset) \
