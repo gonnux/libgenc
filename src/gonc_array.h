@@ -35,9 +35,15 @@ do                                            \
 while(0)
 
 #define GONC_ARRAY_FOR_EACH(array, index) \
-for(size_t index = 0; index < (array)->size; ++index)
+for(size_t index = 0; index != (array)->size; ++index)
 
 #define GONC_ARRAY_REVERSE_FOR_EACH(array, index) \
-for(size_t index = (array)->size - 1; index >= 0; --index)
+for(size_t index = (array)->size - 1; index != -1; --index)
+
+#define GONC_ARRAY_SUBSET_FOR_EACH(array, index, start, end) \
+for(size_t index = start; index != end; ++index)
+
+#define GONC_ARRAY_REVERSE_SUBSET_FOR_EACH(array, index, end, start) \
+for(size_t index = end; index != start; --index)
 
 #endif
