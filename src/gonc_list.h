@@ -110,14 +110,24 @@ do                                                                  \
 }                                                                   \
 while(0)
 
-#define GONC_LIST_FOR_EACH(list, type, element) \
-for(type* element = (list)->head;               \
-     element != NULL;                           \
+#define GONC_LIST_FOR_EACH(list, element) \
+for(element = (list)->head;               \
+     element != NULL;                     \
      element = element->next)
 
-#define GONC_LIST_REVERSE_FOR_EACH(list, type, element) \
-for(type* element = (list)->tail;                       \
-     element != NULL;                                   \
+#define GONC_LIST_REVERSE_FOR_EACH(list, element) \
+for(element = (list)->tail;                       \
+     element != NULL;                             \
+     element = element->previous)
+
+#define GONC_LIST_FOR_EACH2(list, type, element) \
+for(type* element = (list)->head;                \
+     element != NULL;                            \
+     element = element->next)
+
+#define GONC_LIST_REVERSE_FOR_EACH2(list, type, element) \
+for(type* element = (list)->tail;                        \
+     element != NULL;                                    \
      element = element->previous)
 
 #define GONC_LIST_AFTER(list, element, _offset)                       \

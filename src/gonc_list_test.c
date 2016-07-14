@@ -23,24 +23,24 @@ int main()
     GONC_LIST_INSERT_AFTER(&list, (&list)->head, &element1);
     GONC_LIST_INSERT_AFTER(&list, (&list)->head, &element2);
 
-    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    GONC_LIST_FOR_EACH2(&list, struct integer, item)
     {
         printf("%d\n", item->value);
     }
     printf("\n");
-    GONC_LIST_REVERSE_FOR_EACH(&list, struct integer, item)
-    {
-        printf("%d\n", item->value);
-    }
-    printf("\n");
-    GONC_LIST_REMOVE(&list, (&list)->head);
-    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    GONC_LIST_REVERSE_FOR_EACH2(&list, struct integer, item)
     {
         printf("%d\n", item->value);
     }
     printf("\n");
     GONC_LIST_REMOVE(&list, (&list)->head);
-    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    GONC_LIST_FOR_EACH2(&list, struct integer, item)
+    {
+        printf("%d\n", item->value);
+    }
+    printf("\n");
+    GONC_LIST_REMOVE(&list, (&list)->head);
+    GONC_LIST_FOR_EACH2(&list, struct integer, item)
     {
         printf("%d\n", item->value);
     }
@@ -61,7 +61,7 @@ int main()
 
     printf("After destroy:\n");
 
-    GONC_LIST_FOR_EACH(&list, struct integer, item)
+    GONC_LIST_FOR_EACH2(&list, struct integer, item)
     {
         printf("%d\n", item->value);
     }
