@@ -50,7 +50,7 @@ int main()
 
     struct integer* element = (&list)->head;
 
-    GONC_LIST_AFTER(&list, struct integer, element, 1);
+    GONC_LIST_AFTER(&list, element, 1);
     
     printf("%d\n", element->value);
 

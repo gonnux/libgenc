@@ -120,7 +120,7 @@ for(type* element = (list)->tail;                       \
      element != NULL;                                   \
      element = element->previous)
 
-#define GONC_LIST_AFTER(list, type, element, _offset)                 \
+#define GONC_LIST_AFTER(list, element, _offset)                       \
 for(size_t offset = 0; offset < _offset && element != NULL; ++offset) \
     element = element->next;
 
