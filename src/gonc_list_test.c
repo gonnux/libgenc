@@ -7,7 +7,10 @@ struct integer
     GONC_LIST_ELEMENT(struct integer);
 };
 
-GONC_LIST(integer_list, struct integer);
+struct integer_list
+{
+    GONC_LIST(struct integer);
+};
 
 int main()
 {

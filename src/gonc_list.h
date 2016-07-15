@@ -1,20 +1,20 @@
 #ifndef _GONC_LIST_H
 #define _GONC_LIST_H
 
-#define GONC_LIST(name, type) \
-struct name                   \
-{                             \
-    type* head;               \
-    type* tail;               \
-    size_t size;              \
+#define GONC_LIST(type) \
+struct                  \
+{                       \
+    type* head;         \
+    type* tail;         \
+    size_t size;        \
 }
 
-#define GONC_LIST_INIT(list)             \
-do                                       \
-{                                        \
-    (list)->head = (list)->tail = NULL;  \
-    (list)->size = 0;                    \
-}                                        \
+#define GONC_LIST_INIT(list)            \
+do                                      \
+{                                       \
+    (list)->head = (list)->tail = NULL; \
+    (list)->size = 0;                   \
+}                                       \
 while(0)
 
 #define GONC_LIST_ELEMENT(type) \
