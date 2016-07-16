@@ -29,7 +29,7 @@ while(0)
 #define GONC_HMAP_GET(hmap, key_string, value)       \
 do                                                   \
 {                                                    \
-    size_t hash;                                     \
+    size_t hash = 0;                                 \
     for(size_t i = 0; i < (key_string)->length; ++i) \
     {                                                \
         hash += (key_string)->chars[i];              \
@@ -43,7 +43,7 @@ while(0)
 #define GONC_HMAP_SET(hmap, key_string, value)       \
 do                                                   \
 {                                                    \
-    size_t hash;                                     \
+    size_t hash = 0;                                 \
     for(size_t i = 0; i < (key_string)->length; ++i) \
     {                                                \
         hash += (key_string)->chars[i];              \
