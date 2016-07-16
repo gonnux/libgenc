@@ -5,28 +5,28 @@
 
 struct gonc_string
 {
-    char* value;
+    char* chars;
     size_t length;
 };
 
-#define GONC_STRING_GET_VALUE(string) \
+#define GONC_STRING_GET_CHARS(string) \
 (string)->value
 
 #define GONC_STRING_GET_LENGTH(string) \
 (string)->length
 
-#define GONC_STRING_SET(string, _value)         \
+#define GONC_STRING_SET(string, _chars)         \
 do                                              \
 {                                               \
-    (string)->value = _value;                   \
-    (string)->length = strlen((string)->value); \
+    (string)->chars = _chars;                   \
+    (string)->length = strlen((string)->chars); \
 }                                               \
 while(0)
 
-#define GONC_STRING_SET2(string, _value, _length) \
+#define GONC_STRING_SET2(string, _chars, _length) \
 do                                                \
 {                                                 \
-    (string)->value = _value;                     \
+    (string)->chars = _chars;                     \
     (string)->length = _length;                   \
 }                                                 \
 while(0)
