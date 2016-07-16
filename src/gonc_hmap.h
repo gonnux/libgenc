@@ -20,68 +20,48 @@ do                                                                              
 }                                                                                           \
 while(0)
 
+#define GONC_HMAP_ELEMENT(type, value_type) \
+struct                                      \
+{                                           \
+    unsigned char* key;                     \
+    size_t key_length;                      \
+    value_type* value;                      \
+    type* previous;                         \
+    type* next;                             \
+} gonc_hmap_element
+
 #define GONC_HMAP_CAPACITY(hmap) \
 (hmap)->gonc_hmap.capacity
 
 #define GONC_HMAP_SIZE(hmap) \
 (hmap)->gonc_hmap.size
 
-#define GONC_HMAP_GET(hmap, key_chars, value)    \
-do                                               \
-{                                                \
-    size_t key_chars_length = strlen(key_chars); \
-    size_t hash = 0;                             \
-    for(size_t i = 0; i < key_chars_length; ++i) \
-    {                                            \
-        hash += key_chars[i];                    \
-        hash << 8;                               \
-    }                                            \
-    hash %= (hmap)->gonc_hmap.capacity;          \
-    value = (hmap)->gonc_hmap.elements[hash];    \
-}                                                \
+#define GONC_HMAP_GET(hmap, key, key_length, value) \
+do                                                  \
+{                                                   \
+    size_t hash = 0;                                \
+    for(size_t i = 0; i < key_length; ++i)          \
+    {                                               \
+        hash += key[i];                             \
+        hash << 8;                                  \
+    }                                               \
+    hash %= (hmap)->gonc_hmap.capacity;             \
+    value = (hmap)->gonc_hmap.elements[hash];       \
+}                                                   \
 while(0)
 
-#define GONC_HMAP_SET(hmap, key_chars, value)    \
-do                                               \
-{                                                \
-    size_t key_chars_length = strlen(key_chars); \
-    size_t hash = 0;                             \
-    for(size_t i = 0; i < key_chars_length; ++i) \
-    {                                            \
-        hash += key_chars[i];                    \
-        hash << 8;                               \
-    }                                            \
-    hash %= (hmap)->gonc_hmap.capacity;          \
-    (hmap)->gonc_hmap.elements[hash] = value;    \
-}                                                \
-while(0)
-
-#define GONC_HMAP_GET2(hmap, key_string, value)      \
-do                                                   \
-{                                                    \
-    size_t hash = 0;                                 \
-    for(size_t i = 0; i < (key_string)->length; ++i) \
-    {                                                \
-        hash += (key_string)->chars[i];              \
-        hash << 8;                                   \
-    }                                                \
-    hash %= (hmap)->gonc_hmap.capacity;              \
-    value = (hmap)->gonc_hmap.elements[hash];        \
-}                                                    \
-while(0)
-
-#define GONC_HMAP_SET2(hmap, key_string, value)      \
-do                                                   \
-{                                                    \
-    size_t hash = 0;                                 \
-    for(size_t i = 0; i < (key_string)->length; ++i) \
-    {                                                \
-        hash += (key_string)->chars[i];              \
-        hash << 8;                                   \
-    }                                                \
-    hash %= (hmap)->gonc_hmap.capacity;              \
-    (hmap)->gonc_hmap.elements[hash] = value;        \
-}                                                    \
+#define GONC_HMAP_SET(hmap, key, key_length, value, old_value) \
+do                                                             \
+{                                                              \
+    size_t hash = 0;                                           \
+    for(size_t i = 0; i < key_length; ++i)                     \
+    {                                                          \
+        hash += key[i];                                        \
+        hash << 8;                                             \
+    }                                                          \
+    hash %= (hmap)->gonc_hmap.capacity;                        \
+    (hmap)->gonc_hmap.elements[hash] = value;                  \
+}                                                              \
 while(0)
 
 #endif

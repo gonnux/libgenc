@@ -17,15 +17,6 @@ do                                                          \
 }                                                           \
 while(0)
 
-#define GONC_LIST_HEAD(list) \
-(list)->gonc_list.head
-
-#define GONC_LIST_TAIL(list) \
-(list)->gonc_list.tail
-
-#define GONC_LIST_SIZE(list) \
-(list)->gonc_list.size
-
 #define GONC_LIST_ELEMENT(type) \
 struct                          \
 {                               \
@@ -36,6 +27,14 @@ struct                          \
 #define GONC_LIST_ELEMENT_INIT(element) \
 (element)->gonc_list_element.previous = (element)->gonc_list_element.next = NULL
 
+#define GONC_LIST_HEAD(list) \
+(list)->gonc_list.head
+
+#define GONC_LIST_TAIL(list) \
+(list)->gonc_list.tail
+
+#define GONC_LIST_SIZE(list) \
+(list)->gonc_list.size
 
 #define GONC_LIST_PREVIOUS(list, element) \
 (element)->gonc_list_element.previous
