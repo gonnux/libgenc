@@ -26,7 +26,37 @@ while(0)
 #define GONC_HMAP_SIZE(hmap) \
 (hmap)->gonc_hmap.size
 
-#define GONC_HMAP_GET(hmap, key_string, value)       \
+#define GONC_HMAP_GET(hmap, key_chars, value)    \
+do                                               \
+{                                                \
+    size_t key_chars_length = strlen(key_chars); \
+    size_t hash = 0;                             \
+    for(size_t i = 0; i < key_chars_length; ++i) \
+    {                                            \
+        hash += key_chars[i];                    \
+        hash << 8;                               \
+    }                                            \
+    hash %= (hmap)->gonc_hmap.capacity;          \
+    value = (hmap)->gonc_hmap.elements[hash];    \
+}                                                \
+while(0)
+
+#define GONC_HMAP_SET(hmap, key_chars, value)    \
+do                                               \
+{                                                \
+    size_t key_chars_length = strlen(key_chars); \
+    size_t hash = 0;                             \
+    for(size_t i = 0; i < key_chars_length; ++i) \
+    {                                            \
+        hash += key_chars[i];                    \
+        hash << 8;                               \
+    }                                            \
+    hash %= (hmap)->gonc_hmap.capacity;          \
+    (hmap)->gonc_hmap.elements[hash] = value;    \
+}                                                \
+while(0)
+
+#define GONC_HMAP_GET2(hmap, key_string, value)      \
 do                                                   \
 {                                                    \
     size_t hash = 0;                                 \
@@ -40,7 +70,7 @@ do                                                   \
 }                                                    \
 while(0)
 
-#define GONC_HMAP_SET(hmap, key_string, value)       \
+#define GONC_HMAP_SET2(hmap, key_string, value)      \
 do                                                   \
 {                                                    \
     size_t hash = 0;                                 \

@@ -10,12 +10,9 @@ int main()
     };
     struct myhmap hmap;
     GONC_HMAP_INIT(&hmap, 10007);
-    struct gonc_string key;
-    GONC_STRING_SET(&key, "HELLO");
-    int value = 100;
-    GONC_HMAP_SET(&hmap, &key, value);
-    int value_out;
-    GONC_HMAP_GET(&hmap, &key, value_out);
-    printf("%d\n", value_out);
+    GONC_HMAP_SET(&hmap, "HELLO", 100);
+    int value;
+    GONC_HMAP_GET(&hmap, "HELLO", value);
+    printf("%d\n", value);
     return 0;
 }
