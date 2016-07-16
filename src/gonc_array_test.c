@@ -9,7 +9,7 @@ struct integer_array
 int main()
 {
     struct integer_array ia;
-    GONC_ARRAY_INIT(&ia, int, 10);
+    GONC_ARRAY_INIT(&ia, 10);
     for(int i = 0; i < GONC_ARRAY_CAPACITY(&ia); ++i)
     {
         GONC_ARRAY_SET(&ia, i, i * 100);

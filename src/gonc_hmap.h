@@ -9,13 +9,13 @@ struct                  \
     size_t size;        \
 } gonc_hmap
 
-#define GONC_HMAP_INIT(hmap, type, _capacity)                      \
-do                                                                 \
-{                                                                  \
-    (hmap)->gonc_hmap.elements = malloc(_capacity * sizeof(type)); \
-    (hmap)->gonc_hmap.capacity = _capacity;                        \
-    (hmap)->gonc_hmap.size = 0;                                    \
-}                                                                  \
+#define GONC_HMAP_INIT(hmap, _capacity)                                                     \
+do                                                                                          \
+{                                                                                           \
+    (hmap)->gonc_hmap.elements = malloc(_capacity * sizeof(*((hmap)->gonc_hmap.elements))); \
+    (hmap)->gonc_hmap.capacity = _capacity;                                                 \
+    (hmap)->gonc_hmap.size = 0;                                                             \
+}                                                                                           \
 while(0)
 
 #define GONC_HMAP_CAPACITY(hmap) \

@@ -11,13 +11,13 @@ struct                   \
     size_t size;         \
 } gonc_array
 
-#define GONC_ARRAY_INIT(array, type, _capacity)                      \
-do                                                                   \
-{                                                                    \
-    (array)->gonc_array.elements = malloc(_capacity * sizeof(type)); \
-    (array)->gonc_array.capacity = _capacity;                        \
-    (array)->gonc_array.size = 0;                                    \
-}                                                                    \
+#define GONC_ARRAY_INIT(array, _capacity)                                                       \
+do                                                                                              \
+{                                                                                               \
+    (array)->gonc_array.elements = malloc(_capacity * sizeof(*((array)->gonc_array.elements))); \
+    (array)->gonc_array.capacity = _capacity;                                                   \
+    (array)->gonc_array.size = 0;                                                               \
+}                                                                                               \
 while(0)
 
 #define GONC_ARRAY_CAPACITY(array) \
