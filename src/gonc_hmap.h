@@ -75,12 +75,18 @@ do                                                                              
         element = (element)->gonc_hmap_element.next;                                                               \
     if(element != NULL)                                                                                            \
     {                                                                                                              \
+        if(element == (hmap)->gonc_hmap.elements[hash] && (element)->gonc_hmap_element.next == NULL)               \
+            (hmap)->gonc_hmap.elements[hash] = NULL;                                                               \
         if((element)->gonc_hmap_element.previous != NULL)                                                          \
+        {                                                                                                          \
             (element)->gonc_hmap_element.previous->gonc_hmap_element.next = (element)->gonc_hmap_element.next;     \
+            (element)->gonc_hmap_element.previous = NULL;                                                          \
+        }                                                                                                          \
         if((element)->gonc_hmap_element.next != NULL)                                                              \
             (element)->gonc_hmap_element.next->gonc_hmap_element.previous = (element)->gonc_hmap_element.previous; \
-            (element)->gonc_hmap_element.previous = (element)->gonc_hmap_element.next = NULL;                      \
+            (element)->gonc_hmap_element.next = NULL;                                                              \
         }                                                                                                          \
+        --((hmap)->gonc_hmap.size);                                                                                \
     }                                                                                                              \
 }                                                                                                                  \
 while(0)
@@ -108,10 +114,15 @@ do                                                                              
         if(old_element != NULL)                                                                                                             \
         {                                                                                                                                   \
             if((old_element)->gonc_hmap_element.previous != NULL)                                                                           \
+            {                                                                                                                               \
                 (old_element)->gonc_hmap_element.previous->gonc_hmap_element.next = (old_element)->gonc_hmap_element.next;                  \
+                (old_element)->gonc_hmap_element.previous = NULL;                                                                           \
+            }                                                                                                                               \
             if((old_element)->gonc_hmap_element.next != NULL)                                                                               \
+            {                                                                                                                               \
                 (old_element)->gonc_hmap_element.next->gonc_hmap_element.previous = (old_element)->gonc_hmap_element.previous;              \
-            (old_element)->gonc_hmap_element.previous = (old_element)->gonc_hmap_element.next = NULL;                                       \
+                (old_element)->gonc_hmap_element.next = NULL;                                                                               \
+            }                                                                                                                               \
         }                                                                                                                                   \
         else                                                                                                                                \
             ++((hmap)->gonc_hmap.size);                                                                                                     \
