@@ -1,6 +1,16 @@
 #ifndef _GONC_LIST_H
 #define _GONC_LIST_H
 
+#define GONC_LIST_ELEMENT(type) \
+struct                          \
+{                               \
+    type* previous;             \
+    type* next;                 \
+} gonc_list_element
+
+#define GONC_LIST_ELEMENT_INIT(element) \
+(element)->gonc_list_element.previous = (element)->gonc_list_element.next = NULL
+
 #define GONC_LIST(type) \
 struct                  \
 {                       \
@@ -16,16 +26,6 @@ do                                                          \
     (list)->gonc_list.size = 0;                             \
 }                                                           \
 while(0)
-
-#define GONC_LIST_ELEMENT(type) \
-struct                          \
-{                               \
-    type* previous;             \
-    type* next;                 \
-} gonc_list_element
-
-#define GONC_LIST_ELEMENT_INIT(element) \
-(element)->gonc_list_element.previous = (element)->gonc_list_element.next = NULL
 
 #define GONC_LIST_HEAD(list) \
 (list)->gonc_list.head

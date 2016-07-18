@@ -3,6 +3,24 @@
 
 #include <stdlib.h>
 
+#define GONC_HMAP_ELEMENT(type) \
+struct                          \
+{                               \
+    unsigned char* key;         \
+    size_t key_length;          \
+    type* previous;             \
+    type* next;                 \
+} gonc_hmap_element
+
+#define GONC_HMAP_ELEMENT_INIT(hmap) \
+(hmap)->gonc_hmap_element.previous = (hmap)->gonc_hmap_element.next = NULL;
+
+#define GONC_HMAP_ELEMENT_KEY(element) \
+(element)->gonc_hmap_element.key
+
+#define GONC_HMAP_ELEMENT_KEY_LENGTH(element) \
+(element)->gonc_hmap_element.key_length
+
 #define GONC_HMAP(type) \
 struct                  \
 {                       \
@@ -19,18 +37,6 @@ do                                                                              
     (hmap)->gonc_hmap.size = 0;                                                             \
 }                                                                                           \
 while(0)
-
-#define GONC_HMAP_ELEMENT(type) \
-struct                          \
-{                               \
-    unsigned char* key;         \
-    size_t key_length;          \
-    type* previous;             \
-    type* next;                 \
-} gonc_hmap_element
-
-#define GONC_HMAP_ELEMENT_INIT(hmap) \
-(hmap)->gonc_hmap_element.previous = (hmap)->gonc_hmap_element.next = NULL;
 
 #define GONC_HMAP_CAPACITY(hmap) \
 (hmap)->gonc_hmap.capacity
