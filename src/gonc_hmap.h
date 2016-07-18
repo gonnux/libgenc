@@ -6,7 +6,7 @@
 #define GONC_HMAP(type) \
 struct                  \
 {                       \
-    type* elements;     \
+    type** elements;    \
     size_t capacity;    \
     size_t size;        \
 } gonc_hmap
@@ -36,32 +36,55 @@ struct                                      \
 #define GONC_HMAP_SIZE(hmap) \
 (hmap)->gonc_hmap.size
 
-#define GONC_HMAP_GET(hmap, key, key_length, value) \
-do                                                  \
-{                                                   \
-    size_t hash = 0;                                \
-    for(size_t i = 0; i < key_length; ++i)          \
-    {                                               \
-        hash += key[i];                             \
-        hash << 8;                                  \
-    }                                               \
-    hash %= (hmap)->gonc_hmap.capacity;             \
-    value = (hmap)->gonc_hmap.elements[hash];       \
-}                                                   \
+#define GONC_HMAP_GET(hmap, _key, _key_length, element)                                         \
+do                                                                                              \
+{                                                                                               \
+    size_t hash = 0;                                                                            \
+    for(size_t i = 0; i < _key_length; ++i)                                                     \
+    {                                                                                           \
+        hash += _key[i];                                                                        \
+        hash << 8;                                                                              \
+    }                                                                                           \
+    hash %= (hmap)->gonc_hmap.capacity;                                                         \
+    element = (hmap)->gonc_hmap.elements[hash];                                                 \
+    while(element != NULL && strncmp(_key, (element)->gonc_hmap_element.key, _key_length) != 0) \
+        element = (element)->gonc_hmap_element.next;                                            \
+}                                                                                               \
 while(0)
 
-#define GONC_HMAP_SET(hmap, key, key_length, value, old_value) \
-do                                                             \
-{                                                              \
-    size_t hash = 0;                                           \
-    for(size_t i = 0; i < key_length; ++i)                     \
-    {                                                          \
-        hash += key[i];                                        \
-        hash << 8;                                             \
-    }                                                          \
-    hash %= (hmap)->gonc_hmap.capacity;                        \
-    (hmap)->gonc_hmap.elements[hash] = value;                  \
-}                                                              \
+#define GONC_HMAP_SET(hmap, element, old_element)                                                           \
+do                                                                                                          \
+{                                                                                                           \
+    size_t hash = 0;                                                                                        \
+    for(size_t i = 0; i < key_length; ++i)                                                                  \
+    {                                                                                                       \
+        hash += key[i];                                                                                     \
+        hash << 8;                                                                                          \
+    }                                                                                                       \
+    hash %= (hmap)->gonc_hmap.capacity;                                                                     \
+    if((hmap)->gonc_hmap.elements[hash] == NULL)                                                            \
+        (hmap)->gonc_hmap.elements[hash] = element;                                                         \
+    else                                                                                                    \
+    {                                                                                                       \
+        old_element = (hmap)->gonc_hmap.elements[hash];                                                     \
+        while(old_element != NULL && strncmp(_key, (old_element)->gonc_hmap_element.key, _key_length) != 0) \
+            old_element = (old_element)->gonc_hmap_element.next;                                            \
+        if(old_element == NULL)                                                                             \
+        {                                                                                                   \
+            (element)->next = (hmap)->gonc_hmap.elements[hash];                                             \
+            (hmap)->gonc_hmap.elements[hash]->previous = element;                                           \
+            (hmap)->gonc_hmap.elements[hash] = element;                                                     \
+        }                                                                                                   \
+        else                                                                                                \
+        {                                                                                                   \
+            if((old_element)->previous != NULL)                                                             \
+                (old_element)->previous->next = (old_element)->next;                                        \
+            if((old_element)->next != NULL)                                                                 \
+                (old_element)->next->previous = (old_element)->previous;                                    \
+            (old_element)->previous = (old_element)->next = NULL;                                           \
+        }                                                                                                   \
+    }                                                                                                       \
+}                                                                                                           \
 while(0)
 
 #endif
