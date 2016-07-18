@@ -60,6 +60,31 @@ do                                                                              
 }                                                                                               \
 while(0)
 
+#define GONC_HMAP_REMOVE(hmap, _key, _key_length, element)                                                         \
+do                                                                                                                 \
+{                                                                                                                  \
+    size_t hash = 0;                                                                                               \
+    for(size_t i = 0; i < _key_length; ++i)                                                                        \
+    {                                                                                                              \
+        hash += _key[i];                                                                                           \
+        hash << 8;                                                                                                 \
+    }                                                                                                              \
+    hash %= (hmap)->gonc_hmap.capacity;                                                                            \
+    element = (hmap)->gonc_hmap.elements[hash];                                                                    \
+    while(element != NULL && strncmp(_key, (element)->gonc_hmap_element.key, _key_length) != 0)                    \
+        element = (element)->gonc_hmap_element.next;                                                               \
+    if(element != NULL)                                                                                            \
+    {                                                                                                              \
+        if((element)->gonc_hmap_element.previous != NULL)                                                          \
+            (element)->gonc_hmap_element.previous->gonc_hmap_element.next = (element)->gonc_hmap_element.next;     \
+        if((element)->gonc_hmap_element.next != NULL)                                                              \
+            (element)->gonc_hmap_element.next->gonc_hmap_element.previous = (element)->gonc_hmap_element.previous; \
+            (element)->gonc_hmap_element.previous = (element)->gonc_hmap_element.next = NULL;                      \
+        }                                                                                                          \
+    }                                                                                                              \
+}                                                                                                                  \
+while(0)
+
 #define GONC_HMAP_SET(hmap, element, old_element)                                                                                           \
 do                                                                                                                                          \
 {                                                                                                                                           \
@@ -88,6 +113,8 @@ do                                                                              
                 (old_element)->gonc_hmap_element.next->gonc_hmap_element.previous = (old_element)->gonc_hmap_element.previous;              \
             (old_element)->gonc_hmap_element.previous = (old_element)->gonc_hmap_element.next = NULL;                                       \
         }                                                                                                                                   \
+        else                                                                                                                                \
+            ++((hmap)->gonc_hmap.size);                                                                                                     \
         (element)->gonc_hmap_element.next = (hmap)->gonc_hmap.elements[hash];                                                               \
         (hmap)->gonc_hmap.elements[hash]->gonc_hmap_element.previous = element;                                                             \
         (hmap)->gonc_hmap.elements[hash] = element;                                                                                         \
