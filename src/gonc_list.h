@@ -66,6 +66,9 @@ do                                                                              
 }                                                                                          \
 while(0)
 
+#define GONC_LIST_PREPEND(list, element) \
+GONC_LIST_INSERT_BEFORE(list, (list)->gonc_list.head, element)
+
 #define GONC_LIST_INSERT_AFTER(list, element, new_element)                               \
 do                                                                                       \
 {                                                                                        \
