@@ -90,8 +90,8 @@ do                                                                              
 }                                                                                        \
 while(0)
 
-#define GONC_LIST_APPEND(list, element)
-GONC_LIST_INSERT_AFTER(list, (list)->tail, element)
+#define GONC_LIST_APPEND(list, element) \
+GONC_LIST_INSERT_AFTER(list, (list)->gonc_list.tail, element)
 
 #define GONC_LIST_REMOVE(list, element)                                                                        \
 do                                                                                                             \
