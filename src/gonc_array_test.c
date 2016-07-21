@@ -10,10 +10,10 @@ int main()
 {
     struct integer_array ia;
     GONC_ARRAY_INIT(&ia, 10);
-    for(int i = 0; i < GONC_ARRAY_CAPACITY(&ia); ++i)
+    for(int i = 0; i < GONC_ARRAY_SIZE(&ia); ++i)
     {
         GONC_ARRAY_SET(&ia, i, i * 100);
-        printf("element: %d size: %u capacity: %u\n", GONC_ARRAY_GET(&ia, i), GONC_ARRAY_SIZE(&ia), GONC_ARRAY_CAPACITY(&ia));
+        printf("element: %d size: %u\n", GONC_ARRAY_GET(&ia, i), GONC_ARRAY_SIZE(&ia));
     }
     GONC_ARRAY_FOR_EACH(&ia, i)
     {

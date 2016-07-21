@@ -7,21 +7,16 @@
 struct                   \
 {                        \
     type* elements;      \
-    size_t capacity;     \
     size_t size;         \
 } gonc_array
 
-#define GONC_ARRAY_INIT(array, _capacity)                                                       \
-do                                                                                              \
-{                                                                                               \
-    (array)->gonc_array.elements = malloc(_capacity * sizeof(*((array)->gonc_array.elements))); \
-    (array)->gonc_array.capacity = _capacity;                                                   \
-    (array)->gonc_array.size = 0;                                                               \
-}                                                                                               \
+#define GONC_ARRAY_INIT(array, _size)                                                       \
+do                                                                                          \
+{                                                                                           \
+    (array)->gonc_array.elements = malloc(_size * sizeof(*((array)->gonc_array.elements))); \
+    (array)->gonc_array.size = _size;                                                       \
+}                                                                                           \
 while(0)
-
-#define GONC_ARRAY_CAPACITY(array) \
-(array)->gonc_array.capacity
 
 #define GONC_ARRAY_SIZE(array) \
 (array)->gonc_array.size
@@ -32,11 +27,8 @@ while(0)
 #define GONC_ARRAY_SET(array, index, element)          \
 do                                                     \
 {                                                      \
-    if(index < (array)->gonc_array.capacity)           \
-    {                                                  \
+    if(index < (array)->gonc_array.size)               \
         (array)->gonc_array.elements[index] = element; \
-        ++((array)->gonc_array.size);                  \
-    }                                                  \
 }                                                      \
 while(0)
 
