@@ -133,4 +133,10 @@ do                                                                              
 }                                                                                                                                           \
 while(0)
 
+#define GONC_HMAP_INDEX(hmap, index) \
+(hmap)->gonc_hmap.elements[index]
+
+#define GONC_HMAP_FREE_ELEMENTS(hmap) \
+free((hmap)->gonc_hmap.elements)
+
 #endif
