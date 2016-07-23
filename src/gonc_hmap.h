@@ -142,19 +142,19 @@ do                                                                              
 }                                                                                                                                           \
 while(0)
 
-#define GONC_HMAP_INDEX_REMOVE(hmap, index, element)                                 \
-do                                                                                   \
-{                                                                                    \
-    element = (hmap)->gonc_hmap.elements[index];                                     \
-    (hmap)->gonc_hmap_elements[index] = element->gonc_hmap_element.next;             \
-    if(element != NULL)                                                              \
-    {                                                                                \
-        (element)->gonc_hmap_element.next->previous = NULL;                          \
-        (element)->gonc_hmap_element.next->next = (element)->gonc_hmap_element.next; \
-        (element)->gonc_hmap_element.previous = NULL;                                \
-        (element)->gonc_hmap_element.next = NULL;                                    \
-    }                                                                                \
-}                                                                                    \
+#define GONC_HMAP_INDEX_REMOVE(hmap, index, element)                                                   \
+do                                                                                                     \
+{                                                                                                      \
+    element = (hmap)->gonc_hmap.elements[index];                                                       \
+    if(element != NULL)                                                                                \
+    {                                                                                                  \
+        (hmap)->gonc_hmap.elements[index] = element->gonc_hmap_element.next;                           \
+        (element)->gonc_hmap_element.next->gonc_hmap_element.previous = NULL;                          \
+        (element)->gonc_hmap_element.next->gonc_hmap_element.next = (element)->gonc_hmap_element.next; \
+        (element)->gonc_hmap_element.previous = NULL;                                                  \
+        (element)->gonc_hmap_element.next = NULL;                                                      \
+    }                                                                                                  \
+}                                                                                                      \
 while(0)
 
 #define GONC_HMAP_FREE_ELEMENTS(hmap) \
