@@ -11,6 +11,13 @@ struct                          \
 #define GONC_LIST_ELEMENT_INIT(element) \
 (element)->gonc_list_element.previous = (element)->gonc_list_element.next = NULL
 
+#define GONC_LIST_ELEMENT_PREVIOUS(element) \
+(element)->gonc_list_element.previous
+
+#define GONC_LIST_ELEMENT_NEXT(element) \
+(element)->gonc_list_element.next
+
+
 #define GONC_LIST(type) \
 struct                  \
 {                       \
@@ -35,12 +42,6 @@ while(0)
 
 #define GONC_LIST_SIZE(list) \
 (list)->gonc_list.size
-
-#define GONC_LIST_PREVIOUS(list, element) \
-(element)->gonc_list_element.previous
-
-#define GONC_LIST_NEXT(list, element) \
-(element)->gonc_list_element.next
 
 #define GONC_LIST_INSERT_BEFORE(list, element, new_element)                                \
 do                                                                                         \
