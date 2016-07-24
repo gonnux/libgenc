@@ -2,7 +2,6 @@
 #define _GONC_STRING_H
 
 #include <string.h>
-#include <libgonc/config.h>
 
 struct gonc_string
 {

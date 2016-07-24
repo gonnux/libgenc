@@ -2,7 +2,6 @@
 #define _GONC_ARRAY_H
 
 #include <stdlib.h>
-#include <libgonc/config.h>
 
 #define GONC_ARRAY(type) \
 struct                   \

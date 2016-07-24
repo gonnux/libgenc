@@ -2,7 +2,6 @@
 #define _GONC_HMAP_H
 
 #include <stdlib.h>
-#include <libgonc/config.h>
 
 #define GONC_HMAP_ELEMENT(type) \
 struct                          \
