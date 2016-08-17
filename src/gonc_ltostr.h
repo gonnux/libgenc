@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-static inline size_t ltostr(long _l, int base, char** str)
+static inline size_t gonc_ltostr(long _l, int base, char** str)
 {
     size_t length = 0;
     long l = _l;
