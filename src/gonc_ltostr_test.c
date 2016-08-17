@@ -3,7 +3,8 @@
 int main()
 {
     char* str;
-    GONC_LTOSTR(200, 10, str);
+    ltostr(200, 10, &str);
     printf("%s", str);
+    free(str);
     return 0;
 }
