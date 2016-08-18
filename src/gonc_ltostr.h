@@ -6,20 +6,28 @@
 static inline size_t gonc_ltostr(long _l, int base, char** str)
 {
     size_t length = 0;
-    long l = _l;
-    do
-    {
-        l /= 10;
-        ++length;
-    }
-    while(l > 0);
-    l = _l;
 
-    *str = malloc((length + 1) * sizeof(char));
-    for(size_t index = 0; index != length; ++index)
+    if(base == 10 || base == 16)
     {
-        (*str)[length - index - 1] = '0' + l % 10;
-        l /= 10;
+        long l = _l;
+        do
+        {
+            l /= base;
+            ++length;
+        }
+        while(l > 0);
+        l = _l;
+
+        *str = malloc((length + 1) * sizeof(char));
+        for(size_t index = 0; index != length; ++index)
+        {
+            long remainder = l % base;
+            if(remainder < 10)
+                (*str)[length - index - 1] = '0' + remainder;
+            else
+                (*str)[length - index - 1] = 'A' + remainder - 10;
+            l /= base;
+        }
     }
     (*str)[length] = '\0';
 
