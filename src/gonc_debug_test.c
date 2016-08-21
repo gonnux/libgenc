@@ -1,6 +1,6 @@
 #include "gonc_debug.h"
 int main()
 {
-    GONC_WARNX("%s: %u: HELLO", __FILE__, __LINE__);
+    GONC_DEBUG("test %d", 148);
     return 0;
 }
