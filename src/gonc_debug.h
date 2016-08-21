@@ -9,7 +9,7 @@
 
 #else
 
-#define GONC_DEBUG(fmt, ...) warnx("%s: %u: " fmt, __FILE__, __LINE__, __VA_ARGS__)
+#define GONC_DEBUG(fmt, ...) warnx("%s: %u: " fmt, __FILE__, __LINE__, ##__VA_ARGS__)
 
 #endif
 #endif
