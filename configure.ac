@@ -18,7 +18,7 @@ AC_PROG_CC_STDC
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([stdlib.h string.h])
+AC_CHECK_HEADERS([stdlib.h string.h stddef.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
