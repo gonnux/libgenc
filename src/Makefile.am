@@ -1,1 +1,1 @@
-pkginclude_HEADERS = gonc_list.h gonc_array.h gonc_string.h gonc_hmap.h gonc_cast.h gonc_ltostr.h gonc_uinttostr.h gonc_nstrncmp.h gonc_nstrncasecmp.h gonc_nstrtoi.h
+pkginclude_HEADERS = gon_c_list.h gon_c_array.h gon_c_string.h gon_c_hmap.h gon_c_cast.h gon_c_ltostr.h gon_c_uinttostr.h gon_c_nstrncmp.h gon_c_nstrncasecmp.h gon_c_nstrtoi.h

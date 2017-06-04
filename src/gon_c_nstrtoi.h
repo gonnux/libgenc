@@ -1,9 +1,9 @@
-#ifndef _GONC_NSTRTOI
-#define _GONC_NSTRTOI
+#ifndef _GON_C_NSTRTOI
+#define _GON_C_NSTRTOI
 
 #include <stdlib.h>
 #include <stdio.h>
-static inline int gonc_nstrtoi(char* string, size_t length)
+static inline int gon_c_nstrtoi(char* string, size_t length)
 {
     int intValue = 0;
     int multiplier = 1;

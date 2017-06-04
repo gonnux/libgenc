@@ -1,9 +1,9 @@
-#ifndef _GONC_LTOSTR
-#define _GONC_LTOSTR
+#ifndef _GON_C_LTOSTR
+#define _GON_C_LTOSTR
 
 #include <stdlib.h>
 #include <stdio.h>
-static inline size_t gonc_ltostr(long _l, int base, char** str)
+static inline size_t gon_c_ltostr(long _l, int base, char** str)
 {
     size_t length = 0;
 
