@@ -2,11 +2,11 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libgonc], [0.0.1], [gonny952@gmail.com])
+AC_INIT([libgon_c], [0.0.1], [gonny952@gmail.com])
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT
 
-AC_CONFIG_SRCDIR([src/gonc_list.h])
+AC_CONFIG_SRCDIR([src/gon_c_list.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_FILES([Makefile src/Makefile])
