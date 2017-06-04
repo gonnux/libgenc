@@ -1,9 +1,9 @@
-#ifndef _GONC_UINTTOSTR
-#define _GONC_UINTTOSTR
+#ifndef _GON_C_UINTTOSTR
+#define _GON_C_UINTTOSTR
 
 #include <stdlib.h>
 #include <stdio.h>
-static inline size_t gonc_uinttostr(unsigned int _uint, int base, char** str)
+static inline size_t gon_c_uinttostr(unsigned int _uint, int base, char** str)
 {
     size_t length = 0;
 

@@ -1,7 +1,0 @@
-#include "gonc_nstrtoi.h"
-#include <stdio.h>
-int main()
-{
-    printf("%d\n", gonc_nstrtoi("1234", sizeof("1234") - 1));
-    return 0;
-}

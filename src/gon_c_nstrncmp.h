@@ -1,9 +1,9 @@
-#ifndef _GONC_NSTRNCMP_H
-#define _GONC_NSTRNCMP_H
+#ifndef _GON_C_NSTRNCMP_H
+#define _GON_C_NSTRNCMP_H
 
 #include <stddef.h>
 
-static inline int gonc_nstrncmp(const char* s1, size_t n1, const char* s2, size_t n2)
+static inline int gon_c_nstrncmp(const char* s1, size_t n1, const char* s2, size_t n2)
 {
     for(size_t index = 0; index < n1 && index < n2; ++index)
     {
