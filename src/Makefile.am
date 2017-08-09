@@ -1,1 +1,0 @@
-pkginclude_HEADERS = genc_list.h genc_array.h genc_string.h genc_hmap.h genc_cast.h genc_ltostr.h genc_uinttostr.h genc_nstrncmp.h genc_nstrncasecmp.h genc_nstrtoi.h genc_generic.h genc_nstrnstr.h genc_nstrstr.h
