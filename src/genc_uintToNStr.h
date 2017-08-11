@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-static inline size_t genc_intToNStr(int _uInteger, int base, char** string) {
+static inline size_t genc_uIntToNStr(int _uInteger, int base, char** string) {
     size_t length = 0;
 
     if(base == 10 || base == 16) {
