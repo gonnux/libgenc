@@ -1,9 +1,9 @@
-#ifndef _GENC_HMAP_H
-#define _GENC_HMAP_H
+#ifndef _GENC_HASH_MAP_H
+#define _GENC_HASH_MAP_H
 
 #include <stdlib.h>
 
-#define GENC_HMAP_ELEMENT(type) \
+#define GENC_HASH_MAP_ELEMENT(type) \
 struct                          \
 {                               \
     unsigned char* key;         \
@@ -12,22 +12,22 @@ struct                          \
     type* next;                 \
 } genc_hmap_element
 
-#define GENC_HMAP_ELEMENT_INIT(hmap) \
+#define GENC_HASH_MAP_ELEMENT_INIT(hmap) \
 (hmap)->genc_hmap_element.previous = (hmap)->genc_hmap_element.next = NULL;
 
-#define GENC_HMAP_ELEMENT_KEY(element) \
+#define GENC_HASH_MAP_ELEMENT_KEY(element) \
 (element)->genc_hmap_element.key
 
-#define GENC_HMAP_ELEMENT_KEY_LENGTH(element) \
+#define GENC_HASH_MAP_ELEMENT_KEY_LENGTH(element) \
 (element)->genc_hmap_element.key_length
 
-#define GENC_HMAP_ELEMENT_PREVIOUS(element) \
+#define GENC_HASH_MAP_ELEMENT_PREVIOUS(element) \
 (element)->genc_hmap_element.previous
 
-#define GENC_HMAP_ELEMENT_NEXT(element) \
+#define GENC_HASH_MAP_ELEMENT_NEXT(element) \
 (element)->genc_hmap_element.next
 
-#define GENC_HMAP(type) \
+#define GENC_HASH_MAP(type) \
 struct                  \
 {                       \
     type** elements;    \
@@ -35,7 +35,7 @@ struct                  \
     size_t size;        \
 } genc_hmap
 
-#define GENC_HMAP_INIT(hmap, _capacity)                                                     \
+#define GENC_HASH_MAP_INIT(hmap, _capacity)                                                     \
 do                                                                                          \
 {                                                                                           \
     (hmap)->genc_hmap.elements = calloc(_capacity, sizeof(*((hmap)->genc_hmap.elements)));  \
@@ -44,16 +44,16 @@ do                                                                              
 }                                                                                           \
 while(0)
 
-#define GENC_HMAP_INDEX(hmap, index) \
+#define GENC_HASH_MAP_INDEX(hmap, index) \
 (hmap)->genc_hmap.elements[index]
 
-#define GENC_HMAP_CAPACITY(hmap) \
+#define GENC_HASH_MAP_CAPACITY(hmap) \
 (hmap)->genc_hmap.capacity
 
-#define GENC_HMAP_SIZE(hmap) \
+#define GENC_HASH_MAP_SIZE(hmap) \
 (hmap)->genc_hmap.size
 
-#define GENC_HMAP_GET(hmap, _key, _key_length, element)                                         \
+#define GENC_HASH_MAP_GET(hmap, _key, _key_length, element)                                         \
 do                                                                                              \
 {                                                                                               \
     size_t hash = 0;                                                                            \
@@ -69,7 +69,7 @@ do                                                                              
 }                                                                                               \
 while(0)
 
-#define GENC_HMAP_REMOVE(hmap, _key, _key_length, element)                                                         \
+#define GENC_HASH_MAP_REMOVE(hmap, _key, _key_length, element)                                                         \
 do                                                                                                                 \
 {                                                                                                                  \
     size_t hash = 0;                                                                                               \
@@ -100,7 +100,7 @@ do                                                                              
 }                                                                                                                  \
 while(0)
 
-#define GENC_HMAP_SET(hmap, element, old_element)                                                                                           \
+#define GENC_HASH_MAP_SET(hmap, element, old_element)                                                                                           \
 do                                                                                                                                          \
 {                                                                                                                                           \
     size_t hash = 0;                                                                                                                        \
@@ -142,7 +142,7 @@ do                                                                              
 }                                                                                                                                           \
 while(0)
 
-#define GENC_HMAP_INDEX_REMOVE(hmap, index, element)                                                   \
+#define GENC_HASH_MAP_INDEX_REMOVE(hmap, index, element)                                                   \
 do                                                                                                     \
 {                                                                                                      \
     element = (hmap)->genc_hmap.elements[index];                                                       \
@@ -157,7 +157,7 @@ do                                                                              
 }                                                                                                      \
 while(0)
 
-#define GENC_HMAP_FREE_ELEMENTS(hmap) \
+#define GENC_HASH_MAP_FREE_ELEMENTS(hmap) \
 free((hmap)->genc_hmap.elements)
 
 #endif
