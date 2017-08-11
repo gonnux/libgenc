@@ -4,8 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-struct genc_string
-{
+struct genc_String {
     char* chars;
     size_t length;
     bool freeable;
@@ -21,8 +20,7 @@ struct genc_string
 (string)->freeable
 
 #define GENC_STRING_SET(string, _chars, _freeable) \
-do                                                 \
-{                                                  \
+do {                                               \
     (string)->chars = _chars;                      \
     (string)->length = strlen((string)->chars);    \
     (string)->freeable = _freeable;                \
@@ -30,8 +28,7 @@ do                                                 \
 while(0)
 
 #define GENC_STRING_SET2(string, _chars, _length, _freeable) \
-do                                                           \
-{                                                            \
+do {                                                         \
     (string)->chars = _chars;                                \
     (string)->length = _length;                              \
     (string)->freeable = _freeable;                          \

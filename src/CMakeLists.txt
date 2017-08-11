@@ -1,1 +1,1 @@
-install(FILES genc_array.h genc_generic.h genc_list.h genc_caseCompareNStr.h genc_nStrNStr.h genc_nStrToInt.h genc_uIntToNStr.h genc_cast.h genc_hmap.h genc_compareNStr.h genc_nStrStr.h genc_string.h DESTINATION /usr/local/include/libgenc/)
+install(FILES genc_Array.h genc_Generic.h genc_List.h genc_caseCompareNStr.h genc_nStrNStr.h genc_nStrToInt.h genc_uIntToNStr.h genc_cast.h genc_HashMap.h genc_compareNStr.h genc_nStrStr.h genc_String.h DESTINATION include/libgenc)
