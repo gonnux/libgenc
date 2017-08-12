@@ -1,19 +1,16 @@
 #include <stdio.h>
-#include "genc_list.h"
+#include "../src/genc_List.h"
 
-struct integer
-{
+struct integer {
     int value;
     GENC_LIST_ELEMENT(struct integer);
 };
 
-struct integer_list
-{
+struct integer_list {
     GENC_LIST(struct integer);
 };
 
-int main()
-{
+int main() {
     struct integer_list list;
     GENC_LIST_INIT(&list);
     struct integer element1;
