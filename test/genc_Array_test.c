@@ -1,5 +1,10 @@
-#include "../src/genc_Array.h"
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <cmocka.h>
+
 #include <stdio.h>
+#include "../src/genc_Array.h"
 
 struct integer_array {
     GENC_ARRAY(int);

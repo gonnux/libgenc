@@ -1,5 +1,10 @@
-#include "../src/genc_uIntToNStr.h"
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <cmocka.h>
+
 #include <stdio.h>
+#include "../src/genc_uIntToNStr.h"
 int main() {
     char* str;
     genc_uIntToNStr(200, 10, &str);

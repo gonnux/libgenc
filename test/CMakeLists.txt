@@ -1,10 +1,48 @@
 add_executable(genc_Array_test genc_Array_test.c)
+target_link_libraries(genc_Array_test cmocka)
 add_test(NAME genc_Array_test COMMAND genc_Array_test)
+
 add_executable(genc_List_test genc_List_test.c)
+target_link_libraries(genc_List_test cmocka)
 add_test(NAME genc_List_test COMMAND genc_List_test)
+
 add_executable(genc_HashMap_test genc_HashMap_test.c)
+target_link_libraries(genc_HashMap_test cmocka)
 add_test(NAME genc_HashMap_test COMMAND genc_HashMap_test)
+
 add_executable(genc_uIntToNStr_test genc_uIntToNStr_test.c)
+target_link_libraries(genc_uIntToNStr_test cmocka)
 add_test(NAME genc_uIntToNStr_test COMMAND genc_uIntToNStr_test)
+
 add_executable(genc_nStrToInt_test genc_nStrToInt_test.c)
+target_link_libraries(genc_nStrToInt_test cmocka)
 add_test(NAME genc_nStrToInt_test COMMAND genc_nStrToInt_test)
+
+add_executable(genc_caseCompareNStr_test genc_caseCompareNStr_test.c)
+target_link_libraries(genc_caseCompareNStr_test cmocka)
+add_test(NAME genc_caseCompareNStr_test COMMAND genc_caseCompareNStr_test)
+
+add_executable(genc_compareNStr_test genc_compareNStr_test.c)
+target_link_libraries(genc_compareNStr_test cmocka)
+add_test(NAME genc_compareNStr_test COMMAND genc_compareNStr_test)
+
+add_executable(genc_cast_test genc_cast_test.c)
+target_link_libraries(genc_cast_test cmocka)
+add_test(NAME genc_cast_test COMMAND genc_cast_test)
+
+add_executable(genc_String_test genc_String_test.c)
+target_link_libraries(genc_String_test cmocka)
+add_test(NAME genc_String_test COMMAND genc_String_test)
+
+add_executable(genc_nStrStr_test genc_nStrStr_test.c)
+target_link_libraries(genc_nStrStr_test cmocka)
+add_test(NAME genc_nStrStr_test COMMAND genc_nStrStr_test)
+
+add_executable(genc_nStrNStr_test genc_nStrNStr_test.c)
+target_link_libraries(genc_nStrNStr_test cmocka)
+add_test(NAME genc_nStrNStr_test COMMAND genc_nStrNStr_test)
+
+add_executable(genc_Generic_test genc_Generic_test.c)
+target_link_libraries(genc_Generic_test cmocka)
+add_test(NAME genc_Generic_test COMMAND genc_Generic_test)
+

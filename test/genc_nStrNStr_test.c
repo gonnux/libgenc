@@ -4,9 +4,7 @@
 #include <cmocka.h>
 
 #include <stdio.h>
-#include "../src/genc_nStrToInt.h"
-int main()
-{
-    printf("%d\n", genc_nStrToInt("1234", sizeof("1234") - 1));
+#include "../src/genc_nStrNStr.h"
+int main() {
     return 0;
 }
