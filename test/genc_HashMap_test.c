@@ -1,16 +1,18 @@
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <cmocka.h>
+
 #include <stdio.h>
 #include "../src/genc_HashMap.h"
 #include "../src/genc_String.h"
 
-int main()
-{
-    struct my_HashMap_element
-    {
+int main() {
+    struct my_HashMap_element {
         int value;
         GENC_HASH_MAP_ELEMENT(struct my_HashMap_element);
     };
-    struct my_HashMap
-    {
+    struct my_HashMap {
         GENC_HASH_MAP(struct my_HashMap_element);
     };
     struct my_HashMap HashMap;
