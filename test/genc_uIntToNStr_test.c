@@ -1,12 +1,11 @@
-#include "genc_ltostr.h"
+#include "../src/genc_uIntToNStr.h"
 #include <stdio.h>
-int main()
-{
+int main() {
     char* str;
-    genc_ltostr(200, 10, &str);
+    genc_uIntToNStr(200, 10, &str);
     printf("%s\n", str);
     free(str);
-    genc_ltostr(10, 16, &str);
+    genc_uIntToNStr(10, 16, &str);
     printf("%s\n", str);
     free(str);
 
