@@ -11,10 +11,12 @@ static inline int genc_nStrNStr(char* nString1, size_t nString1Length, char* nSt
     char* string2 = malloc(nString2Length + 1);
     memcpy(string2, nString2, nString2Length);
     string2[nString2Length] = '\0';
-    int result = strstr(string1, string2) - string1;
+    char* result = strstr(string1, string2);
     free(string1);
     free(string2);
-    return result;
+    if(result == NULL)
+        return -1;
+    return result - string1;
 }
 
 #endif

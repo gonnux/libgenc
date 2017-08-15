@@ -8,9 +8,11 @@ static inline int genc_strNStr(char* string1, char* nString2, size_t nString2Len
     char* string2 = malloc(nString2Length + 1);
     memcpy(string2, nString2, nString2Length);
     string2[nString2Length] = '\0';
-    int result = strstr(string1, string2) - string1;
+    char* result = strstr(string1, string2);
     free(string2);
-    return result;
+    if(result == NULL)
+        return -1;
+    return result - string1;
 }
 
 #endif
