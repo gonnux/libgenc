@@ -2,6 +2,7 @@
 #define _GENC_STRING_H
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 
 struct genc_String {
@@ -11,7 +12,7 @@ struct genc_String {
 };
 
 #define GENC_STRING_GET_CHARS(string) \
-(string)->value
+(string)->chars
 
 #define GENC_STRING_GET_LENGTH(string) \
 (string)->length
@@ -24,15 +25,22 @@ do {                                               \
     (string)->chars = _chars;                      \
     (string)->length = strlen((string)->chars);    \
     (string)->freeable = _freeable;                \
-}                                                  \
-while(0)
+} while(0)
 
 #define GENC_STRING_SET2(string, _chars, _length, _freeable) \
 do {                                                         \
     (string)->chars = _chars;                                \
     (string)->length = _length;                              \
     (string)->freeable = _freeable;                          \
-}                                                            \
-while(0)
+} while(0)
+
+#define GENC_STRING_FREE(string)          \
+do {                                      \
+    if(GENC_STRING_IS_FREEABLE(string)) { \
+        free((string)->chars);            \
+        (string)->chars = NULL;           \
+        (string)->freeable = false;       \
+    }                                     \
+} while(0)
 
 #endif
