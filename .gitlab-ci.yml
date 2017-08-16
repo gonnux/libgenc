@@ -1,0 +1,14 @@
+image: https://hub.docker.com/r/rikorose/gcc-cmake
+
+build:
+  stage: build
+  script: 
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+
+test:
+  stage: test
+  script:
+    - make test
