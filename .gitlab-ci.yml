@@ -1,4 +1,4 @@
-image: https://hub.docker.com/r/rikorose/gcc-cmake
+image: rikorose/gcc-cmake
 
 build:
   stage: build
