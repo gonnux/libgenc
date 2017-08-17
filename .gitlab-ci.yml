@@ -3,6 +3,7 @@ image: rikorose/gcc-cmake
 build:
   stage: build
   script: 
+    - apt-get install cmocka-dev
     - mkdir build
     - cd build
     - cmake ..
