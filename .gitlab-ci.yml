@@ -12,4 +12,8 @@ build:
 test:
   stage: test
   script:
+    - pacman -S --noconfirm cmake gcc make cmocka jansson lua
+    - mkdir build
+    - cd build
+    - cmake ..
     - make test
