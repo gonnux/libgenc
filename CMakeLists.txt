@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(libenc)
+project(libgenc)
 enable_testing()
 set(CMAKE_BUILD_TYPE Debug)
 add_subdirectory(src)
