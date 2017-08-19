@@ -1,9 +1,9 @@
-image: rikorose/gcc-cmake
+image: dock0/arch
 
 build:
   stage: build
   script: 
-    - apt-get -y install libcmocka-dev
+    - pacman -S --noconfirm cmake gcc make cmocka
     - mkdir build
     - cd build
     - cmake ..
