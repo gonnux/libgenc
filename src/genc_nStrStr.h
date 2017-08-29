@@ -5,6 +5,25 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * @file genc_nStrStr.h
+ * @author Byeonggon Lee
+ * @brief This file contains function genc_nStrStr
+ */
+
+/**
+ * @brief
+ * Find a string in another string.
+ * @param nString1
+ * Same as haystack in strstr().
+ * @param nString1Length
+ * Length of nString1.
+ * @param string2
+ * Same as needle in strstr().
+ * @returns
+ * Index of the first match of the substring.
+ */
+
 static inline int genc_nStrStr(char* nString1, size_t nString1Length, char* string2) {
     char* string1 = malloc(nString1Length + 1);
     memcpy(string1, nString1, nString1Length);
