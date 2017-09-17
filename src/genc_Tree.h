@@ -13,6 +13,7 @@ struct                          \
 #define GENC_TREE_ELEMENT_INIT(element, childCapacity)                           \
 (element)->genc_Tree_element.parent = NULL;                                      \
 (element)->genc_Tree_element.childCapacity = childCapacity;                      \
+(element)->genc_Tree_element.childCount = 0;                                     \
 (element)->genc_Tree_element.children = malloc(childCapacity * sizeof(element));
 
 #define GENC_TREE_ELEMENT_PARENT(element) \
@@ -30,24 +31,5 @@ if((element)->genc_Tree_element.childCount < (element)->genc_Tree_element.childC
     (child)->genc_Tree_element.parent = element;                                           \
     ++((element)->genc_Tree_element.childCount)                                            \
 }
-
-#define GENC_TREE(type) \
-struct {                \
-    type* root;         \
-} genc_Tree
-
-#define GENC_TREE_INIT(list)                                \
-do                                                          \
-{                                                           \
-    (list)->genc_Tree.root = NULL;                          \
-    (list)->genc_Tree.size = 0;                             \
-}                                                           \
-while(0)
-
-#define GENC_TREE_ROOT(list) \
-(list)->genc_Tree.root
-
-#define GENC_TREE_SIZE(list) \
-(list)->genc_Tree.size
 
 #endif
