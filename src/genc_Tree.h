@@ -32,4 +32,6 @@ if((element)->genc_Tree_element.childCount < (element)->genc_Tree_element.childC
     ++((element)->genc_Tree_element.childCount)                                            \
 }
 
+#define GENC_TREE_ELEMENT_FOREACH(element, stack)
+
 #endif
