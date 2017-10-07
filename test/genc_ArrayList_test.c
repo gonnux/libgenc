@@ -1,0 +1,33 @@
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <cmocka.h>
+#include <stdio.h>
+#include "../src/genc_ArrayList.h"
+
+struct Integer {
+    int value;
+};
+
+struct Integer_ArrayList {
+    GENC_ARRAY_LIST(struct Integer);
+};
+
+int main() {
+    struct Integer_ArrayList arrayList;
+    GENC_ARRAY_LIST_INIT(&arrayList, 10);
+    struct Integer element1;
+    element1.value = 100;
+    struct Integer element2;
+    element2.value = 200;
+
+    GENC_ARRAY_LIST_PUSH(&arrayList, element1);
+    GENC_ARRAY_LIST_PUSH(&arrayList, element2);
+    GENC_ARRAY_LIST_POP(&arrayList);
+
+    GENC_ARRAY_LIST_FOR_EACH(&arrayList, index) {
+        printf("%d\n", GENC_ARRAY_LIST_GET(&arrayList, index).value);
+    }
+    printf("\n");
+    return 0;
+}
