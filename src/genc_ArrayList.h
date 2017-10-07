@@ -13,13 +13,15 @@ struct {                      \
 } genc_ArrayList
 
 #define GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList) \
-sizeof(*((arrayList)->genc_ArrayList.elements)
+sizeof(*((arrayList)->genc_ArrayList.elements))
 
-#define GENC_ARRAY_LIST_INIT(arrayList, _capacity)                                                              \
-do {                                                                                                            \
-    errx(EXIT_FAILURE, "%s: %u: capacity should be larger than 0", __FILE__, __LINE__);                                       \
-    (arrayList)->genc_ArrayList.elements = malloc(_capacity * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));         \
-    GENC_ARRAY_LIST_CAPACITY = _capacity;                                                           \
+#define GENC_ARRAY_LIST_INIT(arrayList, _capacity)                                                      \
+do {                                                                                                    \
+    if(GENC_ARRAY_LIST_CAPACITY(arrayList) <= 0)                                                        \
+        errx(EXIT_FAILURE, "%s: %u: capacity should be larger than 0", __FILE__, __LINE__);             \
+    (arrayList)->genc_ArrayList.elements = malloc(_capacity * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
+    GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                                    \
+    GENC_ARRAY_LIST_SIZE(arrayList) = 0;                                                                \
 } while(0)
 
 #define GENC_ARRAY_LIST_CAPACITY(arrayList) \
