@@ -51,7 +51,7 @@ do {                                                                            
 #define GENC_ARRAY_LIST_POP(arrayList, element) \
 do {                                            \
     GENC_ARRAY_LIST_PEEK(arrayList, element);   \
-    --GENC_ARRAY_LIST_SIZE(arrayList)
+    --GENC_ARRAY_LIST_SIZE(arrayList);          \
 } while(0)
 
 #define GENC_ARRAY_LIST_FOR_EACH(arrayList, index) \
