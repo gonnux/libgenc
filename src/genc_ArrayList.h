@@ -33,8 +33,8 @@ do {                                                                            
 #define GENC_ARRAY_LIST_GET(arrayList, index) \
 ((arrayList)->genc_ArrayList.elements[index])
 
-#define GENC_ARRAY_LIST_PEEK(arrayList) \
-GENC_ARRAY_LIST_GET(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1);
+#define GENC_ARRAY_LIST_PEEK(arrayList, element) \
+*element = GENC_ARRAY_LIST_GET(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1)
 
 #define GENC_ARRAY_LIST_PUSH(arrayList, element)                                                    \
 do {                                                                                                \
@@ -48,8 +48,11 @@ do {                                                                            
     ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
 } while(0)
 
-#define GENC_ARRAY_LIST_POP(arrayList) \
---GENC_ARRAY_LIST_SIZE(arrayList)
+#define GENC_ARRAY_LIST_POP(arrayList, element) \
+do {                                            \
+    GENC_ARRAY_LIST_PEEK(arrayList, element);   \
+    --GENC_ARRAY_LIST_SIZE(arrayList)
+} while(0)
 
 #define GENC_ARRAY_LIST_FOR_EACH(arrayList, index) \
 for(size_t index = 0; index != GENC_ARRAY_LIST_SIZE(arrayList); ++index)
