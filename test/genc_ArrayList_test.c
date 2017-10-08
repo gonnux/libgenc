@@ -20,14 +20,16 @@ static void genc_ArrayList_test(void** state) {
     element1.value = 100;
     struct Integer element2;
     element2.value = 200;
+    struct Integer element3;
 
     GENC_ARRAY_LIST_PUSH(&arrayList, element1);
     GENC_ARRAY_LIST_PUSH(&arrayList, element2);
-    GENC_ARRAY_LIST_POP(&arrayList);
+    GENC_ARRAY_LIST_POP(&arrayList, &element3);
 
     GENC_ARRAY_LIST_FOR_EACH(&arrayList, index) {
         printf("%d\n", GENC_ARRAY_LIST_GET(&arrayList, index).value);
     }
+    printf("%d", element3.value);
     printf("\n");
 }
 
