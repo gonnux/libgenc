@@ -10,6 +10,15 @@ struct {                       \
     } children;                \
 } genc_Tree_node
 
+#define GENC_TREE_NODE_INIT(node, capacity) \
+GENC_ARRAY_LIST_INIT((&(node)->genc_Tree_node.children), capacity)
+
+#define GENC_TREE_NODE_ADD_CHILD(node, child) \
+GENC_ARRAY_LIST_PUSH(&((node)->genc_Tree_node.children), child)
+
+#define GENC_TREE_NODE_GET_CHILD(node, index) \
+GENC_ARRAY_LIST_GET(&((node)->genc_Tree_node.children), index)
+
 /*
 #define GENC_LIST_ELEMENT_INIT(element) \
 (element)->genc_List_element.previous = (element)->genc_List_element.next = NULL
