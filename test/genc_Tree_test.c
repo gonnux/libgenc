@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "genc_Tree.h"
+#include "../src/genc_Tree.h"
 int main() {
     struct node {
         GENC_TREE_NODE(struct node);
