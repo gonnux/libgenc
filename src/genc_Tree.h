@@ -19,6 +19,13 @@ GENC_ARRAY_LIST_PUSH(&((node)->genc_Tree_node.children), child)
 #define GENC_TREE_NODE_GET_CHILD(node, index) \
 GENC_ARRAY_LIST_GET(&((node)->genc_Tree_node.children), index)
 
+#define GENC_TREE_NODE_BFS_BEGIN(node, queue) \
+do {
+    struct genc_Tree_Node_BfsHistory* queue;
+    queue = malloc(sizeof(struct genc_Tree_Node_BfsHistory));
+    GENC_LIST_ELEMENT_INIT(queue);
+} while(0)
+
 /*
 #define GENC_LIST_ELEMENT_INIT(element) \
 (element)->genc_List_element.previous = (element)->genc_List_element.next = NULL
