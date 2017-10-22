@@ -8,7 +8,7 @@ struct {                       \
     struct {                   \
         GENC_ARRAY_LIST(type); \
     } children;                \
-} genc_Tree_node
+} genc_Tree_Node
 
 #define GENC_TREE_NODE_INIT(node, capacity) \
 GENC_ARRAY_LIST_INIT((&(node)->genc_Tree_node.children), capacity)
@@ -18,6 +18,18 @@ GENC_ARRAY_LIST_PUSH(&((node)->genc_Tree_node.children), child)
 
 #define GENC_TREE_NODE_GET_CHILD(node, index) \
 GENC_ARRAY_LIST_GET(&((node)->genc_Tree_node.children), index)
+
+#define GENC_TREE_DFS_BEGIN(node, stack) \
+do {
+    struct genc_Tree_SearchHistory* history = malloc(sizeof(struct genc_Tree_SearchHistory));
+    history->childIndex = childIndex;
+    GENC_LIST_PUSH(stack, history);
+} while(0)
+#define GENC_TREE_DFS_END(node, stack) \
+#define GENC_TREE_BFS_BEGIN(node, queue) \
+#define GENC_TREE_BFS_END(node, queue) \
+#define GENC_TREE_RBFS_BEGIN(node, queue) \
+#define GENC_TREE_RBFS_END(node, queue) \
 
 /*
 #define GENC_LIST_ELEMENT_INIT(element) \
