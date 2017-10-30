@@ -8,7 +8,7 @@ struct {                       \
     struct {                   \
         GENC_ARRAY_LIST(type); \
     } children;                \
-} genc_Tree_Node
+} genc_Tree_node
 
 #define GENC_TREE_NODE_INIT(node, capacity) \
 GENC_ARRAY_LIST_INIT((&(node)->genc_Tree_node.children), capacity)
@@ -46,21 +46,22 @@ struct {                                 \
 GENC_LIST_ELEMENT_INIT(&((historyElement)->genc_Tree_bfsHistoryElement))
 
 #define GENC_TREE_NODE_BFS_BEGIN(type, node, queue) \
-do {
-    struct {
-        GENC_TREE_BFS_HISTORY(type);
-    } history;
-    GENC_TREE_BFS_HISTORY_INIT(&history);
-    struct {
-        GENC_TREE_BFS_HISTORY_ELEMENT(type);
-    }* historyElement;
-    do {
-        for(int index = 0; index < GENC_TREE_NODE_CHILD_COUNT(historyElement); ++index) {
-            type* node = GENC_TREE_NODE_GET_CHILD(node, index);
-            historyElement = malloc(sizeof(struct GENC_TREE_NODE_BFS_HISTORY(type));
-            GENC_TREE_BFS_HISTORY_ELEMENT_INIT(historyElement);
-        }
-    } while(GENC_TREE_BFS_HISTORY_SIZE(history) > 0);
+do { \
+    struct { \
+        GENC_TREE_BFS_HISTORY(type); \
+    } history; \
+    GENC_TREE_BFS_HISTORY_INIT(&history); \
+    struct { \
+        GENC_TREE_BFS_HISTORY_ELEMENT(type); \
+    }* historyElement; \
+    do { \
+        for(int index = 0; index < GENC_TREE_NODE_CHILD_COUNT(historyElement); ++index) { \
+            type* node = GENC_TREE_NODE_GET_CHILD(node, index); \
+            historyElement = malloc(sizeof(struct GENC_TREE_NODE_BFS_HISTORY(type)); \
+            GENC_TREE_BFS_HISTORY_ELEMENT_INIT(historyElement); \
+        } \
+    } while(GENC_TREE_BFS_HISTORY_SIZE(history) > 0)
+
 #define GENC_TREE_NODE_BFS_END(type, node, queue) \
 } while(0)
 
