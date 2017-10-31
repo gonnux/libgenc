@@ -5,6 +5,7 @@
 
 #define GENC_TREE_NODE(type)   \
 struct {                       \
+    type* parent;              \
     struct {                   \
         GENC_ARRAY_LIST(type); \
     } children;                \
@@ -12,6 +13,9 @@ struct {                       \
 
 #define GENC_TREE_NODE_INIT(node, capacity) \
 GENC_ARRAY_LIST_INIT((&(node)->genc_Tree_node.children), capacity)
+
+#define GENC_TREE_NODE_GET_PARENT(node) \
+(node)->genc_Tree_node.parent;
 
 #define GENC_TREE_NODE_ADD_CHILD(node, child) \
 GENC_ARRAY_LIST_PUSH(&((node)->genc_Tree_node.children), child)
