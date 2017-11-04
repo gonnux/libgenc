@@ -75,14 +75,14 @@ do {                                                                            
 #define GENC_ARRAY_LIST_REMOVE(arrayList, index, element)                               \
 do {                                                                                    \
     if(index > GENC_ARRAY_LIST_SIZE(arrayList) - 1)                                     \
-        break;                                                  \
-    *element = GENC_ARRAY_LIST_GET(arrayList, index);                          \
-    if(index < GENC_ARRAY_LIST_SIZE - 1) {                    \
-        memmove((arrayList)->genc_ArrayList.elements + index, \
-             (arrayList)->genc_ArrayList.elements + index + 1, \
+        break;                                                                          \
+    *element = GENC_ARRAY_LIST_GET(arrayList, index);                                   \
+    if(index < GENC_ARRAY_LIST_SIZE - 1) {                                              \
+        memmove((arrayList)->genc_ArrayList.elements + index,                           \
+             (arrayList)->genc_ArrayList.elements + index + 1,                          \
              (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE); \
-    } \
-    --GENC_ARRAY_LIST_SIZE(arrayList);
+    }                                                                                   \
+    --GENC_ARRAY_LIST_SIZE(arrayList);                                                  \
 } while(0)
 
 #define GENC_ARRAY_LIST_FOR_EACH(arrayList, index) \
