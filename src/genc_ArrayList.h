@@ -4,6 +4,7 @@
 #include <err.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define GENC_ARRAY_LIST(type) \
 struct {                      \
@@ -33,26 +34,11 @@ do {                                                                            
 #define GENC_ARRAY_LIST_GET(arrayList, index) \
 ((arrayList)->genc_ArrayList.elements[index])
 
+#define GENC_ARRAY_LIST_SET(arrayList, index, element) \
+(arrayList)->genc_ArrayList.elements[index] = element
+
 #define GENC_ARRAY_LIST_PEEK(arrayList, element) \
 *element = GENC_ARRAY_LIST_GET(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1)
-
-#define GENC_ARRAY_LIST_PUSH(arrayList, element)                                                    \
-do {                                                                                                \
-    if(GENC_ARRAY_LIST_SIZE(arrayList) == GENC_ARRAY_LIST_CAPACITY(arrayList)) {                    \
-        GENC_ARRAY_LIST_CAPACITY(arrayList) *= 2;                                                   \
-        (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
-                                                        GENC_ARRAY_LIST_CAPACITY(arrayList)         \
-                                                        * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
-    }                                                                                               \
-    (arrayList)->genc_ArrayList.elements[GENC_ARRAY_LIST_SIZE(arrayList)] = element;                \
-    ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
-} while(0)
-
-#define GENC_ARRAY_LIST_POP(arrayList, element) \
-do {                                            \
-    GENC_ARRAY_LIST_PEEK(arrayList, element);   \
-    --GENC_ARRAY_LIST_SIZE(arrayList);          \
-} while(0)
 
 #define GENC_ARRAY_LIST_INSERT(arrayList, index, element)                                           \
 do {                                                                                                \
@@ -67,23 +53,30 @@ do {                                                                            
     if(index < GENC_ARRAY_LIST_SIZE(arrayList)) {                                                   \
         memmove((arrayList)->genc_ArrayList.elements + index + 1,                                   \
              (arrayList)->genc_ArrayList.elements + index,                                          \
-             (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE);                        \
+             (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));  \
     }                                                                                               \
-    (arrayList)->genc_ArrayList.elements[GENC_ARRAY_LIST_SIZE(arrayList)] = element;                \
+    GENC_ARRAY_LIST_SET(arrayList, index, element);                                                 \
     ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
 } while(0)
-#define GENC_ARRAY_LIST_REMOVE(arrayList, index, element)                               \
-do {                                                                                    \
-    if(index > GENC_ARRAY_LIST_SIZE(arrayList) - 1)                                     \
-        break;                                                                          \
-    *element = GENC_ARRAY_LIST_GET(arrayList, index);                                   \
-    if(index < GENC_ARRAY_LIST_SIZE - 1) {                                              \
-        memmove((arrayList)->genc_ArrayList.elements + index,                           \
-             (arrayList)->genc_ArrayList.elements + index + 1,                          \
-             (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE); \
-    }                                                                                   \
-    --GENC_ARRAY_LIST_SIZE(arrayList);                                                  \
+
+#define GENC_ARRAY_LIST_PUSH(arrayList, element)                            \
+GENC_ARRAY_LIST_INSERT(arrayList, GENC_ARRAY_LIST_SIZE(arrayList), element)
+
+#define GENC_ARRAY_LIST_REMOVE(arrayList, index, element)                                          \
+do {                                                                                               \
+    if(index > GENC_ARRAY_LIST_SIZE(arrayList) - 1)                                                \
+        break;                                                                                     \
+    *element = GENC_ARRAY_LIST_GET(arrayList, index);                                              \
+    if(index < GENC_ARRAY_LIST_SIZE(arrayList) - 1) {                                                         \
+        memmove((arrayList)->genc_ArrayList.elements + index,                                      \
+             (arrayList)->genc_ArrayList.elements + index + 1,                                     \
+             (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
+    }                                                                                              \
+    --GENC_ARRAY_LIST_SIZE(arrayList);                                                             \
 } while(0)
+
+#define GENC_ARRAY_LIST_POP(arrayList, element) \
+GENC_ARRAY_LIST_REMOVE(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1, element)
 
 #define GENC_ARRAY_LIST_FOR_EACH(arrayList, index) \
 for(size_t index = 0; index != GENC_ARRAY_LIST_SIZE(arrayList); ++index)
