@@ -34,11 +34,14 @@ do {                                                                            
 #define GENC_ARRAY_LIST_GET(arrayList, index) \
 ((arrayList)->genc_ArrayList.elements[index])
 
+#define GENC_ARRAY_LIST_GET2(arrayList, index, element) \
+*element = GENC_ARRAY_LIST_GET(arrayList, index)
+
 #define GENC_ARRAY_LIST_SET(arrayList, index, element) \
 (arrayList)->genc_ArrayList.elements[index] = element
 
 #define GENC_ARRAY_LIST_PEEK(arrayList, element) \
-*element = GENC_ARRAY_LIST_GET(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1)
+GENC_ARRAY_LIST_GET2(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1, element)
 
 #define GENC_ARRAY_LIST_INSERT(arrayList, index, element)                                           \
 do {                                                                                                \
