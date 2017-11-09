@@ -70,7 +70,7 @@ do {                                                                            
     if(index > GENC_ARRAY_LIST_SIZE(arrayList) - 1)                                                \
         break;                                                                                     \
     *element = GENC_ARRAY_LIST_GET(arrayList, index);                                              \
-    if(index < GENC_ARRAY_LIST_SIZE(arrayList) - 1) {                                                         \
+    if(index < GENC_ARRAY_LIST_SIZE(arrayList) - 1) {                                              \
         memmove((arrayList)->genc_ArrayList.elements + index,                                      \
              (arrayList)->genc_ArrayList.elements + index + 1,                                     \
              (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
