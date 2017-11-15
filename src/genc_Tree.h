@@ -29,4 +29,7 @@ GENC_ARRAY_LIST_GET(&((node)->genc_Tree_node.children), index)
 #define GENC_TREE_NODE_CHILD_COUNT(node) \
 GENC_ARRAY_LIST_SIZE(&((node)->genc_Tree_node.children))
 
+#define GENC_TREE_NODE_GET_CHILDREN(node) \
+(&(node)->genc_Tree_node.children)
+
 #endif
