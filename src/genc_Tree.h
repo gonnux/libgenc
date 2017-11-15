@@ -17,6 +17,9 @@ GENC_ARRAY_LIST_INIT((&(node)->genc_Tree_node.children), capacity)
 #define GENC_TREE_NODE_GET_PARENT(node) \
 (node)->genc_Tree_node.parent;
 
+#define GENC_TREE_NODE_SET_PARENT(node, parentNode) \
+(node)->genc_Tree_node.parent = parentNode;
+
 #define GENC_TREE_NODE_ADD_CHILD(node, child) \
 GENC_ARRAY_LIST_PUSH(&((node)->genc_Tree_node.children), child)
 
