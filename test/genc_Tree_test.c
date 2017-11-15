@@ -11,7 +11,7 @@ int main() {
     struct node node3 = {.value = 300};
 
     GENC_TREE_NODE_INIT(&node1);
-    GENC_TREE_NODE_INIT_CHILDREN(&node, 10);
+    GENC_TREE_NODE_INIT_CHILDREN(&node1, 10);
     GENC_TREE_NODE_INIT(&node2);
     GENC_TREE_NODE_INIT_CHILDREN(&node2, 10);
     GENC_TREE_NODE_INIT(&node3);
