@@ -11,7 +11,10 @@ struct {                       \
     } children;                \
 } genc_Tree_node
 
-#define GENC_TREE_NODE_INIT(node, capacity) \
+#define GENC_TREE_NODE_INIT(node) \
+memset(node, NULL, sizeof(*(node)));
+
+#define GENC_TREE_NODE_INIT_CHILDREN(node, capacity) \
 GENC_ARRAY_LIST_INIT((&(node)->genc_Tree_node.children), capacity)
 
 #define GENC_TREE_NODE_GET_PARENT(node) \
