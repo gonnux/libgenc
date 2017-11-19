@@ -16,7 +16,7 @@ struct {                       \
 memset(node, 0, sizeof(*(node)));
 
 #define GENC_TREE_NODE_INIT_CHILDREN(node, capacity) \
-GENC_ARRAY_LIST_INIT((&(node)->genc_Tree_node.children), capacity)
+GENC_ARRAY_LIST_INIT2((&(node)->genc_Tree_node.children), capacity)
 
 #define GENC_TREE_NODE_GET_PARENT(node) \
 (node)->genc_Tree_node.parent;
