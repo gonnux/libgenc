@@ -37,8 +37,11 @@ do {                                                                            
 #define GENC_ARRAY_LIST_GET2(arrayList, index, element) \
 *element = GENC_ARRAY_LIST_GET(arrayList, index)
 
-#define GENC_ARRAY_LIST_SET(arrayList, index, element) \
-(arrayList)->genc_ArrayList.elements[index] = element
+#define GENC_ARRAY_LIST_SET(arrayList, index, element)         \
+do {                                                           \
+    if(index < GENC_ARRAY_LIST_SIZE(arrayList))                \
+        (arrayList)->genc_ArrayList.elements[index] = element; \
+} while(0)
 
 #define GENC_ARRAY_LIST_PEEK(arrayList, element) \
 GENC_ARRAY_LIST_GET2(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1, element)
