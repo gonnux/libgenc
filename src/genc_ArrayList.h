@@ -71,8 +71,8 @@ do {                                                                            
              (arrayList)->genc_ArrayList.elements + index,                                          \
              (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));  \
     }                                                                                               \
-    GENC_ARRAY_LIST_SET(arrayList, index, element);                                                 \
     ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
+    GENC_ARRAY_LIST_SET(arrayList, index, element);                                                 \
 } while(0)
 
 #define GENC_ARRAY_LIST_PUSH(arrayList, element) \
