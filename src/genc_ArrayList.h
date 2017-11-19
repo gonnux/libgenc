@@ -16,20 +16,53 @@ struct {                      \
 #define GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList) \
 sizeof(*((arrayList)->genc_ArrayList.elements))
 
-#define GENC_ARRAY_LIST_INIT(arrayList, _capacity)                                                      \
-do {                                                                                                    \
-    if(_capacity <= 0)                                                                                  \
-        errx(EXIT_FAILURE, "%s: %u: capacity should be larger than 0", __FILE__, __LINE__);             \
-    (arrayList)->genc_ArrayList.elements = malloc(_capacity * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
-    GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                                    \
-    GENC_ARRAY_LIST_SIZE(arrayList) = 0;                                                                \
-} while(0)
-
 #define GENC_ARRAY_LIST_CAPACITY(arrayList) \
 ((arrayList)->genc_ArrayList.capacity)
 
 #define GENC_ARRAY_LIST_SIZE(arrayList) \
 ((arrayList)->genc_ArrayList.size)
+
+#define GENC_ARRAY_LIST_SHRINK(arrayList)                                                           \
+do {                                                                                                \
+    GENC_ARRAY_LIST_CAPACITY(arrayList) = GENC_ARRAY_LIST_SIZE(arrayList);                          \
+    (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,            \
+                                                        GENC_ARRAY_LIST_CAPACITY(arrayList)         \
+                                                        * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
+} while(0)
+
+#define GENC_ARRAY_LIST_REALLOC(arrayList, _capacity)                                                       \
+do {                                                                                                        \
+    if(_capacity <= 0)                                                                                      \
+        errx(EXIT_FAILURE, "%s: %u: capacity should be larger than 0", __FILE__, __LINE__);                 \
+    if((arrayList)->genc_ArrayList.elements != NULL) {                                                      \
+        if(_capacity != GENC_ARRAY_LIST_CAPACITY(arrayList)) {                                              \
+            if(_capacity <= GENC_ARRAY_LIST_SIZE(arrayList))                                                \
+                GENC_ARRAY_LIST_SHRINK(arrayList);                                                          \
+            else {                                                                                          \
+                GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                            \
+                (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
+                                                        GENC_ARRAY_LIST_CAPACITY(arrayList)                 \
+                                                        * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));         \
+            }                                                                                               \
+        }                                                                                                   \
+    } else {                                                                                                \
+        (arrayList)->genc_ArrayList.elements = malloc(_capacity * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
+        GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                                    \
+    }                                                                                                       \
+} while(0)
+
+#define GENC_ARRAY_LIST_INIT(arrayList)          \
+do {                                             \
+    (arrayList)->genc_ArrayList.elements = NULL; \
+    GENC_ARRAY_LIST_CAPACITY(arrayList) = 0;     \
+    GENC_ARRAY_LIST_SIZE(arrayList) = 0;         \
+} while(0)
+
+#define GENC_ARRAY_LIST_INIT2(arrayList, _capacity) \
+do {                                                \
+   GENC_ARRAY_LIST_INIT(arrayList);                 \
+   GENC_ARRAY_LIST_REALLOC(arrayList, _capacity);   \
+} while(0)
 
 #define GENC_ARRAY_LIST_GET(arrayList, index) \
 ((arrayList)->genc_ArrayList.elements[index])
@@ -45,16 +78,6 @@ do {                                                           \
 
 #define GENC_ARRAY_LIST_PEEK(arrayList, element) \
 GENC_ARRAY_LIST_GET2(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1, element)
-
-#define GENC_ARRAY_LIST_REALLOC(arrayList, capacity)                                                \
-do {                                                                                                \
-    if(capacity >= GENC_ARRAY_LIST_SIZE(arrayList)) {                                               \
-        GENC_ARRAY_LIST_CAPACITY(arrayList) = capacity;                                             \
-        (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
-                                                        GENC_ARRAY_LIST_CAPACITY(arrayList)         \
-                                                        * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
-    }                                                                                               \
-} while(0)
 
 #define GENC_ARRAY_LIST_INSERT(arrayList, index, element)                                           \
 do {                                                                                                \
