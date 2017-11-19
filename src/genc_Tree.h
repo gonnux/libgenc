@@ -1,7 +1,7 @@
 #ifndef _GENC_TREE_H
 #define _GENC_TREE_H
 
-#include <libgenc/genc_ArrayList.h>
+#include "genc_ArrayList.h"
 #include <string.h>
 
 #define GENC_TREE_NODE(type)   \
