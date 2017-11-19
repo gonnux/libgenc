@@ -15,7 +15,7 @@ struct Integer_ArrayList {
 
 static void genc_ArrayList_test(void** state) {
     struct Integer_ArrayList arrayList;
-    GENC_ARRAY_LIST_INIT(&arrayList, 10);
+    GENC_ARRAY_LIST_INIT2(&arrayList, 10);
     struct Integer element1;
     element1.value = 100;
     struct Integer element2;
@@ -35,7 +35,7 @@ static void genc_ArrayList_test(void** state) {
 
 static void genc_ArrayList_test_insertion(void** state) {
     struct Integer_ArrayList arrayList;
-    GENC_ARRAY_LIST_INIT(&arrayList, 1);
+    GENC_ARRAY_LIST_INIT2(&arrayList, 1);
     struct Integer element1;
     element1.value = 100;
     struct Integer element2;
