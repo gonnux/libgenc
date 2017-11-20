@@ -64,16 +64,25 @@ do {                                                \
    GENC_ARRAY_LIST_REALLOC(arrayList, _capacity);   \
 } while(0)
 
+#define GENC_ARRAY_LIST_FREE(arrayList)          \
+do {                                             \
+    free((arrayList)->genc_ArrayList.elements);  \
+    (arrayList)->genc_ArrayList.elements = NULL; \
+} while(0)
+
 #define GENC_ARRAY_LIST_GET(arrayList, index) \
 ((arrayList)->genc_ArrayList.elements[index])
 
 #define GENC_ARRAY_LIST_GET2(arrayList, index, element) \
 *element = GENC_ARRAY_LIST_GET(arrayList, index)
 
-#define GENC_ARRAY_LIST_SET(arrayList, index, element)         \
-do {                                                           \
-    if(index < GENC_ARRAY_LIST_SIZE(arrayList))                \
-        (arrayList)->genc_ArrayList.elements[index] = element; \
+#define GENC_ARRAY_LIST_RAWSET(arrayList, index, element) \
+(arrayList)->genc_ArrayList.elements[index] = element
+
+#define GENC_ARRAY_LIST_SET(arrayList, index, element)     \
+do {                                                       \
+    if(index < GENC_ARRAY_LIST_SIZE(arrayList))            \
+        GENC_ARRAY_LIST_RAWSET(arrayList, index, element); \
 } while(0)
 
 #define GENC_ARRAY_LIST_PEEK(arrayList, element) \
@@ -94,8 +103,8 @@ do {                                                                            
              (arrayList)->genc_ArrayList.elements + index,                                          \
              (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));  \
     }                                                                                               \
+    GENC_ARRAY_LIST_RAWSET(arrayList, index, element);                                              \
     ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
-    GENC_ARRAY_LIST_SET(arrayList, index, element);                                                 \
 } while(0)
 
 #define GENC_ARRAY_LIST_PUSH(arrayList, element) \
