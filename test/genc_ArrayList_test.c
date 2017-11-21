@@ -28,6 +28,29 @@ static void genc_ArrayList_testInsertion(void** state) {
     }
 }
 
+static void genc_ArrayList_testRemoval(void** state) {
+    struct Integer_ArrayList arrayList;
+    GENC_ARRAY_LIST_INIT2(&arrayList, 1);
+    struct Integer element;
+    int elementCount = 10;
+
+    for(int i = 0; i < elementCount; ++i) {
+        element.value = i * 100;
+        GENC_ARRAY_LIST_PUSH(&arrayList, element);
+    }
+
+    for(int i = elementCount - 1; i >= 0; --i) {
+        if(GENC_ARRAY_LIST_GET(&arrayList, i).value % 200 != 0)
+            GENC_ARRAY_LIST_REMOVE(&arrayList, i, &element);
+    }
+
+    GENC_ARRAY_LIST_FOR_EACH(&arrayList, index) {
+        element = GENC_ARRAY_LIST_GET(&arrayList, index);
+        assert_int_equal(element.value, index * 2 * 100);
+    }
+}
+
+
 static void genc_ArrayList_testStack(void** state) {
     struct Integer_ArrayList arrayList;
     GENC_ARRAY_LIST_INIT(&arrayList);
@@ -65,7 +88,9 @@ static void genc_ArrayList_testQueue(void** state) {
 int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(genc_ArrayList_testInsertion),
-        cmocka_unit_test(genc_ArrayList_testStack)
+        cmocka_unit_test(genc_ArrayList_testRemoval),
+        cmocka_unit_test(genc_ArrayList_testStack),
+        cmocka_unit_test(genc_ArrayList_testQueue)
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);
