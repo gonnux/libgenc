@@ -5,46 +5,46 @@
 #include <stdio.h>
 #include "../src/genc_List.h"
 
-struct integer {
+struct Integer {
     int value;
-    GENC_LIST_ELEMENT(struct integer);
+    GENC_LIST_ELEMENT(struct Integer);
 };
 
-struct integer_list {
-    GENC_LIST(struct integer);
+struct Integer_List {
+    GENC_LIST(struct Integer);
 };
 
-int main() {
-    struct integer_list list;
+void genc_List_test(void** state) {
+    struct Integer_List list;
     GENC_LIST_INIT(&list);
-    struct integer element1;
+    struct Integer element1;
     GENC_LIST_ELEMENT_INIT(&element1);
     element1.value = 100;
-    struct integer element2;
+    struct Integer element2;
     GENC_LIST_ELEMENT_INIT(&element2);
     element2.value = 200;
 
     GENC_LIST_INSERT_AFTER(&list, GENC_LIST_HEAD(&list), &element1);
     GENC_LIST_INSERT_AFTER(&list, GENC_LIST_HEAD(&list), &element2);
 
-    GENC_LIST_FOR_EACH(&list, struct integer, item)
+    GENC_LIST_FOR_EACH(&list, struct Integer, item)
     {
         printf("%d\n", item->value);
     }
     printf("\n");
-    GENC_LIST_REVERSE_FOR_EACH(&list, struct integer, item)
-    {
-        printf("%d\n", item->value);
-    }
-    printf("\n");
-    GENC_LIST_REMOVE(&list, GENC_LIST_HEAD(&list));
-    GENC_LIST_FOR_EACH(&list, struct integer, item)
+    GENC_LIST_REVERSE_FOR_EACH(&list, struct Integer, item)
     {
         printf("%d\n", item->value);
     }
     printf("\n");
     GENC_LIST_REMOVE(&list, GENC_LIST_HEAD(&list));
-    GENC_LIST_FOR_EACH(&list, struct integer, item)
+    GENC_LIST_FOR_EACH(&list, struct Integer, item)
+    {
+        printf("%d\n", item->value);
+    }
+    printf("\n");
+    GENC_LIST_REMOVE(&list, GENC_LIST_HEAD(&list));
+    GENC_LIST_FOR_EACH(&list, struct Integer, item)
     {
         printf("%d\n", item->value);
     }
@@ -52,7 +52,7 @@ int main() {
     GENC_LIST_INSERT_AFTER(&list, GENC_LIST_HEAD(&list), &element1);
     GENC_LIST_INSERT_AFTER(&list, GENC_LIST_HEAD(&list), &element2);
 
-    struct integer* element = GENC_LIST_HEAD(&list);
+    struct Integer* element = GENC_LIST_HEAD(&list);
 
     GENC_LIST_AFTER(&list, element, 1);
     
@@ -65,10 +65,16 @@ int main() {
 
     printf("After destroy:\n");
 
-    GENC_LIST_FOR_EACH(&list, struct integer, item)
+    GENC_LIST_FOR_EACH(&list, struct Integer, item)
     {
         printf("%d\n", item->value);
     }
+}
 
-    return 0;
+int main() {
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(genc_List_test)
+    };
+
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
