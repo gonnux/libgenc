@@ -2,7 +2,6 @@
 #define _GENC_TREE_H
 
 #include "genc_ArrayList.h"
-#include <string.h>
 
 #define GENC_TREE_NODE(type)   \
 struct {                       \
@@ -12,8 +11,11 @@ struct {                       \
     } children;                \
 } genc_Tree_node
 
-#define GENC_TREE_NODE_INIT(node) \
-memset(node, 0, sizeof(*(node)));
+#define GENC_TREE_NODE_INIT(node)                           \
+do {                                                        \
+    (node)->genc_Tree_node.parent = NULL;                   \
+    GENC_ARRAY_LIST_INIT(&(node)->genc_Tree_node.children); \
+} while(0)
 
 #define GENC_TREE_NODE_INIT_CHILDREN(node, capacity) \
 GENC_ARRAY_LIST_INIT2((&(node)->genc_Tree_node.children), capacity)
