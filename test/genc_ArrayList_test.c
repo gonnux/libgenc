@@ -13,6 +13,15 @@ struct Integer_ArrayList {
     GENC_ARRAY_LIST(struct Integer);
 };
 
+static void genc_ArrayList_testRealloc(void** state) {
+    struct Integer_ArrayList arrayList;
+    GENC_ARRAY_LIST_INIT(&arrayList);
+    GENC_ARRAY_LIST_REALLOC(&arrayList, 10);
+    assert_int_equal(GENC_ARRAY_LIST_CAPACITY(&arrayList), 10);
+    GENC_ARRAY_LIST_REALLOC(&arrayList, 1);
+    assert_int_equal(GENC_ARRAY_LIST_CAPACITY(&arrayList), 1);
+}
+
 static void genc_ArrayList_testInsertion(void** state) {
     struct Integer_ArrayList arrayList;
     GENC_ARRAY_LIST_INIT2(&arrayList, 1);
@@ -87,6 +96,7 @@ static void genc_ArrayList_testQueue(void** state) {
 
 int main() {
     const struct CMUnitTest tests[] = {
+        cmocka_unit_test(genc_ArrayList_testRealloc),
         cmocka_unit_test(genc_ArrayList_testInsertion),
         cmocka_unit_test(genc_ArrayList_testRemoval),
         cmocka_unit_test(genc_ArrayList_testStack),
