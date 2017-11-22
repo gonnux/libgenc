@@ -1,6 +1,11 @@
+#include <stdarg.h>
+#include <stddef.h>
+#include <setjmp.h>
+#include <cmocka.h>
 #include <stdio.h>
 #include "../src/genc_Tree.h"
-int main() {
+
+void genc_Tree_test(void** state) {
     struct node {
         GENC_TREE_NODE(struct node);
         int value;
@@ -23,7 +28,12 @@ int main() {
 
     printf("%d\n", GENC_TREE_NODE_GET_CHILD(&node1, 0).value);
     printf("%d\n", GENC_TREE_NODE_GET_CHILD(&node1, 1).value);
-
-
-    return 0;
 }
+
+int main() {                                                                                                                                                                                  
+    const struct CMUnitTest tests[] = {                                                                                                                                                       
+        cmocka_unit_test(genc_Tree_test)
+    };                                                                                                                                                                                        
+
+    return cmocka_run_group_tests(tests, NULL, NULL);                                                                                                                                         
+} 
