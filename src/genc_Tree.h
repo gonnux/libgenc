@@ -35,6 +35,9 @@ do {                                              \
 #define GENC_TREE_NODE_ADD_CHILD(node, child) \
 GENC_ARRAY_LIST_PUSH(&((node)->genc_Tree_node.children), child)
 
+#define GENC_TREE_NODE_ADD_EMPTY_CHILD(node) \
+GENC_ARRAY_LIST_PUSH_EMPTY(&((node)->genc_Tree_node.children))
+
 #define GENC_TREE_NODE_GET_CHILD(node, index) \
 GENC_ARRAY_LIST_GET(&((node)->genc_Tree_node.children), index)
 
