@@ -10,7 +10,7 @@ void genc_Tree_test(void** state) {
         GENC_TREE_NODE(struct node);
         int value;
     };
-    
+
     struct node node1 = {.value = 100};
     struct node node2 = {.value = 200};
     struct node node3 = {.value = 300};
@@ -30,10 +30,9 @@ void genc_Tree_test(void** state) {
     printf("%d\n", GENC_TREE_NODE_GET_CHILD(&node1, 1).value);
 }
 
-int main() {                                                                                                                                                                                  
-    const struct CMUnitTest tests[] = {                                                                                                                                                       
+int main() {
+    const struct CMUnitTest tests[] = {
         cmocka_unit_test(genc_Tree_test)
-    };                                                                                                                                                                                        
-
-    return cmocka_run_group_tests(tests, NULL, NULL);                                                                                                                                         
-} 
+    };
+    return cmocka_run_group_tests(tests, NULL, NULL);
+}
