@@ -107,8 +107,12 @@ do {                                                                            
     ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
 } while(0)
 
+#define GENC_ARRAY_LIST_INSERT_EMPTY(arrayList, index)
+
 #define GENC_ARRAY_LIST_PUSH(arrayList, element) \
 GENC_ARRAY_LIST_INSERT(arrayList, GENC_ARRAY_LIST_SIZE(arrayList), element)
+
+#define GENC_ARRAY_LIST_PUSH_EMPTY(arrayList)
 
 #define GENC_ARRAY_LIST_REMOVE(arrayList, index, element)                                          \
 do {                                                                                               \
