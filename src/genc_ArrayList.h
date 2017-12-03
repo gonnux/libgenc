@@ -107,12 +107,29 @@ do {                                                                            
     ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
 } while(0)
 
-#define GENC_ARRAY_LIST_INSERT_EMPTY(arrayList, index)
+#define GENC_ARRAY_LIST_INSERT_EMPTY(arrayList, index)                                              \
+do {                                                                                                \
+    if(index > GENC_ARRAY_LIST_SIZE(arrayList))                                                     \
+        break;                                                                                      \
+    if(GENC_ARRAY_LIST_SIZE(arrayList) == GENC_ARRAY_LIST_CAPACITY(arrayList)) {                    \
+        GENC_ARRAY_LIST_CAPACITY(arrayList) *= 2;                                                   \
+        (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
+                                                        GENC_ARRAY_LIST_CAPACITY(arrayList)         \
+                                                        * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
+    }                                                                                               \
+    if(index < GENC_ARRAY_LIST_SIZE(arrayList)) {                                                   \
+        memmove((arrayList)->genc_ArrayList.elements + index + 1,                                   \
+             (arrayList)->genc_ArrayList.elements + index,                                          \
+             (GENC_ARRAY_LIST_SIZE(arrayList) - index) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));  \
+    }                                                                                               \
+    ++GENC_ARRAY_LIST_SIZE(arrayList);                                                              \
+} while(0)
 
 #define GENC_ARRAY_LIST_PUSH(arrayList, element) \
 GENC_ARRAY_LIST_INSERT(arrayList, GENC_ARRAY_LIST_SIZE(arrayList), element)
 
-#define GENC_ARRAY_LIST_PUSH_EMPTY(arrayList)
+#define GENC_ARRAY_LIST_PUSH_EMPTY(arrayList) \
+GENC_ARRAY_LIST_INSERT_EMPTY(arrayList, GENC_ARRAY_LIST_SIZE(arrayList))
 
 #define GENC_ARRAY_LIST_REMOVE(arrayList, index, element)                                          \
 do {                                                                                               \
