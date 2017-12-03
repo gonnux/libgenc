@@ -15,13 +15,9 @@ void genc_Tree_test(void** state) {
     struct node node;
     node.value = value;
     GENC_TREE_NODE_INIT2(&node, 2);
-
-    
+    struct node newNode;
+    newNode.value = value;
     GENC_TREE_NODE_ADD_CHILD(&node, newNode);
-    GENC_TREE_NODE_ADD_CHILD(&node1, node3);
-
-    printf("%d\n", GENC_TREE_NODE_GET_CHILD(&node1, 0).value);
-    printf("%d\n", GENC_TREE_NODE_GET_CHILD(&node1, 1).value);
 }
 
 int main() {
