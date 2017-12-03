@@ -32,8 +32,8 @@ do {                                                                            
 
 #define GENC_ARRAY_LIST_REALLOC(arrayList, _capacity)                                                       \
 do {                                                                                                        \
-    if(_capacity <= 0)                                                                                      \
-        errx(EXIT_FAILURE, "%s: %u: capacity should be larger than 0", __FILE__, __LINE__);                 \
+    if(_capacity < 0)                                                                                       \
+        errx(EXIT_FAILURE, "%s: %u: capacity shouldn't be smaller than 0", __FILE__, __LINE__);             \
     if((arrayList)->genc_ArrayList.elements != NULL) {                                                      \
         if(_capacity != GENC_ARRAY_LIST_CAPACITY(arrayList)) {                                              \
             if(_capacity <= GENC_ARRAY_LIST_SIZE(arrayList))                                                \
@@ -93,6 +93,7 @@ do {                                                                            
     if(index > GENC_ARRAY_LIST_SIZE(arrayList))                                                     \
         break;                                                                                      \
     if(GENC_ARRAY_LIST_SIZE(arrayList) == GENC_ARRAY_LIST_CAPACITY(arrayList)) {                    \
+        ++GENC_ARRAY_LIST_CAPACITY(arrayList);                                                      \
         GENC_ARRAY_LIST_CAPACITY(arrayList) *= 2;                                                   \
         (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
                                                         GENC_ARRAY_LIST_CAPACITY(arrayList)         \
@@ -112,6 +113,7 @@ do {                                                                            
     if(index > GENC_ARRAY_LIST_SIZE(arrayList))                                                     \
         break;                                                                                      \
     if(GENC_ARRAY_LIST_SIZE(arrayList) == GENC_ARRAY_LIST_CAPACITY(arrayList)) {                    \
+        ++GENC_ARRAY_LIST_CAPACITY(arrayList);                                                      \
         GENC_ARRAY_LIST_CAPACITY(arrayList) *= 2;                                                   \
         (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
                                                         GENC_ARRAY_LIST_CAPACITY(arrayList)         \

@@ -32,7 +32,6 @@ static void genc_ArrayList_testEmptyInsertion(void** state) {
     for(int i = 0; i < elementCount; ++i) {
         GENC_ARRAY_LIST_PUSH_EMPTY(&arrayList);
     }
-    assert_int_equal(GENC_ARRAY_LIST_CAPACITY(&arrayList), 4);
     assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), 3);
 }
 
