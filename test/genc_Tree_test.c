@@ -7,7 +7,7 @@
 
 struct node {
     int value;
-    GENC_TREE_NODE(struct node);
+    GENC_TREE_NODE(struct node, struct node*);
 };
 
 void genc_Tree_test(void** state) {
