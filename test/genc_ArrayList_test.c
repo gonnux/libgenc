@@ -22,6 +22,20 @@ static void genc_ArrayList_testRealloc(void** state) {
     assert_int_equal(GENC_ARRAY_LIST_CAPACITY(&arrayList), 1);
 }
 
+static void genc_ArrayList_testEmptyInsertion(void** state) {
+    struct Integer_ArrayList arrayList;
+    int elementCount = 3;
+    int capacity = 1;
+    GENC_ARRAY_LIST_INIT2(&arrayList, capacity);
+    assert_int_equal(GENC_ARRAY_LIST_CAPACITY(&arrayList), capacity);
+    assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), 0);
+    for(int i = 0; i < elementCount; ++i) {
+        GENC_ARRAY_LIST_PUSH_EMPTY(&arrayList);
+    }
+    assert_int_equal(GENC_ARRAY_LIST_CAPACITY(&arrayList), 4);
+    assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), 3);
+}
+
 static void genc_ArrayList_testInsertion(void** state) {
     struct Integer_ArrayList arrayList;
     GENC_ARRAY_LIST_INIT2(&arrayList, 1);
@@ -97,6 +111,7 @@ static void genc_ArrayList_testQueue(void** state) {
 int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(genc_ArrayList_testRealloc),
+        cmocka_unit_test(genc_ArrayList_testEmptyInsertion),
         cmocka_unit_test(genc_ArrayList_testInsertion),
         cmocka_unit_test(genc_ArrayList_testRemoval),
         cmocka_unit_test(genc_ArrayList_testStack),
