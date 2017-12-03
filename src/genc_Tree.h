@@ -3,12 +3,12 @@
 
 #include "genc_ArrayList.h"
 
-#define GENC_TREE_NODE(type)   \
-struct {                       \
-    type* parent;              \
-    struct {                   \
-        GENC_ARRAY_LIST(type); \
-    } children;                \
+#define GENC_TREE_NODE(type, parentType) \
+struct {                                 \
+    parentType parent;                   \
+    struct {                             \
+        GENC_ARRAY_LIST(type);           \
+    } children;                          \
 } genc_Tree_node
 
 #define GENC_TREE_NODE_INIT(node)                           \
