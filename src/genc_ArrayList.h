@@ -64,10 +64,20 @@ do {                                                \
    GENC_ARRAY_LIST_REALLOC(arrayList, _capacity);   \
 } while(0)
 
+#define GENC_ARRAY_LIST_ZERO(arrayList)              \
+do {                                                 \
+    if(GENC_ARRAY_LIST_CAPACITY(arrayList) > 0) {    \
+        memset((arrayList)->genc_ArrayList.elements, \
+          0,                                         \
+          GENC_ARRAY_LIST_CAPACITY(arrayList) *      \
+          GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));  \
+    }                                                \
+} while(0)
+
 #define GENC_ARRAY_LIST_FREE(arrayList)          \
 do {                                             \
     free((arrayList)->genc_ArrayList.elements);  \
-    (arrayList)->genc_ArrayList.elements = NULL; \
+    GENC_ARRAY_LIST_INIT(arrayList);             \
 } while(0)
 
 #define GENC_ARRAY_LIST_GET(arrayList, index) \

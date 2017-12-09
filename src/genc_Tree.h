@@ -11,26 +11,35 @@ struct {                                 \
     } children;                          \
 } genc_Tree_node
 
+#define GENC_TREE_NODE_GET_PARENT(node) \
+(node)->genc_Tree_node.parent;
+
+#define GENC_TREE_NODE_SET_PARENT(node, parentNode) \
+(node)->genc_Tree_node.parent = parentNode;
+
+#define GENC_TREE_NODE_GET_CHILDREN(node) \
+(&(node)->genc_Tree_node.children)
+
+#define GENC_TREE_NODE_INIT_CHILDREN(node, capacity) \
+GENC_ARRAY_LIST_REALLOC(GENC_TREE_NODE_GET_CHILDREN(node), capacity)
+
+#define GENC_TREE_NODE_ZERO_CHILDREN(node) \
+GENC_ARRAY_LIST_ZERO(GENC_TREE_NODE_GET_CHILDREN(node))
+
+#define GENC_TREE_NODE_FREE_CHILDREN(node) \
+GENC_ARRAY_LIST_FREE(GENC_TREE_NODE_GET_CHILDREN(node));
+
 #define GENC_TREE_NODE_INIT(node)                           \
 do {                                                        \
     (node)->genc_Tree_node.parent = NULL;                   \
     GENC_ARRAY_LIST_INIT(&(node)->genc_Tree_node.children); \
 } while(0)
 
-#define GENC_TREE_NODE_INIT_CHILDREN(node, capacity) \
-GENC_ARRAY_LIST_REALLOC((&(node)->genc_Tree_node.children), capacity)
-
 #define GENC_TREE_NODE_INIT2(node, capacity)      \
 do {                                              \
     GENC_TREE_NODE_INIT(node);                    \
     GENC_TREE_NODE_INIT_CHILDREN(node, capacity); \
 } while(0)
-
-#define GENC_TREE_NODE_GET_PARENT(node) \
-(node)->genc_Tree_node.parent;
-
-#define GENC_TREE_NODE_SET_PARENT(node, parentNode) \
-(node)->genc_Tree_node.parent = parentNode;
 
 #define GENC_TREE_NODE_ADD_CHILD(node, child) \
 GENC_ARRAY_LIST_PUSH(&((node)->genc_Tree_node.children), child)
@@ -46,8 +55,5 @@ GENC_ARRAY_LIST_SIZE(&((node)->genc_Tree_node.children))
 
 #define GENC_TREE_NODE_FOR_EACH_CHILD(node, index) \
 GENC_ARRAY_LIST_FOR_EACH((&(node)->genc_Tree_node.children), index)
-
-#define GENC_TREE_NODE_GET_CHILDREN(node) \
-(&(node)->genc_Tree_node.children)
 
 #endif
