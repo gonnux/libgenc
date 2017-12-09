@@ -1,7 +1,6 @@
 #ifndef _GENC_ARRAY_LIST_H
 #define _GENC_ARRAY_LIST_H
 
-#include <err.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,25 +29,25 @@ do {                                                                            
                                                         * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
 } while(0)
 
-#define GENC_ARRAY_LIST_REALLOC(arrayList, _capacity)                                                       \
-do {                                                                                                        \
-    if(_capacity < 0)                                                                                       \
-        errx(EXIT_FAILURE, "%s: %u: capacity shouldn't be smaller than 0", __FILE__, __LINE__);             \
-    if((arrayList)->genc_ArrayList.elements != NULL) {                                                      \
-        if(_capacity != GENC_ARRAY_LIST_CAPACITY(arrayList)) {                                              \
-            if(_capacity <= GENC_ARRAY_LIST_SIZE(arrayList))                                                \
-                GENC_ARRAY_LIST_SHRINK(arrayList);                                                          \
-            else {                                                                                          \
-                GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                            \
-                (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
-                                                        GENC_ARRAY_LIST_CAPACITY(arrayList)                 \
-                                                        * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));         \
-            }                                                                                               \
-        }                                                                                                   \
-    } else {                                                                                                \
-        (arrayList)->genc_ArrayList.elements = malloc(_capacity * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
-        GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                                    \
-    }                                                                                                       \
+#define GENC_ARRAY_LIST_REALLOC(arrayList, _capacity)                                                           \
+do {                                                                                                            \
+    if(_capacity >= 0) {                                                                                        \
+        if((arrayList)->genc_ArrayList.elements != NULL) {                                                      \
+            if(_capacity != GENC_ARRAY_LIST_CAPACITY(arrayList)) {                                              \
+                if(_capacity <= GENC_ARRAY_LIST_SIZE(arrayList))                                                \
+                    GENC_ARRAY_LIST_SHRINK(arrayList);                                                          \
+                else {                                                                                          \
+                    GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                            \
+                    (arrayList)->genc_ArrayList.elements = realloc((arrayList)->genc_ArrayList.elements,        \
+                                                            GENC_ARRAY_LIST_CAPACITY(arrayList)                 \
+                                                            * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList));         \
+                }                                                                                               \
+            }                                                                                                   \
+        } else {                                                                                                \
+            (arrayList)->genc_ArrayList.elements = malloc(_capacity * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
+            GENC_ARRAY_LIST_CAPACITY(arrayList) = _capacity;                                                    \
+        }                                                                                                       \
+    }                                                                                                           \
 } while(0)
 
 #define GENC_ARRAY_LIST_INIT(arrayList)          \
