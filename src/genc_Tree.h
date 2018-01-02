@@ -11,11 +11,14 @@ struct {                                 \
     } children;                          \
 } genc_Tree_node
 
+#define GENC_TREE_NODE_PARENT(node) \
+(node)->genc_Tree_node.parent
+
 #define GENC_TREE_NODE_GET_PARENT(node) \
-(node)->genc_Tree_node.parent;
+(node)->genc_Tree_node.parent
 
 #define GENC_TREE_NODE_SET_PARENT(node, parentNode) \
-(node)->genc_Tree_node.parent = parentNode;
+(node)->genc_Tree_node.parent = parentNode
 
 #define GENC_TREE_NODE_GET_CHILDREN(node) \
 (&(node)->genc_Tree_node.children)
