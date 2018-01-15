@@ -5,6 +5,6 @@
 (void*[]){__VA_ARGS__, NULL}
 
 #define GENC_ARGS_COUNT(args, count) \
-for(*count = 0; args[*count] != NULL; ++(*count))
+for(*(count) = 0; args[*(count)] != NULL; ++(*(count)))
 
 #endif
