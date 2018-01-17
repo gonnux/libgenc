@@ -7,7 +7,7 @@
 #include "../src/genc_HashMap.h"
 #include "../src/genc_String.h"
 
-int main() {
+void genc_HashMap_test(void** state) {
     struct my_HashMap_element {
         int value;
         GENC_HASH_MAP_ELEMENT(struct my_HashMap_element);
@@ -47,5 +47,12 @@ int main() {
     struct my_HashMap_element* element_out;
     GENC_HASH_MAP_GET(&HashMap, "HELLO", 5, element_out);
     printf("%d\n", element_out->value);
-    return 0;
+
+}
+
+int main() {
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(genc_HashMap_test),
+    };
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
