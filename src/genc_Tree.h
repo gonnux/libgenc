@@ -20,17 +20,17 @@ struct {                                 \
 #define GENC_TREE_NODE_SET_PARENT(node, parentNode) \
 (node)->genc_Tree_node.parent = parentNode
 
-#define GENC_TREE_NODE_GET_CHILDREN(node) \
+#define GENC_TREE_NODE_CHILDREN(node) \
 (&(node)->genc_Tree_node.children)
 
 #define GENC_TREE_NODE_INIT_CHILDREN(node, capacity) \
-GENC_ARRAY_LIST_REALLOC(GENC_TREE_NODE_GET_CHILDREN(node), capacity)
+GENC_ARRAY_LIST_REALLOC(GENC_TREE_NODE_CHILDREN(node), capacity)
 
 #define GENC_TREE_NODE_ZERO_CHILDREN(node) \
-GENC_ARRAY_LIST_ZERO(GENC_TREE_NODE_GET_CHILDREN(node))
+GENC_ARRAY_LIST_ZERO(GENC_TREE_NODE_CHILDREN(node))
 
 #define GENC_TREE_NODE_FREE_CHILDREN(node) \
-GENC_ARRAY_LIST_FREE(GENC_TREE_NODE_GET_CHILDREN(node));
+GENC_ARRAY_LIST_FREE(GENC_TREE_NODE_CHILDREN(node));
 
 #define GENC_TREE_NODE_INIT(node)                           \
 do {                                                        \
