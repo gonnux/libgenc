@@ -50,13 +50,10 @@ do {                                                                            
     }                                                                                                             \
 } while(0)
 
-#define GENC_ARRAY_LIST_REALLOC2(arrayList)                                          \
-do {                                                                                 \
-    if(GENC_ARRAY_LIST_SIZE(arrayList) == GENC_ARRAY_LIST_CAPACITY(arrayList)) {     \
-        ++GENC_ARRAY_LIST_CAPACITY(arrayList);                                       \
-        GENC_ARRAY_LIST_CAPACITY(arrayList) *= 2;                                    \
-        GENC_ARRAY_LIST_RAW_REALLOC(arrayList, GENC_ARRAY_LIST_CAPACITY(arrayList)); \
-    }                                                                                \
+#define GENC_ARRAY_LIST_REALLOC2(arrayList)                                                    \
+do {                                                                                           \
+    if(GENC_ARRAY_LIST_SIZE(arrayList) == GENC_ARRAY_LIST_CAPACITY(arrayList))                 \
+        GENC_ARRAY_LIST_RAW_REALLOC(arrayList, (GENC_ARRAY_LIST_CAPACITY(arrayList) + 1) * 2); \
 } while(0)
 
 #define GENC_ARRAY_LIST_RAW_MOVE(arrayList, beginIndex, endIndex, moveCount) \
