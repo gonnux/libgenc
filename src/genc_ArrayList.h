@@ -71,16 +71,16 @@ do {                                             \
     GENC_ARRAY_LIST_SIZE(arrayList) = 0;         \
 } while(0)
 
-#define GENC_ARRAY_LIST_INIT2(arrayList, initialCapacity) \
-do {                                                      \
-    GENC_ARRAY_LIST_INIT(arrayList);                      \
-    GENC_ARRAY_LIST_REALLOC(arrayList, initialCapacity);  \
-} while(0)
-
 #define GENC_ARRAY_LIST_ZERO(arrayList, beginIndex, endIndex)                                                                                \
 do {                                                                                                                                         \
     if(GENC_ARRAY_LIST_SIZE(arrayList) > 0 && endIndex - beginIndex >= 0)                                                                    \
         memset((arrayList)->genc_ArrayList.elements + beginIndex, 0, (endIndex - beginIndex + 1) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
+} while(0)
+
+#define GENC_ARRAY_LIST_INIT2(arrayList, initialCapacity) \
+do {                                                      \
+    GENC_ARRAY_LIST_INIT(arrayList);                      \
+    GENC_ARRAY_LIST_REALLOC(arrayList, initialCapacity);  \
 } while(0)
 
 #define GENC_ARRAY_LIST_INIT3(arraylist, initialSize)    \
