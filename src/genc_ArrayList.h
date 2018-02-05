@@ -83,11 +83,11 @@ do {                                                      \
     GENC_ARRAY_LIST_REALLOC(arrayList, initialCapacity);  \
 } while(0)
 
-#define GENC_ARRAY_LIST_INIT3(arraylist, initialSize)    \
-do {                                                     \
-    GENC_ARRAY_LIST_INIT2(arrayList, initialSize * 2);   \
-    GENC_ARRAY_LIST_SIZE(arrayList) = initialSize;       \
-    GENC_ARRAY_LIST_ZERO(arrayList, 0, initialSize - 1); \
+#define GENC_ARRAY_LIST_INIT3(arrayList, initialSize)      \
+do {                                                       \
+    GENC_ARRAY_LIST_INIT2(arrayList, (initialSize) * 2);   \
+    GENC_ARRAY_LIST_SIZE(arrayList) = initialSize;         \
+    GENC_ARRAY_LIST_ZERO(arrayList, 0, (initialSize) - 1); \
 } while(0)
 
 
