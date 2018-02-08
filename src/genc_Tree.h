@@ -41,6 +41,9 @@ do {                                                                  \
     GENC_ARRAY_LIST_INIT3(GENC_TREE_NODE_CHILDREN(node), childCount); \
 } while(0)
 
+#define GENC_TREE_NODE_REALLOC_CHILDREN(node, childCapacity) \
+GENC_ARRAY_LIST_REALLOC(GENC_TREE_NODE_CHILDREN(node), childCapacity)
+
 #define GENC_TREE_NODE_FREE(node) \
 GENC_ARRAY_LIST_FREE(GENC_TREE_NODE_CHILDREN(node))
 
