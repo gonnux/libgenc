@@ -71,7 +71,7 @@ do {                                             \
     GENC_ARRAY_LIST_SIZE(arrayList) = 0;         \
 } while(0)
 
-#define GENC_ARRAY_LIST_ZERO(arrayList, beginIndex, endIndex)                                                                                \
+#define GENC_ARRAY_LIST_ZERO_ELEMENTS(arrayList, beginIndex, endIndex)                                                                       \
 do {                                                                                                                                         \
     if(GENC_ARRAY_LIST_SIZE(arrayList) > 0 && endIndex - beginIndex >= 0)                                                                    \
         memset((arrayList)->genc_ArrayList.elements + beginIndex, 0, (endIndex - beginIndex + 1) * GENC_ARRAY_LIST_ELEMENT_SIZE(arrayList)); \
@@ -83,11 +83,11 @@ do {                                                      \
     GENC_ARRAY_LIST_REALLOC(arrayList, initialCapacity);  \
 } while(0)
 
-#define GENC_ARRAY_LIST_INIT3(arrayList, initialSize)      \
-do {                                                       \
-    GENC_ARRAY_LIST_INIT2(arrayList, (initialSize) * 2);   \
-    GENC_ARRAY_LIST_SIZE(arrayList) = initialSize;         \
-    GENC_ARRAY_LIST_ZERO(arrayList, 0, (initialSize) - 1); \
+#define GENC_ARRAY_LIST_INIT3(arrayList, initialSize)               \
+do {                                                                \
+    GENC_ARRAY_LIST_INIT2(arrayList, (initialSize) * 2);            \
+    GENC_ARRAY_LIST_SIZE(arrayList) = initialSize;                  \
+    GENC_ARRAY_LIST_ZERO_ELEMENTS(arrayList, 0, (initialSize) - 1); \
 } while(0)
 
 
@@ -134,7 +134,7 @@ do {                                                                            
     if(index < GENC_ARRAY_LIST_SIZE(arrayList))                                                          \
         GENC_ARRAY_LIST_RAW_MOVE(arrayList, index, index + 1, GENC_ARRAY_LIST_SIZE(arrayList) - index);  \
     ++GENC_ARRAY_LIST_SIZE(arrayList);                                                                   \
-    GENC_ARRAY_LIST_ZERO(arrayList, index, index);                                                       \
+    GENC_ARRAY_LIST_ZERO_ELEMENTS(arrayList, index, index);                                              \
 } while(0)
 
 #define GENC_ARRAY_LIST_PUSH(arrayList, element) \
