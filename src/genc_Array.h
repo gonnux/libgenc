@@ -9,17 +9,23 @@ struct {                 \
     size_t size;         \
 } genc_Array
 
-#define GENC_ARRAY_INIT(array, _size)                                                       \
-do {                                                                                        \
-    (array)->genc_Array.elements = malloc(_size * sizeof(*((array)->genc_Array.elements))); \
-    (array)->genc_Array.size = _size;                                                       \
+#define GENC_ARRAY_INIT(array, newSize)                                                       \
+do {                                                                                          \
+    (array)->genc_Array.elements = malloc(newSize * sizeof(*((array)->genc_Array.elements))); \
+    (array)->genc_Array.size = newSize;                                                       \
 } while(0)
 
 #define GENC_ARRAY_SIZE(array) \
 (array)->genc_Array.size
 
-#define GENC_ARRAY_GET(array, index) \
+#define GENC_ARRAY_ELEMENT_SIZE(array) \
+sizeof(*(array)->genc_Array.elements)
+
+#define GENC_ARRAY_AT(array, index) \
 (array)->genc_Array.elements[index]
+
+#define GENC_ARRAY_GET(array, index, element) \
+*(element) = (array)->genc_Array.elements[index]
 
 #define GENC_ARRAY_SET(array, index, element)          \
 do {                                                   \

@@ -16,6 +16,11 @@ struct {                        \
 #define GENC_LIST_ELEMENT_NEXT(element) \
 (element)->genc_List_element.next
 
+#define GENC_LIST_ELEMENT_SIZE(list) \
+sizeof(*(list)->genc_List.head)
+
+#define GENC_LIST_ELEMENT_TYPE(list) \
+typeof(*(list)->genc_List.head)
 
 #define GENC_LIST(type) \
 struct {                \
@@ -115,8 +120,8 @@ do {                                                                            
     --((list)->genc_List.size);                                                                                \
 } while(0)
 
-#define GENC_LIST_FOR_EACH(list, type, element) \
-for(type* element = (list)->genc_List.head; element != NULL; element = element->genc_List_element.next)
+#define GENC_LIST_FOR_EACH(list, element) \
+for(GENC_LIST_ELEMENT_TYPE(list)* element = (list)->genc_List.head; element != NULL; element = element->genc_List_element.next)
 
 #define GENC_LIST_FOR_EACH2(list, element) \
 for(element = (list)->genc_List.head; element != NULL; element = element->genc_List_element.next)
