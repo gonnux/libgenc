@@ -69,14 +69,24 @@ void GENC_LIST_INSERT_BEFORE_test(void** state) {
     struct Integer integer1 = {.value = 1};
     GENC_LIST_ELEMENT_INIT(&integer1);
     GENC_LIST_INSERT_BEFORE(&integerList, GENC_LIST_HEAD(&integerList), &integer1);
+
+    assert_non_null(GENC_LIST_HEAD(&integerList));
+    assert_null(GENC_LIST_ELEMENT_PREVIOUS(GENC_LIST_HEAD(&integerList));
+    assert_null(GENC_LIST_ELEMENT_AFTER(GENC_LIST_HEAD(&integerList));
     assert_int_equal(GENC_LIST_HEAD(&integerList)->value, 1);
+
+    assert_non_null(GENC_LIST_TAIL(&integerList));
+    assert_null(GENC_LIST_ELEMENT_PREVIOUS(GENC_LIST_TAIL(&integerList));
+    assert_null(GENC_LIST_ELEMENT_NEXT(GENC_LIST_TAIL(&integerList));
     assert_int_equal(GENC_LIST_TAIL(&integerList)->value, 1);
+
     struct Integer integer2 = {.value = 2};
     GENC_LIST_ELEMENT_INIT(&integer2);
     GENC_LIST_INSERT_BEFORE(&integerList, GENC_LIST_HEAD(&integerList), &integer2);
     assert_int_equal(GENC_LIST_HEAD(&integerList)->value, 2);
     assert_int_equal(GENC_LIST_TAIL(&integerList)->value, 1);
     struct Integer integer3 = {.value = 3};
+
     GENC_LIST_ELEMENT_INIT(&integer3);
     GENC_LIST_INSERT_BEFORE(&integerList, GENC_LIST_TAIL(&integerList), &integer3);
     assert_int_equal(GENC_LIST_HEAD(&integerList)->value, 2);
