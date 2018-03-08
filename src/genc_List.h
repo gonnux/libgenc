@@ -55,18 +55,20 @@ do {                                                                            
         (element)->genc_List_element.previous = newElement;                           \
 } while(0)
 
-#define GENC_LIST_INSERT_BEFORE(list, element, newElement)                                \
-do {                                                                                      \
-    if(element != NULL) {                                                                 \
-        GENC_LIST_ELEMENT_PREPEND(element, newElement);                                   \
-        if((element)->genc_List_element.previous == NULL)                                 \
-            (list)->genc_List.head = newElement;                                          \
-    } else {                                                                              \
-        (newElement)->genc_List_element.next = NULL;                                      \
-        (newElement)->genc_List_element.previous = NULL;                                  \
-        (list)->genc_List.head = (list)->genc_List.tail = newElement;                     \
-    }                                                                                     \
-    ++((list)->genc_List.size);                                                           \
+#define GENC_LIST_INSERT_BEFORE(list, element, newElement)            \
+do {                                                                  \
+    if(element != NULL) {                                             \
+        if((element)->genc_List_element.previous == NULL) {           \
+            GENC_LIST_ELEMENT_PREPEND(element, newElement);           \
+            (list)->genc_List.head = newElement;                      \
+        } else                                                        \
+            GENC_LIST_ELEMENT_PREPEND(element, newElement);           \
+    } else {                                                          \
+        (newElement)->genc_List_element.next = NULL;                  \
+        (newElement)->genc_List_element.previous = NULL;              \
+        (list)->genc_List.head = (list)->genc_List.tail = newElement; \
+    }                                                                 \
+    ++((list)->genc_List.size);                                       \
 } while(0)
 
 #define GENC_LIST_PREPEND(list, element) \
@@ -86,9 +88,11 @@ do {                                                                            
 #define GENC_LIST_INSERT_AFTER(list, element, newElement)             \
 do {                                                                  \
     if(element != NULL) {                                             \
-        GENC_LIST_ELEMENT_APPEND(element, newElement);                \
-        if((element)->genc_List_element.next == NULL)                 \
+        if((element)->genc_List_element.next == NULL) {               \
+            GENC_LIST_ELEMENT_APPEND(element, newElement);            \
             (list)->genc_List.tail = newElement;                      \
+        } else                                                        \
+            GENC_LIST_ELEMENT_APPEND(element, newElement);            \
     } else {                                                          \
         (newElement)->genc_List_element.previous = NULL;              \
         (newElement)->genc_List_element.next = NULL;                  \
