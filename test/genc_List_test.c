@@ -153,29 +153,6 @@ void GENC_LIST_APPEND_test(void** state) {
     assert_int_equal(GENC_LIST_TAIL(&integerList)->value, 3);
 }
 
-
-void genc_List_test(void** state) {
-    struct Integer_List integerList;
-/*
-    GENC_LIST_INIT(&integerList);
-    struct Integer* element = NULL;
-    int rawIntegerArray[] = {1, 2, 3, 4, 5};
-    int rawIntegerArraySize = sizeof(rawIntegerArray) / sizeof(int);
-    for(int index = 0; index < rawIntegerArraySize; ++index) {
-        element = malloc(sizeof(struct Integer));
-        GENC_LIST_ELEMENT_INIT(element);
-        element->value = rawIntegerArray[index];
-        GENC_LIST_INSERT_BEFORE(&integerList, GENC_LIST_HEAD(&integerList), element);
-    }
-    int* outputRawIntegerArray;
-    int outputRawIntegerArraySize;
-    Integer_List_toRawArray(&integerList, &outputRawIntegerArray, &outputRawIntegerArraySize);
-    assert_int_equal(rawIntegerArraySize, outputRawIntegerArraySize);
-    assert_memory_equal(rawIntegerArray, outputRawIntegerArray, outputRawIntegerArraySize);
-    free(outputRawIntegerArray);
-*/
-}
-
 int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(GENC_LIST_INIT_test),
@@ -186,8 +163,6 @@ int main() {
         cmocka_unit_test(GENC_LIST_INSERT_AFTER_test),
         cmocka_unit_test(GENC_LIST_PREPEND_test),
         cmocka_unit_test(GENC_LIST_APPEND_test),
-        cmocka_unit_test(genc_List_test)
     };
-
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
