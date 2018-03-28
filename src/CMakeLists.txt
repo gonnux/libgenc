@@ -1,1 +1,2 @@
- install(FILES genc_Array.h genc_Generic.h genc_List.h genc_caseCompareNStr.h genc_nStrNStr.h genc_nStrToInt.h genc_uIntToNStr.h genc_cast.h genc_HashMap.h genc_compareNStr.h genc_strNStr.h genc_nStrStr.h genc_String.h genc_ArrayList.h genc_Tree.h genc_args.h DESTINATION include/libgenc)
+file(GLOB headers "*.h")
+install(FILES "${headers}" DESTINATION include/libgenc)
