@@ -1,8 +1,8 @@
-#ifndef _GENC_UINT_TO_STR
-#define _GENC_UINT_TO_STR
+#ifndef _GENC_UINT_TO_NSTR
+#define _GENC_UINT_TO_NSTR
 
 #include <stdlib.h>
-static inline size_t genc_Uint_toStr(int _uInteger, int base, char** string) {
+static inline size_t genc_Uint_toNstr(int _uInteger, int base, char** string) {
     size_t length = 0;
 
     if(base == 10 || base == 16) {
@@ -13,7 +13,7 @@ static inline size_t genc_Uint_toStr(int _uInteger, int base, char** string) {
         } while(uInteger > 0);
         uInteger = _uInteger;
 
-        *string = malloc((length + 1) * sizeof(char));
+        *string = malloc(length * sizeof(char));
         for(size_t index = 0; index != length; ++index) {
             int remainder = uInteger % base;
             if(remainder < 10)
@@ -23,8 +23,6 @@ static inline size_t genc_Uint_toStr(int _uInteger, int base, char** string) {
             uInteger /= base;
         }
     }
-    (*string)[length] = '\0';
-
     return length;
 }
 
