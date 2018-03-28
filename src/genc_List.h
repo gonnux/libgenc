@@ -44,6 +44,15 @@ do {                                                        \
 #define GENC_LIST_SIZE(list) \
 (list)->genc_List.size
 
+#define GENC_LIST_ELEMENT_REPLACE(element, newElement)                            \
+do {                                                                              \
+    GENC_LIST_ELEMENT_PREVIOUS(newElement) = GENC_LIST_ELEMENT_PREVIOUS(element); \
+    GENC_LIST_ELEMENT_NEXT(newElement) = GENC_LIST_ELEMENT_NEXT(element);         \
+    GENC_LIST_ELEMENT_PREVIOUS(GENC_LIST_ELEMENT_NEXT(element)) = newElement;     \
+    GENC_LIST_ELEMENT_NEXT(GENC_LIST_ELEMENT_PREVIOUS(element)) = newElement;     \
+} while(0)
+
+
 #define GENC_LIST_ELEMENT_PREPEND(element, newElement)                                \
 do {                                                                                  \
     (newElement)->genc_List_element.next = element;                                   \
