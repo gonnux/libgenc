@@ -4,13 +4,13 @@
 #include <cmocka.h>
 
 #include <stdio.h>
-#include "../src/genc_uIntToNStr.h"
+#include "../src/genc_Uint_toStr.h"
 int main() {
     char* str;
-    genc_uIntToNStr(200, 10, &str);
+    genc_Uint_toStr(200, 10, &str);
     printf("%s\n", str);
     free(str);
-    genc_uIntToNStr(10, 16, &str);
+    genc_Uint_toStr(10, 16, &str);
     printf("%s\n", str);
     free(str);
 
