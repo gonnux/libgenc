@@ -1,2 +1,2 @@
 file(GLOB headers "*.h")
-install(FILES "${headers}" DESTINATION include/libgenc)
+install(FILES ${headers} DESTINATION include/libgenc)
