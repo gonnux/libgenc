@@ -4,7 +4,6 @@
 #include <stdlib.h>
 static inline size_t genc_Uint_toStr(int _uInteger, int base, char** string) {
     size_t length = 0;
-
     if(base == 10 || base == 16) {
         int uInteger = _uInteger;
         do {
@@ -24,7 +23,6 @@ static inline size_t genc_Uint_toStr(int _uInteger, int base, char** string) {
         }
     }
     (*string)[length] = '\0';
-
     return length;
 }
 

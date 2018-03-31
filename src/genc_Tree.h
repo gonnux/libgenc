@@ -4,11 +4,11 @@
 #include "genc_ArrayList.h"
 
 #define GENC_TREE_NODE(type, parentType) \
-struct {                                 \
-    parentType parent;                   \
-    struct {                             \
-        GENC_ARRAY_LIST(type);           \
-    } children;                          \
+struct { \
+    parentType parent; \
+    struct { \
+        GENC_ARRAY_LIST(type); \
+    } children; \
 } genc_Tree_node
 
 #define GENC_TREE_NODE_PARENT(node) \
@@ -23,23 +23,20 @@ struct {                                 \
 #define GENC_TREE_NODE_CHILDREN(node) \
 (&(node)->genc_Tree_node.children)
 
-#define GENC_TREE_NODE_INIT(node)                        \
-do {                                                     \
-    (node)->genc_Tree_node.parent = NULL;                \
+#define GENC_TREE_NODE_INIT(node) { \
+    (node)->genc_Tree_node.parent = NULL; \
     GENC_ARRAY_LIST_INIT(GENC_TREE_NODE_CHILDREN(node)); \
-} while(0)
+}
 
-#define GENC_TREE_NODE_INIT2(node, childCapacity)                        \
-do {                                                                     \
-    GENC_TREE_NODE_INIT(node);                                           \
+#define GENC_TREE_NODE_INIT2(node, childCapacity) { \
+    GENC_TREE_NODE_INIT(node); \
     GENC_ARRAY_LIST_INIT2(GENC_TREE_NODE_CHILDREN(node), childCapacity); \
-} while(0)
+}
 
-#define GENC_TREE_NODE_INIT3(node, childCount)                        \
-do {                                                                  \
-    GENC_TREE_NODE_INIT(node);                                        \
+#define GENC_TREE_NODE_INIT3(node, childCount) { \
+    GENC_TREE_NODE_INIT(node); \
     GENC_ARRAY_LIST_INIT3(GENC_TREE_NODE_CHILDREN(node), childCount); \
-} while(0)
+}
 
 #define GENC_TREE_NODE_REALLOC_CHILDREN(node, childCapacity) \
 GENC_ARRAY_LIST_REALLOC(GENC_TREE_NODE_CHILDREN(node), childCapacity)

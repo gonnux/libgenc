@@ -20,27 +20,24 @@ struct genc_String {
 #define GENC_STRING_IS_FREEABLE(string) \
 (string)->freeable
 
-#define GENC_STRING_SET(string, _chars, _freeable) \
-do {                                               \
-    (string)->chars = _chars;                      \
-    (string)->length = strlen((string)->chars);    \
-    (string)->freeable = _freeable;                \
-} while(0)
+#define GENC_STRING_SET(string, _chars, _freeable) { \
+    (string)->chars = _chars; \
+    (string)->length = strlen((string)->chars); \
+    (string)->freeable = _freeable; \
+}
 
-#define GENC_STRING_SET2(string, _chars, _length, _freeable) \
-do {                                                         \
-    (string)->chars = _chars;                                \
-    (string)->length = _length;                              \
-    (string)->freeable = _freeable;                          \
-} while(0)
+#define GENC_STRING_SET2(string, _chars, _length, _freeable) { \
+    (string)->chars = _chars; \
+    (string)->length = _length; \
+    (string)->freeable = _freeable; \
+}
 
-#define GENC_STRING_FREE(string)          \
-do {                                      \
+#define GENC_STRING_FREE(string) { \
     if(GENC_STRING_IS_FREEABLE(string)) { \
-        free((string)->chars);            \
-        (string)->chars = NULL;           \
-        (string)->freeable = false;       \
-    }                                     \
-} while(0)
+        free((string)->chars); \
+        (string)->chars = NULL; \
+        (string)->freeable = false; \
+    } \
+}
 
 #endif

@@ -4,16 +4,15 @@
 #include <stdlib.h>
 
 #define GENC_ARRAY(type) \
-struct {                 \
-    type* elements;      \
-    size_t size;         \
+struct { \
+    type* elements; \
+    size_t size; \
 } genc_Array
 
-#define GENC_ARRAY_INIT(array, newSize)                                                       \
-do {                                                                                          \
+#define GENC_ARRAY_INIT(array, newSize) { \
     (array)->genc_Array.elements = malloc(newSize * sizeof(*((array)->genc_Array.elements))); \
-    (array)->genc_Array.size = newSize;                                                       \
-} while(0)
+    (array)->genc_Array.size = newSize; \
+}
 
 #define GENC_ARRAY_SIZE(array) \
 (array)->genc_Array.size
@@ -27,11 +26,10 @@ sizeof(*(array)->genc_Array.elements)
 #define GENC_ARRAY_GET(array, index, element) \
 *(element) = (array)->genc_Array.elements[index]
 
-#define GENC_ARRAY_SET(array, index, element)          \
-do {                                                   \
-    if(index < (array)->genc_Array.size)               \
+#define GENC_ARRAY_SET(array, index, element) { \
+    if(index < (array)->genc_Array.size) \
         (array)->genc_Array.elements[index] = element; \
-} while(0)
+}
 
 #define GENC_ARRAY_FOR_EACH(array, index) \
 for(size_t index = 0; index != (array)->genc_Array.size; ++index)
