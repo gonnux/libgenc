@@ -24,17 +24,14 @@ struct { \
 (&(node)->genc_Tree_node.children)
 
 #define GENC_TREE_NODE_INIT(node) { \
-    GENC_TREE_NODE_SET_PARENT(node, NULL); \
     GENC_ARRAY_LIST_INIT(GENC_TREE_NODE_CHILDREN(node)); \
 }
 
 #define GENC_TREE_NODE_INIT2(node, childCapacity) { \
-    GENC_TREE_NODE_SET_PARENT(node, NULL); \
     GENC_ARRAY_LIST_INIT2(GENC_TREE_NODE_CHILDREN(node), childCapacity); \
 }
 
 #define GENC_TREE_NODE_INIT3(node, childCount) { \
-    GENC_TREE_NODE_SET_PARENT(node, NULL); \
     GENC_ARRAY_LIST_INIT3(GENC_TREE_NODE_CHILDREN(node), childCount); \
 }
 
