@@ -112,7 +112,10 @@ do {                                                        \
         GENC_ARRAY_LIST_RAW_SET(arrayList, index, element); \
 } while(0)
 
-#define GENC_ARRAY_LIST_PEEK(arrayList, element) \
+#define GENC_ARRAY_LIST_PEEK(arrayList) \
+GENC_ARRAY_LIST_GET(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1)
+
+#define GENC_ARRAY_LIST_PEEK2(arrayList, element) \
 GENC_ARRAY_LIST_GET2(arrayList, GENC_ARRAY_LIST_SIZE(arrayList) - 1, element)
 
 #define GENC_ARRAY_LIST_INSERT(arrayList, index, element)                                               \
