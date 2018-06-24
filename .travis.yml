@@ -1,6 +1,8 @@
 dist: trusty
 sudo: required
 language: c
+install:
+  - apt-get install libcmocka-dev
 compiler:
   - gcc
 before_script:
