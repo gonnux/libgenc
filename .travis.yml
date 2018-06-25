@@ -8,7 +8,7 @@ before_install:
   - cd cmocka
   - mkdir build
   - cd build
-  - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr
+  - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
   - cd ../../
 install:
   - cd cmocka/build
