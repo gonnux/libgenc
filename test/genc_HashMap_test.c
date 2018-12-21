@@ -31,7 +31,7 @@ int main() {
 
     GENC_HASH_MAP_SET(&HashMap, element, old_element);
 
-    printf("%u\n", old_element);
+    printf("%p\n", old_element);
 
     element = malloc(sizeof(struct my_HashMap_element));
     GENC_HASH_MAP_ELEMENT_INIT(element);
@@ -42,7 +42,7 @@ int main() {
 
     GENC_HASH_MAP_SET(&HashMap, element, old_element);
 
-    printf("%u %d\n", old_element, old_element->value);
+    printf("%p %d\n", old_element, old_element->value);
 
     struct my_HashMap_element* element_out;
     GENC_HASH_MAP_GET(&HashMap, "HELLO", 5, element_out);
