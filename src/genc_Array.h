@@ -20,10 +20,10 @@ struct { \
 #define GENC_ARRAY_ELEMENT_SIZE(array) \
 sizeof(*(array)->genc_Array.elements)
 
-#define GENC_ARRAY_AT(array, index) \
+#define GENC_ARRAY_GET(array, index) \
 (array)->genc_Array.elements[index]
 
-#define GENC_ARRAY_GET(array, index, element) \
+#define GENC_ARRAY_GET2(array, index, element) \
 *(element) = (array)->genc_Array.elements[index]
 
 #define GENC_ARRAY_SET(array, index, element) { \
