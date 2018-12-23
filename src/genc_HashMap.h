@@ -9,7 +9,7 @@
 struct \
 { \
     unsigned char* key; \
-    size_t key_length; \
+    size_t keyLength; \
     GENC_LIST_ELEMENT(type); \
 } genc_HashMap_element
 
@@ -20,13 +20,19 @@ GENC_LIST_ELEMENT_INIT(&((hmap)->genc_HashMap_element))
 (element)->genc_HashMap_element.key
 
 #define GENC_HASH_MAP_ELEMENT_KEY_LENGTH(element) \
-(element)->genc_HashMap_element.key_length
+(element)->genc_HashMap_element.keyLength
 
 #define GENC_HASH_MAP_ELEMENT_PREVIOUS(element) \
 GENC_LIST_ELEMENT_PREVIOUS(&((element)->genc_HashMap_element))
 
 #define GENC_HASH_MAP_ELEMENT_NEXT(element) \
 GENC_LIST_ELEMENT_NEXT(&((element)->genc_HashMap_element))
+
+#define GENC_HASH_MAP_CHAIN(type) \
+struct \
+{ \
+    GENC_LIST(type); \
+} genc_HashMap_chain
 
 #define GENC_HASH_MAP(type) \
 struct { \
@@ -51,29 +57,31 @@ do { \
 #define GENC_HASH_MAP_SIZE(hmap) \
 (hmap)->genc_HashMap.size
 
-#define GENC_HASH_MAP_GET(hmap, _key, _key_length, element) \
-do { \
-    size_t hash = 0; \
-    for(size_t i = 0; i < _key_length; ++i) { \
-        hash += _key[i]; \
-        hash << 8; \
+#define GENC_HASH_MAP_GET_HASH(hmap, _key, _keyLength, hash)  do { \
+    *(hash) = 0; \
+    for(size_t i = 0; i != _keyLength; ++i) { \
+        *(hash) += _key[i]; \
+        *(hash) << 8; \
     } \
-    hash %= (hmap)->genc_HashMap.capacity; \
+    *(hash) %= (hmap)->genc_HashMap.capacity; \
+} while(0)
+
+#define GENC_HASH_MAP_GET_RAW(hmap, hash, _key, _keyLength, element) do { \
     element = (hmap)->genc_HashMap.elements[hash]; \
-    while(element != NULL && strncmp(_key, (element)->genc_HashMap_element.key, _key_length) != 0) \
+    while(element != NULL && strncmp(_key, (element)->genc_HashMap_element.key, _keyLength) != 0) \
         element = GENC_HASH_MAP_ELEMENT_NEXT(element); \
 } while(0)
 
-#define GENC_HASH_MAP_REMOVE(hmap, _key, _key_length, element) \
+#define GENC_HASH_MAP_GET(hmap, _key, _keyLength, element) \
 do { \
-    size_t hash = 0; \
-    for(size_t i = 0; i < _key_length; ++i) { \
-        hash += _key[i]; \
-        hash << 8; \
-    } \
-    hash %= (hmap)->genc_HashMap.capacity; \
+    size_t hash; \
+    GENC_HASH_MAP_GET_HASH(hmap, _key, _keyLength, &hash); \
+    GENC_HASH_MAP_GET_RAW(hmap, hash, _key, _keyLength, element); \
+} while(0)
+
+#define GENC_HASH_MAP_REMOVE_RAW(hmap, hash, _key, _keyLength, element) do { \
     element = (hmap)->genc_HashMap.elements[hash]; \
-    while(element != NULL && strncmp(_key, (element)->genc_HashMap_element.key, _key_length) != 0) \
+    while(element != NULL && strncmp(_key, (element)->genc_HashMap_element.key, _keyLength) != 0) \
         element = GENC_HASH_MAP_ELEMENT_NEXT(element); \
     if(element != NULL) { \
         if(element == (hmap)->genc_HashMap.elements[hash] && GENC_HASH_MAP_ELEMENT_NEXT(element) == NULL) \
@@ -90,10 +98,17 @@ do { \
     } \
 } while(0)
 
+
+#define GENC_HASH_MAP_REMOVE(hmap, _key, _keyLength, element) do { \
+    size_t hash; \
+    GENC_HASH_MAP_GET_HASH(hmap, _key, _keyLength, &hash); \
+    GENC_HASH_MAP_REMOVE_RAW(hmap, hash, _key, _keyLength, element); \
+} while(0)
+
 #define GENC_HASH_MAP_SET(hmap, element, oldElement) \
 do { \
     size_t hash = 0; \
-    for(size_t i = 0; i < (element)->genc_HashMap_element.key_length; ++i) { \
+    for(size_t i = 0; i < (element)->genc_HashMap_element.keyLength; ++i) { \
         hash += (element)->genc_HashMap_element.key[i]; \
         hash << 8; \
     } \
@@ -103,7 +118,7 @@ do { \
     else { \
         oldElement = (hmap)->genc_HashMap.elements[hash]; \
         while(oldElement != NULL && \
-             strncmp((element)->genc_HashMap_element.key, (oldElement)->genc_HashMap_element.key, (element)->genc_HashMap_element.key_length) != 0) { \
+             strncmp((element)->genc_HashMap_element.key, (oldElement)->genc_HashMap_element.key, (element)->genc_HashMap_element.keyLength) != 0) { \
             oldElement = GENC_HASH_MAP_ELEMENT_NEXT(oldElement); \
         } \
         if(oldElement != NULL) { \
