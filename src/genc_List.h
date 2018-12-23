@@ -19,7 +19,10 @@ struct { \
 #define GENC_LIST_ELEMENT_SIZE(list) \
 sizeof(*(list)->genc_List.head)
 
-#define GENC_LIST_ELEMENT_TYPE(list) \
+#define GENC_LIST_ELEMENT_TYPE(element) \
+typeof(*(element))
+
+#define GENC_LIST_ELEMENT_TYPE2(list) \
 typeof(*(list)->genc_List.head)
 
 #define GENC_LIST(type) \
@@ -60,6 +63,12 @@ struct { \
         (element)->genc_List_element.previous = newElement; \
 }
 
+#define GENC_LIST_ELEMENT_PREPEND_TO_HEAD(element, newElement) { \
+    (newElement)->genc_List_element.next = element; \
+    (newElement)->genc_List_element.previous = NULL; \
+        (element)->genc_List_element.previous = newElement; \
+}
+
 #define GENC_LIST_INSERT_BEFORE(list, element, newElement) { \
     if(element != NULL) { \
         if((element)->genc_List_element.previous == NULL) { \
@@ -86,6 +95,12 @@ GENC_LIST_INSERT_BEFORE(list, (list)->genc_List.head, element)
         (element)->genc_List_element.next = newElement; \
     } else \
         (element)->genc_List_element.next = newElement; \
+}
+
+#define GENC_LIST_ELEMENT_APPEND_TO_TAIL(element, newElement) { \
+    (newElement)->genc_List_element.previous = element; \
+    (newElement)->genc_List_element.next = (element)->genc_List_element.next; \
+    (element)->genc_List_element.next = newElement; \
 }
 
 #define GENC_LIST_INSERT_AFTER(list, element, newElement) { \
@@ -125,8 +140,14 @@ GENC_LIST_INSERT_AFTER(list, (list)->genc_List.tail, element)
     --((list)->genc_List.size); \
 }
 
+#define GENC_LIST_ELEMENT_FOR_EACH(head, element) \
+for(GENC_LIST_ELEMENT_TYPE(head)* element = head; element != NULL; element = GENC_LIST_ELEMENT_NEXT(element))
+
+#define GENC_LIST_ELEMENT_REVERSE_FOR_EACH(tail, element) \
+for(GENC_LIST_ELEMENT_TYPE(tail)* element = tail; element != NULL; element = GENC_LIST_ELEMENT_PREVIOUS(element))
+
 #define GENC_LIST_FOR_EACH(list, element) \
-for(GENC_LIST_ELEMENT_TYPE(list)* element = (list)->genc_List.head; element != NULL; element = element->genc_List_element.next)
+for(GENC_LIST_ELEMENT_TYPE2(list)* element = (list)->genc_List.head; element != NULL; element = element->genc_List_element.next)
 
 #define GENC_LIST_FOR_EACH2(list, element) \
 for(element = (list)->genc_List.head; element != NULL; element = element->genc_List_element.next)

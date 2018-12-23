@@ -104,28 +104,37 @@ do { \
     GENC_HASH_MAP_REMOVE_RAW(hmap, hash, _key, _keyLength, element); \
 } while(0)
 
+// test is needed for oldElement
 #define GENC_HASH_MAP_SET_RAW(hmap, hash, element, oldElement) do { \
     if((hmap)->genc_HashMap.elements[hash] == NULL) \
         (hmap)->genc_HashMap.elements[hash] = element; \
     else { \
+	bool foundOldElement = false; \
         oldElement = (hmap)->genc_HashMap.elements[hash]; \
-        while(oldElement != NULL && \
-             strncmp((element)->genc_HashMap_element.key, (oldElement)->genc_HashMap_element.key, (element)->genc_HashMap_element.keyLength) != 0) { \
-            oldElement = GENC_HASH_MAP_ELEMENT_NEXT(oldElement); \
+        for(oldElement = (hmap)->genc_HashMap.elements[hash]; \
+            oldElement != NULL; \
+	    oldElement = GENC_HASH_MAP_ELEMENT_NEXT(oldElement)) { \
+            if(strncmp((element)->genc_HashMap_element.key, \
+               (oldElement)->genc_HashMap_element.key, \
+	       (element)->genc_HashMap_element.keyLength) == 0) { \
+                foundOldElement = true; \
+                break; \
+            } \
         } \
-        if(oldElement != NULL) { \
+        if(foundOldElement) { \
             if(GENC_HASH_MAP_ELEMENT_PREVIOUS(oldElement) != NULL) { \
                 GENC_HASH_MAP_ELEMENT_NEXT(GENC_HASH_MAP_ELEMENT_PREVIOUS(oldElement)) = GENC_HASH_MAP_ELEMENT_NEXT(oldElement); \
-                GENC_HASH_MAP_ELEMENT_PREVIOUS(oldElement) = NULL; \
             } \
             if(GENC_HASH_MAP_ELEMENT_NEXT(oldElement) != NULL) { \
                 GENC_HASH_MAP_ELEMENT_PREVIOUS(GENC_HASH_MAP_ELEMENT_NEXT(oldElement)) = GENC_HASH_MAP_ELEMENT_PREVIOUS(oldElement); \
-                GENC_HASH_MAP_ELEMENT_NEXT(oldElement) = NULL; \
             } \
+            GENC_HASH_MAP_ELEMENT_PREVIOUS(oldElement) = NULL; \
+            GENC_HASH_MAP_ELEMENT_NEXT(oldElement) = NULL; \
         } \
         else \
             ++((hmap)->genc_HashMap.size); \
         GENC_HASH_MAP_ELEMENT_NEXT(element) = (hmap)->genc_HashMap.elements[hash]; \
+	GENC_HASH_MAP_ELEMENT_PREVIOUS(element) = NULL; \
         GENC_HASH_MAP_ELEMENT_PREVIOUS((hmap)->genc_HashMap.elements[hash]) = element; \
         (hmap)->genc_HashMap.elements[hash] = element; \
     } \
