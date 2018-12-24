@@ -106,14 +106,14 @@ do { \
     if((hmap)->genc_HashMap.elements[hash] == NULL) \
         (hmap)->genc_HashMap.elements[hash] = element; \
     else { \
-	bool foundOldElement = false; \
+        bool foundOldElement = false; \
         oldElement = (hmap)->genc_HashMap.elements[hash]; \
         for(oldElement = (hmap)->genc_HashMap.elements[hash]; \
             oldElement != NULL; \
-	    oldElement = GENC_LIST_ELEMENT_NEXT(oldElement)) { \
+            oldElement = GENC_LIST_ELEMENT_NEXT(oldElement)) { \
             if(strncmp((element)->genc_HashMap_element.key, \
                (oldElement)->genc_HashMap_element.key, \
-	       (element)->genc_HashMap_element.keyLength) == 0) { \
+               (element)->genc_HashMap_element.keyLength) == 0) { \
                 foundOldElement = true; \
                 break; \
             } \
@@ -130,9 +130,7 @@ do { \
         } \
         else \
             ++((hmap)->genc_HashMap.size); \
-        GENC_LIST_ELEMENT_NEXT(element) = (hmap)->genc_HashMap.elements[hash]; \
-	GENC_LIST_ELEMENT_PREVIOUS(element) = NULL; \
-        GENC_LIST_ELEMENT_PREVIOUS((hmap)->genc_HashMap.elements[hash]) = element; \
+        GENC_LIST_ELEMENT_PREPEND_TO_HEAD((hmap)->genc_HashMap.elements[hash], element); \
         (hmap)->genc_HashMap.elements[hash] = element; \
     } \
 } while(0)
