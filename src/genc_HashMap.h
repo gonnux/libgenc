@@ -83,14 +83,7 @@ do { \
     if(element != NULL) { \
         if(element == (hmap)->genc_HashMap.elements[hash] && GENC_LIST_ELEMENT_NEXT(element) == NULL) \
             (hmap)->genc_HashMap.elements[hash] = NULL; \
-        if(GENC_HMAP_ELEMENT_PREVIOUS(element) != NULL) { \
-            GENC_LIST_ELEMENT_NEXT(GENC_LIST_ELEMENT_PREVIOUS(element) = GENC_LIST_ELEMENT_NEXT(element) \
-            GENC_LIST_ELEMENT_PREVIOUS(element) = NULL; \
-        } \
-        if(GENC_LIST_ELEMENT_NEXT(element) != NULL) { \
-            GENC_LIST_ELEMENT_PREVIOUS(GENC_LIST_ELEMENT_NEXT(element) = GENC_LIST_ELEMENT_PREVIOUS(element); \
-            GENC_LIST_ELEMENT_NEXT(element) = NULL; \
-        } \
+        GENC_LIST_ELMEENT_REMOVE(element); \
         --((hmap)->genc_HashMap.size); \
     } \
 } while(0)
@@ -119,16 +112,8 @@ do { \
             } \
         } \
         if(foundOldElement) { \
-            if(GENC_LIST_ELEMENT_PREVIOUS(oldElement) != NULL) { \
-                GENC_LIST_ELEMENT_NEXT(GENC_LIST_ELEMENT_PREVIOUS(oldElement)) = GENC_LIST_ELEMENT_NEXT(oldElement); \
-            } \
-            if(GENC_LIST_ELEMENT_NEXT(oldElement) != NULL) { \
-                GENC_LIST_ELEMENT_PREVIOUS(GENC_LIST_ELEMENT_NEXT(oldElement)) = GENC_LIST_ELEMENT_PREVIOUS(oldElement); \
-            } \
-            GENC_LIST_ELEMENT_PREVIOUS(oldElement) = NULL; \
-            GENC_LIST_ELEMENT_NEXT(oldElement) = NULL; \
-        } \
-        else \
+            GENC_LIST_ELEMENT_REMOVE(oldElement); \
+	} else \
             ++((hmap)->genc_HashMap.size); \
         GENC_LIST_ELEMENT_PREPEND_TO_HEAD((hmap)->genc_HashMap.elements[hash], element); \
         (hmap)->genc_HashMap.elements[hash] = element; \
@@ -140,18 +125,6 @@ do { \
     size_t hash; \
     GENC_HASH_MAP_GET_HASH(hmap, GENC_HASH_MAP_ELEMENT_KEY(element), GENC_HASH_MAP_ELEMENT_KEY_LENGTH(element), &hash); \
     GENC_HASH_MAP_SET_RAW(hmap, hash, element, oldElement); \
-} while(0)
-
-#define GENC_HASH_MAP_INDEX_REMOVE(hmap, index, element) \
-do { \
-    element = (hmap)->genc_HashMap.elements[index]; \
-    if(element != NULL) { \
-        (hmap)->genc_HashMap.elements[index] = GENC_LIST_ELEMENT_NEXT(element); \
-        GENC_LIST_ELEMENT_PREVIOUS(GENC_LIST_ELEMENT_NEXT(element)) = NULL; \
-        GENC_LIST_ELEMENT_NEXT(GENC_LIST_ELEMENT_NEXT(element)) = GENC_LIST_ELEMENT_NEXT(element) \
-        GENC_LIST_ELEMENT_PREVIOUS(element) = NULL; \
-        GENC_LIST_ELEMENT_NEXT(element) = NULL; \
-    } \
 } while(0)
 
 #define GENC_HASH_MAP_FREE_ELEMENTS(hmap) \
