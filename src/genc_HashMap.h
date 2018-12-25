@@ -2,7 +2,9 @@
 #ifndef _GENC_HASH_MAP_H
 #define _GENC_HASH_MAP_H
 
+#include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include "genc_List.h"
 
 #define GENC_HASH_MAP_ELEMENT(type) \
@@ -64,9 +66,9 @@ do { \
 } while(0)
 
 #define GENC_HASH_MAP_GET_RAW(hmap, hash, _key, _keyLength, element) do { \
-    element = (hmap)->genc_HashMap.elements[hash]; \
-    while(element != NULL && strncmp(_key, (element)->genc_HashMap_element.key, _keyLength) != 0) \
-        element = GENC_LIST_ELEMENT_NEXT(element); \
+    *(element) = (hmap)->genc_HashMap.elements[hash]; \
+    while(*(element) != NULL && strncmp(_key, GENC_HASH_MAP_ELEMENT_KEY(*(element)), _keyLength) != 0) \
+        *(element) = GENC_LIST_ELEMENT_NEXT(*(element)); \
 } while(0)
 
 #define GENC_HASH_MAP_GET(hmap, _key, _keyLength, element) \
@@ -100,19 +102,19 @@ do { \
         (hmap)->genc_HashMap.elements[hash] = element; \
     else { \
         bool foundOldElement = false; \
-        oldElement = (hmap)->genc_HashMap.elements[hash]; \
-        for(oldElement = (hmap)->genc_HashMap.elements[hash]; \
-            oldElement != NULL; \
-            oldElement = GENC_LIST_ELEMENT_NEXT(oldElement)) { \
+        *(oldElement) = (hmap)->genc_HashMap.elements[hash]; \
+        for(*(oldElement) = (hmap)->genc_HashMap.elements[hash]; \
+            *(oldElement) != NULL; \
+            *(oldElement) = GENC_LIST_ELEMENT_NEXT(*(oldElement))) { \
             if(strncmp((element)->genc_HashMap_element.key, \
-               (oldElement)->genc_HashMap_element.key, \
+               (*(oldElement))->genc_HashMap_element.key, \
                (element)->genc_HashMap_element.keyLength) == 0) { \
                 foundOldElement = true; \
                 break; \
             } \
         } \
         if(foundOldElement) { \
-            GENC_LIST_ELEMENT_REMOVE(oldElement); \
+            GENC_LIST_ELEMENT_REMOVE(*(oldElement)); \
 	} else \
             ++((hmap)->genc_HashMap.size); \
         GENC_LIST_ELEMENT_PREPEND_TO_HEAD((hmap)->genc_HashMap.elements[hash], element); \
