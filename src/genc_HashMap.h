@@ -99,9 +99,10 @@ do { \
 // test is needed for oldElement
 #define GENC_HASH_MAP_SET_RAW(hmap, hash, element, oldElement) do { \
     *(oldElement) = (hmap)->genc_HashMap.elements[hash]; \
-    if(*(oldElement) == NULL) \
+    if(*(oldElement) == NULL) { \
         (hmap)->genc_HashMap.elements[hash] = element; \
-    else { \
+        ++GENC_HASH_MAP_SIZE(hmap); \
+    } else { \
         bool foundOldElement = false; \
         for( ; *(oldElement) != NULL; \
             *(oldElement) = GENC_LIST_ELEMENT_NEXT(*(oldElement))) { \
@@ -114,8 +115,8 @@ do { \
         } \
         if(foundOldElement) { \
             GENC_LIST_ELEMENT_REMOVE(*(oldElement)); \
-	} else \
-            ++((hmap)->genc_HashMap.size); \
+        } else \
+            ++GENC_HASH_MAP_SIZE(hmap); \
         GENC_LIST_ELEMENT_PREPEND_TO_HEAD((hmap)->genc_HashMap.elements[hash], element); \
         (hmap)->genc_HashMap.elements[hash] = element; \
     } \
