@@ -98,17 +98,16 @@ do { \
 
 // test is needed for oldElement
 #define GENC_HASH_MAP_SET_RAW(hmap, hash, element, oldElement) do { \
-    if((hmap)->genc_HashMap.elements[hash] == NULL) \
+    *(oldElement) = (hmap)->genc_HashMap.elements[hash]; \
+    if(*(oldElement) == NULL) \
         (hmap)->genc_HashMap.elements[hash] = element; \
     else { \
         bool foundOldElement = false; \
-        *(oldElement) = (hmap)->genc_HashMap.elements[hash]; \
-        for(*(oldElement) = (hmap)->genc_HashMap.elements[hash]; \
-            *(oldElement) != NULL; \
+        for( ; *(oldElement) != NULL; \
             *(oldElement) = GENC_LIST_ELEMENT_NEXT(*(oldElement))) { \
-            if(strncmp((element)->genc_HashMap_element.key, \
-               (*(oldElement))->genc_HashMap_element.key, \
-               (element)->genc_HashMap_element.keyLength) == 0) { \
+            if(strncmp(GENC_HASH_MAP_ELEMENT_KEY(element), \
+               GENC_HASH_MAP_ELEMENT_KEY(*(oldElement)), \
+               GENC_HASH_MAP_ELEMENT_KEY_LENGTH(element)) == 0) { \
                 foundOldElement = true; \
                 break; \
             } \

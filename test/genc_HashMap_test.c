@@ -30,7 +30,7 @@ void GENC_HASH_MAP_test(void** state) {
 
     GENC_HASH_MAP_SET(&HashMap, &element, &oldElement);
 
-    printf("%d\n", oldElement->value);
+    assert_ptr_equal(oldElement, NULL);
 
     GENC_HASH_MAP_ELEMENT_INIT(&element2);
     element2.value = 200;
@@ -38,11 +38,11 @@ void GENC_HASH_MAP_test(void** state) {
     GENC_HASH_MAP_ELEMENT_KEY_LENGTH(&element2) = 5;
 
     GENC_HASH_MAP_SET(&HashMap, &element2, &oldElement);
-    assert_int_equal(oldElement->value, 100);
+    assert_ptr_equal(oldElement, &element);
 
     struct MyHashMapElement* elementOut;
     GENC_HASH_MAP_GET(&HashMap, "HELLO", 5, &elementOut);
-    assert_int_equal(elementOut->value, 200);
+    assert_ptr_equal(elementOut, &element2);
 }
 
 int main() {
