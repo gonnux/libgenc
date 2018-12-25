@@ -156,6 +156,68 @@ void GENC_LIST_APPEND_test(void** state) {
 void GENC_LIST_REMOVE_test(void** state) {
     struct Integer integer1 = {.value = 1};
     GENC_LIST_ELEMENT_INIT(&integer1);
+
+    GENC_LIST_ELEMENT_REMOVE(&integer1);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer1), NULL);
+}
+
+void GENC_LIST_REMOVE_test2(void** state) {
+    struct Integer integer1 = {.value = 1};
+    GENC_LIST_ELEMENT_INIT(&integer1);
+    struct Integer integer2 = {.value = 2};
+    GENC_LIST_ELEMENT_INIT(&integer2);
+
+    GENC_LIST_ELEMENT_APPEND(&integer1, &integer2)
+    GENC_LIST_ELEMENT_REMOVE(&integer1);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer2), NULL);
+}
+
+void GENC_LIST_REMOVE_test3(void** state) {
+    struct Integer integer1 = {.value = 1};
+    GENC_LIST_ELEMENT_INIT(&integer1);
+    struct Integer integer2 = {.value = 2};
+    GENC_LIST_ELEMENT_INIT(&integer2);
+
+    GENC_LIST_ELEMENT_APPEND(&integer1, &integer2)
+    GENC_LIST_ELEMENT_REMOVE(&integer2);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer1), NULL);
+}
+
+void GENC_LIST_REMOVE_test4(void** state) {
+    struct Integer integer1 = {.value = 1};
+    GENC_LIST_ELEMENT_INIT(&integer1);
+    struct Integer integer2 = {.value = 2};
+    GENC_LIST_ELEMENT_INIT(&integer2);
+    struct Integer integer3 = {.value = 3};
+    GENC_LIST_ELEMENT_INIT(&integer2);
+
+    GENC_LIST_ELEMENT_APPEND(&integer1, &integer2);
+    GENC_LIST_ELEMENT_APPEND(&integer2, &integer3);
+    GENC_LIST_ELEMENT_REMOVE(&integer1);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer1), NULL);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer2), &integer3);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer3), &integer2);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer3), NULL);
+}
+
+void GENC_LIST_REMOVE_test5(void** state) {
+    struct Integer integer1 = {.value = 1};
+    GENC_LIST_ELEMENT_INIT(&integer1);
     struct Integer integer2 = {.value = 2};
     GENC_LIST_ELEMENT_INIT(&integer2);
     struct Integer integer3 = {.value = 3};
@@ -165,8 +227,36 @@ void GENC_LIST_REMOVE_test(void** state) {
     GENC_LIST_ELEMENT_APPEND(&integer2, &integer3);
     GENC_LIST_ELEMENT_REMOVE(&integer2);
 
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer1), NULL);
     assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer1), &integer3);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer2), NULL);
+
     assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer3), &integer1);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer3), NULL);
+}
+
+void GENC_LIST_REMOVE_test6(void** state) {
+    struct Integer integer1 = {.value = 1};
+    GENC_LIST_ELEMENT_INIT(&integer1);
+    struct Integer integer2 = {.value = 2};
+    GENC_LIST_ELEMENT_INIT(&integer2);
+    struct Integer integer3 = {.value = 3};
+    GENC_LIST_ELEMENT_INIT(&integer2);
+
+    GENC_LIST_ELEMENT_APPEND(&integer1, &integer2);
+    GENC_LIST_ELEMENT_APPEND(&integer2, &integer3);
+    GENC_LIST_ELEMENT_REMOVE(&integer3);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer1), &integer2);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer2), &integer1);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer2), NULL);
+
+    assert_ptr_equal(GENC_LIST_ELEMENT_PREVIOUS(&integer3), NULL);
+    assert_ptr_equal(GENC_LIST_ELEMENT_NEXT(&integer3), NULL);
 }
 
 int main() {
@@ -180,6 +270,11 @@ int main() {
         cmocka_unit_test(GENC_LIST_PREPEND_test),
         cmocka_unit_test(GENC_LIST_APPEND_test),
         cmocka_unit_test(GENC_LIST_REMOVE_test),
+        cmocka_unit_test(GENC_LIST_REMOVE_test2),
+        cmocka_unit_test(GENC_LIST_REMOVE_test3),
+        cmocka_unit_test(GENC_LIST_REMOVE_test4),
+        cmocka_unit_test(GENC_LIST_REMOVE_test5),
+        cmocka_unit_test(GENC_LIST_REMOVE_test6),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
