@@ -66,7 +66,7 @@ do { \
 } while(0)
 
 #define GENC_HASH_MAP_GET_RAW(hmap, hash, _key, _keyLength, element) do { \
-    *(element) = (hmap)->genc_HashMap.elements[hash]; \
+    *(element) = GENC_HASH_MAP_INDEX(hmap, hash); \
     while(*(element) != NULL && strncmp(_key, GENC_HASH_MAP_ELEMENT_KEY(*(element)), _keyLength) != 0) \
         *(element) = GENC_LIST_ELEMENT_NEXT(*(element)); \
 } while(0)
@@ -79,12 +79,12 @@ do { \
 } while(0)
 
 #define GENC_HASH_MAP_REMOVE_RAW(hmap, hash, _key, _keyLength, element) do { \
-    element = (hmap)->genc_HashMap.elements[hash]; \
+    element = GENC_HASH_MAP_INDEX(hmap, hash); \
     while(element != NULL && strncmp(_key, (element)->genc_HashMap_element.key, _keyLength) != 0) \
         element = GENC_LIST_ELEMENT_NEXT(element); \
     if(element != NULL) { \
-        if(element == (hmap)->genc_HashMap.elements[hash] && GENC_LIST_ELEMENT_NEXT(element) == NULL) \
-            (hmap)->genc_HashMap.elements[hash] = NULL; \
+        if(element == GENC_HASH_MAP_INDEX(hmap, hash) && GENC_LIST_ELEMENT_NEXT(element) == NULL) \
+            GENC_HASH_MAP_INDEX(hmap, hash) = NULL; \
         GENC_LIST_ELMEENT_REMOVE(element); \
         --((hmap)->genc_HashMap.size); \
     } \
@@ -98,9 +98,9 @@ do { \
 
 // test is needed for oldElement
 #define GENC_HASH_MAP_SET_RAW(hmap, hash, element, oldElement) do { \
-    *(oldElement) = (hmap)->genc_HashMap.elements[hash]; \
+    *(oldElement) = GENC_HASH_MAP_INDEX(hmap, hash); \
     if(*(oldElement) == NULL) { \
-        (hmap)->genc_HashMap.elements[hash] = element; \
+        GENC_HASH_MAP_INDEX(hmap, hash) = element; \
         ++GENC_HASH_MAP_SIZE(hmap); \
     } else { \
         bool foundOldElement = false; \
@@ -117,8 +117,8 @@ do { \
             GENC_LIST_ELEMENT_REMOVE(*(oldElement)); \
         } else \
             ++GENC_HASH_MAP_SIZE(hmap); \
-        GENC_LIST_ELEMENT_PREPEND_TO_HEAD((hmap)->genc_HashMap.elements[hash], element); \
-        (hmap)->genc_HashMap.elements[hash] = element; \
+        GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_HASH_MAP_INDEX(hmap, hash), element); \
+        GENC_HASH_MAP_INDEX(hmap, hash) = element; \
     } \
 } while(0)
 
