@@ -8,12 +8,13 @@
 #include "genc_List.h"
 
 #define GENC_HASH_MAP_ELEMENT(type) \
-GENC_LIST_ELEMENT(type); \
-struct \
-{ \
-    unsigned char* key; \
-    size_t keyLength; \
-} genc_HashMap_element
+struct { \
+    GENC_LIST_ELEMENT(type); \
+    struct { \
+        unsigned char* key; \
+        size_t keyLength; \
+    } genc_HashMap_element; \
+}
 
 #define GENC_HASH_MAP_ELEMENT_INIT(element) do { \
     GENC_LIST_ELEMENT_INIT(element); \
