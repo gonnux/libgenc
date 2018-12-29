@@ -57,51 +57,51 @@ struct { \
 
 #define GENC_MAP_INIT(map) { \
     GENC_MAP_REALLOC(map, 10007); \
-    (map)->genc_Map.size = 0; \
+    GENC_MAP_SIZE(map) = 0; \
 }
 
 #define GENC_MAP_INIT2(map, capacity) { \
     GENC_MAP_REALLOC(map, capacity); \
-    (map)->genc_Map.size = 0; \
+    GENC_MAP_SIZE(map) = 0; \
 }
 
-#define GENC_MAP_GET_HASH(map, _key, _keyLength, hash) { \
+#define GENC_MAP_GET_HASH(map, key, keyLength, hash) { \
     *(hash) = 0; \
-    for(size_t i = 0; i != _keyLength; ++i) { \
-        *(hash) += _key[i]; \
+    for(size_t i = 0; i != keyLength; ++i) { \
+        *(hash) += key[i]; \
         *(hash) << 8; \
     } \
     *(hash) %= GENC_MAP_CAPACITY(map); \
 }
 
-#define GENC_MAP_GET_RAW(map, hash, _key, _keyLength, element) { \
+#define GENC_MAP_GET_RAW(map, hash, key, keyLength, element) { \
     *(element) = GENC_MAP_INDEX(map, hash); \
-    while(*(element) != NULL && strncmp(_key, GENC_MAP_ELEMENT_KEY(*(element)), _keyLength) != 0) \
+    while(*(element) != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(*(element)), keyLength) != 0) \
         *(element) = GENC_LIST_ELEMENT_NEXT(*(element)); \
 }
 
-#define GENC_MAP_GET(map, _key, _keyLength, element) { \
+#define GENC_MAP_GET(map, key, keyLength, element) { \
     size_t hash; \
-    GENC_MAP_GET_HASH(map, _key, _keyLength, &hash); \
-    GENC_MAP_GET_RAW(map, hash, _key, _keyLength, element); \
+    GENC_MAP_GET_HASH(map, key, keyLength, &hash); \
+    GENC_MAP_GET_RAW(map, hash, key, keyLength, element); \
 }
 
-#define GENC_MAP_REMOVE_RAW(map, hash, _key, _keyLength, element) { \
+#define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, element) { \
     element = GENC_MAP_INDEX(map, hash); \
-    while(element != NULL && strncmp(_key, (element)->genc_Map_element.key, _keyLength) != 0) \
+    while(element != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(element), keyLength) != 0) \
         element = GENC_LIST_ELEMENT_NEXT(element); \
     if(element != NULL) { \
         if(element == GENC_MAP_INDEX(map, hash) && GENC_LIST_ELEMENT_NEXT(element) == NULL) \
             GENC_MAP_INDEX(map, hash) = NULL; \
         GENC_LIST_ELMEENT_REMOVE(element); \
-        --((map)->genc_Map.size); \
+        --(GENC_MAP_SIZE(map)); \
     } \
 }
 
-#define GENC_MAP_REMOVE(map, _key, _keyLength, element) { \
+#define GENC_MAP_REMOVE(map, key, keyLength, element) { \
     size_t hash; \
-    GENC_MAP_GET_HASH(map, _key, _keyLength, &hash); \
-    GENC_MAP_REMOVE_RAW(map, hash, _key, _keyLength, element); \
+    GENC_MAP_GET_HASH(map, key, keyLength, &hash); \
+    GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, element); \
 }
 
 // test is needed for oldElement
