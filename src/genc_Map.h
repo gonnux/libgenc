@@ -67,9 +67,9 @@ struct { \
     GENC_MAP_CAPACITY(map) = capacity; \
 }
 
-#define GENC_MAP_REALLOC2(map)                                                    \
-do {                                                                                           \
-    if(GENC_MAP_SIZE(map) == GENC_MAP_CAPACITY(map))                 \
+#define GENC_MAP_REALLOC2(map) \
+do { \
+    if(GENC_MAP_SIZE(map) == GENC_MAP_CAPACITY(map)) \
         GENC_MAP_REALLOC(map, (GENC_MAP_CAPACITY(map) + 1) * 2); \
 } while(0)
 
