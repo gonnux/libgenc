@@ -47,7 +47,7 @@ void GENC_MAP_test(void** state) {
     GENC_MAP_GET(&map, "HELLO", 5, &elementOut);
     assert_ptr_equal(elementOut, &element2);
 
-    GENC_MAP_FOR_EACH_BEGIN(&map, elementOut)
+    GENC_MAP_FOR_EACH_BEGIN(&map, &elementOut)
         printf("%d\n", elementOut->value);
     GENC_MAP_FOR_EACH_END
 }

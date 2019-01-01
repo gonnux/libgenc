@@ -147,9 +147,9 @@ do {                                                                            
 
 #define GENC_MAP_FOR_EACH_BEGIN(map, element) { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
-	for(element = GENC_MAP_INDEX(map, index); \
-            element != NULL; \
-	    element = GENC_LIST_ELEMENT_NEXT(element)) {
+	for(*(element) = GENC_MAP_INDEX(map, index); \
+            *(element) != NULL; \
+	    *(element) = GENC_LIST_ELEMENT_NEXT(*(element))) {
 
 #define GENC_MAP_FOR_EACH_END \
 	} \
