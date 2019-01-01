@@ -40,7 +40,7 @@ GENC_MAP_REALLOC(GENC_MTREE_NODE_CHILDREN(node), childCapacity)
 #define GENC_MTREE_NODE_FREE(node) \
 GENC_MAP_FREE(GENC_MTREE_NODE_CHILDREN(node))
 
-#define GENC_MTREE_NODE_ADD_CHILD(node, child, oldChild) { \
+#define GENC_MTREE_NODE_SET_CHILD(node, child, oldChild) { \
     GENC_MTREE_NODE_SET_PARENT(child, node); \
     GENC_MAP_SET(GENC_MTREE_NODE_CHILDREN(node), child, oldChild); \
 }

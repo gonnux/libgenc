@@ -55,6 +55,12 @@ struct { \
     GENC_MAP_CAPACITY(map) = capacity; \
 }
 
+#define GENC_MAP_REALLOC2(map)                                                    \
+do {                                                                                           \
+    if(GENC_MAP_SIZE(map) == GENC_MAP_CAPACITY(map))                 \
+        GENC_MAP_REALLOC(map, (GENC_MAP_CAPACITY(map) + 1) * 2); \
+} while(0)
+
 #define GENC_MAP_INIT(map) { \
     GENC_MAP_REALLOC(map, 10007); \
     GENC_MAP_SIZE(map) = 0; \
@@ -123,9 +129,12 @@ struct { \
         } \
         if(foundOldElement) { \
             GENC_LIST_ELEMENT_REMOVE(*(oldElement)); \
-        } else \
+            if(*(oldElement) != GENC_MAP_INDEX(map, hash)) \
+                GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_INDEX(map, hash), element); \
+        } else { \
             ++GENC_MAP_SIZE(map); \
-        GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_INDEX(map, hash), element); \
+            GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_INDEX(map, hash), element); \
+	} \
         GENC_MAP_INDEX(map, hash) = element; \
     } \
 }
@@ -136,7 +145,20 @@ struct { \
     GENC_MAP_SET_RAW(map, hash, element, oldElement); \
 }
 
+#define GENC_MAP_FOR_EACH_BEGIN(map, element) { \
+    for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
+	for(element = GENC_MAP_INDEX(map, index); \
+            element != NULL; \
+	    element = GENC_LIST_ELEMENT_NEXT(element)) {
+
+#define GENC_MAP_FOR_EACH_END \
+	} \
+    } \
+}
+
 #define GENC_MAP_FREE_ELEMENTS(map) \
 free(GENC_MAP_ELEMENTS(map))
+
+#define GENC_MAP_DESTROY(map)
 
 #endif
