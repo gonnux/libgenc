@@ -30,13 +30,17 @@ struct { \
 
 #define GENC_MAP(type) \
 struct { \
-    type** elements; \
+    type** heads; \
+    type** tails; \
     size_t capacity; \
     size_t size; \
 } genc_Map
 
-#define GENC_MAP_ELEMENTS(map) \
-(map)->genc_Map.elements
+#define GENC_MAP_HEADS(map) \
+(map)->genc_Map.heads
+
+#define GENC_MAP_TAILS(map) \
+(map)->genc_Map.tails
 
 #define GENC_MAP_CAPACITY(map) \
 (map)->genc_Map.capacity
@@ -44,14 +48,22 @@ struct { \
 #define GENC_MAP_SIZE(map) \
 (map)->genc_Map.size
 
-#define GENC_MAP_INDEX(map, index) \
-(map)->genc_Map.elements[index]
+#define GENC_MAP_HEAD(map, index) \
+(map)->genc_Map.heads[index]
+
+#define GENC_MAP_TAIL(map, index) \
+(map)->genc_Map.tails[index]
+
 
 #define GENC_MAP_REALLOC(map, capacity) { \
-    if(GENC_MAP_ELEMENTS(map) == NULL) \
-        GENC_MAP_ELEMENTS(map) = calloc(capacity, sizeof(*GENC_MAP_ELEMENTS(map))); \
+    if(GENC_MAP_HEADS(map) == NULL) \
+        GENC_MAP_HEADS(map) = calloc(capacity, sizeof(*GENC_MAP_HEADS(map))); \
     else \
-        GENC_MAP_ELEMENTS(map) = realloc(GENC_MAP_ELEMENTS(map), GENC_MAP_CAPACITY(map) * sizeof(*(GENC_MAP_ELEMENTS(map)))); \
+        GENC_MAP_HEADS(map) = realloc(GENC_MAP_HEADS(map), GENC_MAP_CAPACITY(map) * sizeof(*(GENC_MAP_HEADS(map)))); \
+    if(GENC_MAP_TAILS(map) == NULL) \
+        GENC_MAP_TAILS(map) = calloc(capacity, sizeof(*GENC_MAP_TAILS(map))); \
+    else \
+        GENC_MAP_TAILS(map) = realloc(GENC_MAP_TAILS(map), GENC_MAP_CAPACITY(map) * sizeof(*(GENC_MAP_TAILS(map)))); \
     GENC_MAP_CAPACITY(map) = capacity; \
 }
 
@@ -81,7 +93,7 @@ do {                                                                            
 }
 
 #define GENC_MAP_GET_RAW(map, hash, key, keyLength, element) { \
-    *(element) = GENC_MAP_INDEX(map, hash); \
+    *(element) = GENC_MAP_HEAD(map, hash); \
     while(*(element) != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(*(element)), keyLength) != 0) \
         *(element) = GENC_LIST_ELEMENT_NEXT(*(element)); \
 }
@@ -93,13 +105,15 @@ do {                                                                            
 }
 
 #define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, element) { \
-    element = GENC_MAP_INDEX(map, hash); \
+    element = GENC_MAP_HEAD(map, hash); \
     while(element != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(element), keyLength) != 0) \
         element = GENC_LIST_ELEMENT_NEXT(element); \
     if(element != NULL) { \
-        if(element == GENC_MAP_INDEX(map, hash) && GENC_LIST_ELEMENT_NEXT(element) == NULL) \
-            GENC_MAP_INDEX(map, hash) = NULL; \
-        GENC_LIST_ELMEENT_REMOVE(element); \
+        if(element == GENC_MAP_HEAD(map, hash)) \
+            GENC_MAP_HEAD(map, hash) = GENC_LIST_ELEMENT_NEXT(element); \
+        if(element == GENC_MAP_TAIL(map, hash)) \
+            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEMENT_PREVIOUS(element); \
+        GENC_LIST_ELEMENT_REMOVE(element); \
         --(GENC_MAP_SIZE(map)); \
     } \
 }
@@ -112,9 +126,10 @@ do {                                                                            
 
 // test is needed for oldElement
 #define GENC_MAP_SET_RAW(map, hash, element, oldElement) { \
-    *(oldElement) = GENC_MAP_INDEX(map, hash); \
+    *(oldElement) = GENC_MAP_HEAD(map, hash); \
     if(*(oldElement) == NULL) { \
-        GENC_MAP_INDEX(map, hash) = element; \
+        GENC_MAP_HEAD(map, hash) = element; \
+        GENC_MAP_TAIL(map, hash) = element; \
         ++GENC_MAP_SIZE(map); \
     } else { \
         bool foundOldElement = false; \
@@ -129,13 +144,13 @@ do {                                                                            
         } \
         if(foundOldElement) { \
             GENC_LIST_ELEMENT_REMOVE(*(oldElement)); \
-            if(*(oldElement) != GENC_MAP_INDEX(map, hash)) \
-                GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_INDEX(map, hash), element); \
+            if(*(oldElement) != GENC_MAP_HEAD(map, hash)) \
+                GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), element); \
         } else { \
             ++GENC_MAP_SIZE(map); \
-            GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_INDEX(map, hash), element); \
-	} \
-        GENC_MAP_INDEX(map, hash) = element; \
+            GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), element); \
+        } \
+        GENC_MAP_HEAD(map, hash) = element; \
     } \
 }
 
@@ -147,17 +162,17 @@ do {                                                                            
 
 #define GENC_MAP_FOR_EACH_BEGIN(map, element) { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
-	for(*(element) = GENC_MAP_INDEX(map, index); \
+        for(*(element) = GENC_MAP_HEAD(map, index); \
             *(element) != NULL; \
-	    *(element) = GENC_LIST_ELEMENT_NEXT(*(element))) {
+            *(element) = GENC_LIST_ELEMENT_NEXT(*(element))) {
 
 #define GENC_MAP_FOR_EACH_END \
-	} \
+        } \
     } \
 }
 
-#define GENC_MAP_FREE_ELEMENTS(map) \
-free(GENC_MAP_ELEMENTS(map))
+#define GENC_MAP_FREE_HEADS(map) \
+free(GENC_MAP_HEADS(map))
 
 #define GENC_MAP_DESTROY(map)
 
