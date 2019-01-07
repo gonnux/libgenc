@@ -59,11 +59,11 @@ struct { \
     if(GENC_MAP_HEADS(map) == NULL) \
         GENC_MAP_HEADS(map) = calloc(capacity, sizeof(*GENC_MAP_HEADS(map))); \
     else \
-        GENC_MAP_HEADS(map) = realloc(GENC_MAP_HEADS(map), GENC_MAP_CAPACITY(map) * sizeof(*(GENC_MAP_HEADS(map)))); \
+        GENC_MAP_HEADS(map) = realloc(GENC_MAP_HEADS(map), capacity * sizeof(*(GENC_MAP_HEADS(map)))); \
     if(GENC_MAP_TAILS(map) == NULL) \
         GENC_MAP_TAILS(map) = calloc(capacity, sizeof(*GENC_MAP_TAILS(map))); \
     else \
-        GENC_MAP_TAILS(map) = realloc(GENC_MAP_TAILS(map), GENC_MAP_CAPACITY(map) * sizeof(*(GENC_MAP_TAILS(map)))); \
+        GENC_MAP_TAILS(map) = realloc(GENC_MAP_TAILS(map), capacity * sizeof(*(GENC_MAP_TAILS(map)))); \
     GENC_MAP_CAPACITY(map) = capacity; \
 }
 
