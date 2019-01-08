@@ -48,32 +48,34 @@ void GENC_MAP_test(void** state) {
     assert_ptr_equal(elementOut, &element2);
 
     for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
-	    if(GENC_MAP_HEAD(&map, index) != NULL)
-    	    printf("%zu %p\n", index, GENC_MAP_HEAD(&map, index));
-	}
-
-    printf("capacity: %zu, size: %zu\n", GENC_MAP_CAPACITY(&map), GENC_MAP_SIZE(&map));
+        if(GENC_MAP_HEAD(&map, index) != NULL) {
+            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &element2);
+            break;
+        }
+    }
+    assert_int_equal(GENC_MAP_CAPACITY(&map), 10007);
+    assert_int_equal(GENC_MAP_SIZE(&map), 1);
 
     GENC_MAP_REALLOC(&map, 20007);
-
     for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
-	    if(GENC_MAP_HEAD(&map, index) != NULL)
-    	    printf("%zu %p\n", index, GENC_MAP_HEAD(&map, index));
-	}
+        if(GENC_MAP_HEAD(&map, index) != NULL) {
+            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &element2);
+            break;
+        }
+    }
+    assert_int_equal(GENC_MAP_CAPACITY(&map), 20007);
+    assert_int_equal(GENC_MAP_SIZE(&map), 1);
 
-    printf("capacity: %zu, size: %zu\n", GENC_MAP_CAPACITY(&map), GENC_MAP_SIZE(&map));
-
-    GENC_MAP_FOR_EACH_BEGIN(&map, &elementOut)
-        printf("%d\n", elementOut->value);
-    GENC_MAP_FOR_EACH_END
 
     GENC_MAP_REALLOC(&map, 2000);
-
-    printf("capacity: %zu, size: %zu\n", GENC_MAP_CAPACITY(&map), GENC_MAP_SIZE(&map));
-
-    GENC_MAP_FOR_EACH_BEGIN(&map, &elementOut)
-        printf("%d\n", elementOut->value);
-    GENC_MAP_FOR_EACH_END
+    for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
+        if(GENC_MAP_HEAD(&map, index) != NULL) {
+            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &element2);
+            break;
+        }
+    }
+    assert_int_equal(GENC_MAP_CAPACITY(&map), 2000);
+    assert_int_equal(GENC_MAP_SIZE(&map), 1);
 }
 
 int main() {
