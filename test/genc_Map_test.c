@@ -47,9 +47,27 @@ void GENC_MAP_test(void** state) {
     GENC_MAP_GET(&map, "HELLO", 5, &elementOut);
     assert_ptr_equal(elementOut, &element2);
 
+    for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
+	    if(GENC_MAP_HEAD(&map, index) != NULL)
+    	    printf("%zu %p\n", index, GENC_MAP_HEAD(&map, index));
+	}
+
+    printf("capacity: %zu, size: %zu\n", GENC_MAP_CAPACITY(&map), GENC_MAP_SIZE(&map));
+
+    GENC_MAP_REALLOC(&map, 20007);
+
+    for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
+	    if(GENC_MAP_HEAD(&map, index) != NULL)
+    	    printf("%zu %p\n", index, GENC_MAP_HEAD(&map, index));
+	}
+
+
+    printf("capacity: %zu, size: %zu\n", GENC_MAP_CAPACITY(&map), GENC_MAP_SIZE(&map));
+
     GENC_MAP_FOR_EACH_BEGIN(&map, &elementOut)
         printf("%d\n", elementOut->value);
     GENC_MAP_FOR_EACH_END
+
 }
 
 int main() {

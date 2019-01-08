@@ -54,22 +54,53 @@ struct { \
 #define GENC_MAP_TAIL(map, index) \
 (map)->genc_Map.tails[index]
 
+#define GENC_MAP_REARRANGE(map) do { \
+    typeof(**GENC_MAP_HEADS(map))* head = NULL; \
+    for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
+        if(GENC_MAP_HEAD(map, index) != NULL) { \
+            if(head != NULL) { \
+                GENC_LIST_ELEMENT_PREPEND(head, GENC_MAP_TAIL(map, index)); \
+            } \
+            head = GENC_MAP_HEAD(map, index); \
+            GENC_MAP_HEAD(map, index) = NULL; \
+            GENC_MAP_TAIL(map, index) = NULL; \
+        } \
+    } \
+    if(head == NULL) \
+        break; \
+    typeof(**GENC_MAP_HEADS(map))* elem = head; \
+    typeof(**GENC_MAP_HEADS(map))* nextElem = GENC_LIST_ELEMENT_NEXT(elem); \
+    typeof(**GENC_MAP_HEADS(map))* oldElem = NULL; \
+    for(; elem != NULL; elem = nextElem) { \
+        GENC_LIST_ELEMENT_REMOVE(elem); \
+        GENC_MAP_SET(map, elem, &oldElem); \
+        nextElem = GENC_LIST_ELEMENT_NEXT(elem); \
+    } \
+} while(0)
 
-#define GENC_MAP_REALLOC(map, capacity) { \
+#define GENC_MAP_REALLOC(map, capacity) do { \
+    if(GENC_MAP_CAPACITY(map) >= capacity) \
+        break; \
+    const size_t capacityDiff = capacity - GENC_MAP_CAPACITY(map); \
     if(GENC_MAP_HEADS(map) == NULL) \
         GENC_MAP_HEADS(map) = calloc(capacity, sizeof(*GENC_MAP_HEADS(map))); \
-    else \
+    else { \
         GENC_MAP_HEADS(map) = realloc(GENC_MAP_HEADS(map), capacity * sizeof(*(GENC_MAP_HEADS(map)))); \
+        memset(GENC_MAP_HEADS(map) + GENC_MAP_CAPACITY(map), 0, capacityDiff); \
+    } \
     if(GENC_MAP_TAILS(map) == NULL) \
         GENC_MAP_TAILS(map) = calloc(capacity, sizeof(*GENC_MAP_TAILS(map))); \
-    else \
+    else { \
         GENC_MAP_TAILS(map) = realloc(GENC_MAP_TAILS(map), capacity * sizeof(*(GENC_MAP_TAILS(map)))); \
+        memset(GENC_MAP_TAILS(map) + GENC_MAP_CAPACITY(map), 0, capacityDiff); \
+    } \
     GENC_MAP_CAPACITY(map) = capacity; \
-}
+    GENC_MAP_REARRANGE(map); \
+} while(0)
 
 #define GENC_MAP_REALLOC2(map) \
 do { \
-    if(GENC_MAP_SIZE(map) == GENC_MAP_CAPACITY(map)) \
+    if(GENC_MAP_SIZE(map) >= GENC_MAP_CAPACITY(map) * 0.7) \
         GENC_MAP_REALLOC(map, (GENC_MAP_CAPACITY(map) + 1) * 2); \
 } while(0)
 
