@@ -61,13 +61,19 @@ void GENC_MAP_test(void** state) {
     	    printf("%zu %p\n", index, GENC_MAP_HEAD(&map, index));
 	}
 
-
     printf("capacity: %zu, size: %zu\n", GENC_MAP_CAPACITY(&map), GENC_MAP_SIZE(&map));
 
     GENC_MAP_FOR_EACH_BEGIN(&map, &elementOut)
         printf("%d\n", elementOut->value);
     GENC_MAP_FOR_EACH_END
 
+    GENC_MAP_REALLOC(&map, 2000);
+
+    printf("capacity: %zu, size: %zu\n", GENC_MAP_CAPACITY(&map), GENC_MAP_SIZE(&map));
+
+    GENC_MAP_FOR_EACH_BEGIN(&map, &elementOut)
+        printf("%d\n", elementOut->value);
+    GENC_MAP_FOR_EACH_END
 }
 
 int main() {

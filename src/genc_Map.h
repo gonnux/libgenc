@@ -54,7 +54,9 @@ struct { \
 #define GENC_MAP_TAIL(map, index) \
 (map)->genc_Map.tails[index]
 
-#define GENC_MAP_REARRANGE(map) do { \
+#define GENC_MAP_REALLOC(map, capacity) do { \
+    if(GENC_MAP_SIZE(map) >= capacity) \
+        break; \
     typeof(**GENC_MAP_HEADS(map))* head = NULL; \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         if(GENC_MAP_HEAD(map, index) != NULL) { \
@@ -66,6 +68,23 @@ struct { \
             GENC_MAP_TAIL(map, index) = NULL; \
         } \
     } \
+    GENC_MAP_SIZE(map) = 0; \
+    const size_t capacityDiff = capacity - GENC_MAP_CAPACITY(map); \
+    if(GENC_MAP_HEADS(map) == NULL) \
+        GENC_MAP_HEADS(map) = calloc(capacity, sizeof(*GENC_MAP_HEADS(map))); \
+    else { \
+        GENC_MAP_HEADS(map) = realloc(GENC_MAP_HEADS(map), capacity * sizeof(*(GENC_MAP_HEADS(map)))); \
+        if(capacity > GENC_MAP_CAPACITY(map)) \
+            memset(GENC_MAP_HEADS(map) + GENC_MAP_CAPACITY(map), 0, capacityDiff); \
+    } \
+    if(GENC_MAP_TAILS(map) == NULL) \
+        GENC_MAP_TAILS(map) = calloc(capacity, sizeof(*GENC_MAP_TAILS(map))); \
+    else { \
+        GENC_MAP_TAILS(map) = realloc(GENC_MAP_TAILS(map), capacity * sizeof(*(GENC_MAP_TAILS(map)))); \
+        if(capacity > GENC_MAP_CAPACITY(map)) \
+            memset(GENC_MAP_TAILS(map) + GENC_MAP_CAPACITY(map), 0, capacityDiff); \
+    } \
+    GENC_MAP_CAPACITY(map) = capacity; \
     if(head == NULL) \
         break; \
     typeof(**GENC_MAP_HEADS(map))* elem = head; \
@@ -76,26 +95,6 @@ struct { \
         GENC_MAP_SET(map, elem, &oldElem); \
         nextElem = GENC_LIST_ELEMENT_NEXT(elem); \
     } \
-} while(0)
-
-#define GENC_MAP_REALLOC(map, capacity) do { \
-    if(GENC_MAP_CAPACITY(map) >= capacity) \
-        break; \
-    const size_t capacityDiff = capacity - GENC_MAP_CAPACITY(map); \
-    if(GENC_MAP_HEADS(map) == NULL) \
-        GENC_MAP_HEADS(map) = calloc(capacity, sizeof(*GENC_MAP_HEADS(map))); \
-    else { \
-        GENC_MAP_HEADS(map) = realloc(GENC_MAP_HEADS(map), capacity * sizeof(*(GENC_MAP_HEADS(map)))); \
-        memset(GENC_MAP_HEADS(map) + GENC_MAP_CAPACITY(map), 0, capacityDiff); \
-    } \
-    if(GENC_MAP_TAILS(map) == NULL) \
-        GENC_MAP_TAILS(map) = calloc(capacity, sizeof(*GENC_MAP_TAILS(map))); \
-    else { \
-        GENC_MAP_TAILS(map) = realloc(GENC_MAP_TAILS(map), capacity * sizeof(*(GENC_MAP_TAILS(map)))); \
-        memset(GENC_MAP_TAILS(map) + GENC_MAP_CAPACITY(map), 0, capacityDiff); \
-    } \
-    GENC_MAP_CAPACITY(map) = capacity; \
-    GENC_MAP_REARRANGE(map); \
 } while(0)
 
 #define GENC_MAP_REALLOC2(map) \
