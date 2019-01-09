@@ -202,8 +202,19 @@ do { \
 }
 
 #define GENC_MAP_FREE_HEADS(map) \
-free(GENC_MAP_HEADS(map))
 
-#define GENC_MAP_DESTROY(map)
+#define GENC_MAP_FREE_TAILS(map) \
+free(GENC_MAP_TAILS(map))
+
+#define GENC_MAP_FREE(map) { \
+    if(GENC_MAP_HEADS(map) != NULL) { \
+        free(GENC_MAP_HEADS(map)); \
+        GENC_MAP_HEADS(map) = NULL; \
+    } \
+    if(GENC_MAP_HEADS(map) != NULL) { \
+        free(GENC_MAP_TAILS(map)); \
+        GENC_MAP_TAILS(map) = NULL; \
+    } \
+}
 
 #endif
