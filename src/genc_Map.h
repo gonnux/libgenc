@@ -11,7 +11,7 @@
 struct { \
     GENC_LIST_ELEMENT(type); \
     struct { \
-        unsigned char* key; \
+        const unsigned char* key; \
         size_t keyLength; \
     } genc_Map_element; \
 }
