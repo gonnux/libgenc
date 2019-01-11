@@ -26,6 +26,12 @@ struct { \
 #define GENC_MTREE_NODE_CHILDREN(node) \
 (&(node)->genc_Mtree_node.children)
 
+#define GENC_MTREE_NODE_KEY(node) \
+GENC_MAP_ELEMENT_KEY(node)
+
+#define GENC_MTREE_NODE_KEY_LENGTH(node) \
+GENC_MAP_ELEMENT_KEY_LENGTH(node)
+
 #define GENC_MTREE_NODE_INIT(node) { \
     GENC_MAP_INIT(GENC_MTREE_NODE_CHILDREN(node)); \
 }

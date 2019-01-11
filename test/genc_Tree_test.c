@@ -15,7 +15,7 @@ void genc_Tree_init3_test(void** state) {
     struct node node;
     node.value = value;
     GENC_TREE_NODE_INIT3(&node, 3);
-    assert_int_equal(GENC_TREE_NODE_GET_CHILD_COUNT(&node), 3);
+    assert_int_equal(GENC_TREE_NODE_CHILD_COUNT(&node), 3);
 }
 
 void genc_Tree_test(void** state) {
@@ -24,7 +24,7 @@ void genc_Tree_test(void** state) {
     node.value = value;
     GENC_TREE_NODE_INIT2(&node, 2);
     GENC_TREE_NODE_ADD_EMPTY_CHILD(&node);
-    assert_int_equal(GENC_TREE_NODE_GET_CHILD_COUNT(&node), 1);
+    assert_int_equal(GENC_TREE_NODE_CHILD_COUNT(&node), 1);
 }
 
 int main() {
