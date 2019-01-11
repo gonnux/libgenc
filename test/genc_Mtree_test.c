@@ -59,13 +59,13 @@ void genc_Tree_test2(void** state) {
     GENC_MTREE_NODE_SET_CHILD(root, child, &oldChild);
     assert_int_equal(GENC_MTREE_NODE_CHILD_COUNT(child), 0);
 
-	assert_int_equal(GENC_MTREE_NODE_CHILD_COUNT(root), 2);
+    assert_int_equal(GENC_MTREE_NODE_CHILD_COUNT(root), 2);
 }
 
 int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(genc_Tree_test),
-        cmocka_unit_test(genc_Tree_test2)
+        cmocka_unit_test(genc_Tree_test2),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
