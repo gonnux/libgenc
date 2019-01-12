@@ -104,7 +104,7 @@ do {                                             \
 *element = GENC_ARRAY_LIST_GET(arrayList, index)
 
 #define GENC_ARRAY_LIST_RAW_SET(arrayList, index, element) \
-(arrayList)->genc_ArrayList.elements[index] = element
+(arrayList)->genc_ArrayList.elements[index] = *(element)
 
 #define GENC_ARRAY_LIST_SET(arrayList, index, element)      \
 do {                                                        \

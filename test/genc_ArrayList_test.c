@@ -42,7 +42,7 @@ static void genc_ArrayList_testInsertion(void** state) {
     int elementCount = 3;
     for(int i = 0; i < elementCount; ++i) {
         element.value = i * 100;
-        GENC_ARRAY_LIST_INSERT(&arrayList, 0, element);
+        GENC_ARRAY_LIST_INSERT(&arrayList, 0, &element);
     }
     GENC_ARRAY_LIST_FOR_EACH(&arrayList, index) {
         element = GENC_ARRAY_LIST_GET(&arrayList, index);
@@ -58,7 +58,7 @@ static void genc_ArrayList_testRemoval(void** state) {
 
     for(int i = 0; i < elementCount; ++i) {
         element.value = i * 100;
-        GENC_ARRAY_LIST_PUSH(&arrayList, element);
+        GENC_ARRAY_LIST_PUSH(&arrayList, &element);
     }
 
     for(int i = elementCount - 1; i >= 0; --i) {
@@ -81,7 +81,7 @@ static void genc_ArrayList_testStack(void** state) {
     int elementCount = 10;
     for(int i = 0; i < elementCount; ++i) {
         element.value = i * 100;
-        GENC_ARRAY_LIST_PUSH(&arrayList, element);
+        GENC_ARRAY_LIST_PUSH(&arrayList, &element);
     }
     for(int i = 0; i < elementCount; ++i) {
         GENC_ARRAY_LIST_POP(&arrayList, &element);
@@ -98,7 +98,7 @@ static void genc_ArrayList_testQueue(void** state) {
     int elementCount = 10;
     for(int i = 0; i < elementCount; ++i) {
         element.value = i * 100;
-        GENC_ARRAY_LIST_PUSH(&arrayList, element);
+        GENC_ARRAY_LIST_PUSH(&arrayList, &element);
     }
     for(int i = 0; i < elementCount; ++i) {
         GENC_ARRAY_LIST_REMOVE(&arrayList, 0, &element);
