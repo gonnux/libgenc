@@ -55,8 +55,6 @@ struct { \
 (map)->genc_Map.tails[index]
 
 #define GENC_MAP_REALLOC(map, capacity) do { \
-    if(GENC_MAP_SIZE(map) >= capacity) \
-        break; \
     typeof(**GENC_MAP_HEADS(map))* head = NULL; \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         if(GENC_MAP_HEAD(map, index) != NULL) { \
@@ -104,13 +102,17 @@ do { \
 } while(0)
 
 #define GENC_MAP_INIT(map) { \
-    GENC_MAP_REALLOC(map, 10007); \
     GENC_MAP_SIZE(map) = 0; \
+    GENC_MAP_CAPACITY(map) = 0; \
+    GENC_MAP_HEADS(map) = NULL; \
+    GENC_MAP_TAILS(map) = NULL; \
+    GENC_MAP_REALLOC(map, 10007); \
 }
 
 #define GENC_MAP_INIT2(map, capacity) { \
-    GENC_MAP_REALLOC(map, capacity); \
     GENC_MAP_SIZE(map) = 0; \
+    GENC_MAP_CAPACITY(map) = 0; \
+    GENC_MAP_REALLOC(map, capacity); \
 }
 
 #define GENC_MAP_GET_HASH(map, key, keyLength, hash) { \

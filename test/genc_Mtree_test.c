@@ -10,7 +10,7 @@ struct node {
     GENC_MTREE_NODE(struct node, struct node*);
 };
 
-void genc_Tree_test(void** state) {
+void genc_Mtree_test(void** state) {
     struct node node;
     struct node child;
     struct node* oldChild;
@@ -24,13 +24,14 @@ void genc_Tree_test(void** state) {
     GENC_MTREE_NODE_SET_CHILD(&node, &child, &oldChild);
     assert_ptr_equal(oldChild, NULL);
     assert_int_equal(GENC_MTREE_NODE_CHILD_COUNT(&node), 1);
+
     GENC_MTREE_NODE_GET_CHILD(&node, "HELLO", sizeof("HELLO") - 1, &oldChild);
     assert_ptr_equal(oldChild, &child);
     GENC_MTREE_NODE_FREE(&node);
     GENC_MTREE_NODE_FREE(&child);
 }
 
-void genc_Tree_test2(void** state) {
+void genc_Mtree_test2(void** state) {
     struct node* root = malloc(sizeof(struct node));
     GENC_MTREE_NODE_INIT(root);
     struct node* child;
@@ -64,8 +65,8 @@ void genc_Tree_test2(void** state) {
 
 int main() {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(genc_Tree_test),
-        cmocka_unit_test(genc_Tree_test2),
+        cmocka_unit_test(genc_Mtree_test),
+        cmocka_unit_test(genc_Mtree_test2),
     };
     return cmocka_run_group_tests(tests, NULL, NULL);
 }

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(libgenc C)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 enable_testing()
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
