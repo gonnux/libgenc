@@ -125,14 +125,6 @@ static void genc_ArrayList_testQueue(void** state) {
     GENC_ARRAY_LIST_FREE(&arrayList);
 }
 
-static void genc_ArrayList_testZeroIteration(void** state) {
-    struct Integer_ArrayList arrayList;
-    GENC_ARRAY_LIST_INIT3(&arrayList, 0);
-    GENC_ARRAY_LIST_FOR_EACH(&arrayList, index) {
-    }
-    GENC_ARRAY_LIST_FREE(&arrayList);
-}
-
 int main() {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(genc_ArrayList_testRealloc),
@@ -140,8 +132,7 @@ int main() {
         cmocka_unit_test(genc_ArrayList_testInsertion),
         cmocka_unit_test(genc_ArrayList_testRemoval),
         cmocka_unit_test(genc_ArrayList_testStack),
-        cmocka_unit_test(genc_ArrayList_testQueue),
-        cmocka_unit_test(genc_ArrayList_testZeroIteration)
+        cmocka_unit_test(genc_ArrayList_testQueue)
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

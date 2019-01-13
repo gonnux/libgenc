@@ -192,7 +192,7 @@ do { \
     GENC_MAP_SET_RAW(map, hash, element, oldElement); \
 }
 
-#define GENC_MAP_FOR_EACH_BEGIN(map, element, index) { \
+#define GENC_MAP_FOR_EACH_BEGIN(map, element) { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         for(*(element) = GENC_MAP_HEAD(map, index); \
             *(element) != NULL; \
