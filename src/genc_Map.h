@@ -124,16 +124,16 @@ do { \
     *(hash) %= GENC_MAP_CAPACITY(map); \
 }
 
-#define GENC_MAP_GET_RAW(map, hash, key, keyLength, element) { \
-    *(element) = GENC_MAP_HEAD(map, hash); \
-    while(*(element) != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(*(element)), keyLength) != 0) \
-        *(element) = GENC_LIST_ELEMENT_NEXT(*(element)); \
+#define GENC_MAP_GET_RAW(map, hash, key, keyLength, elem) { \
+    *(elem) = GENC_MAP_HEAD(map, hash); \
+    while(*(elem) != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(*(elem)), keyLength) != 0) \
+        *(elem) = GENC_LIST_ELEMENT_NEXT(*(elem)); \
 }
 
-#define GENC_MAP_GET(map, key, keyLength, element) { \
+#define GENC_MAP_GET(map, key, keyLength, elem) { \
     size_t hash; \
     GENC_MAP_GET_HASH(map, key, keyLength, &hash); \
-    GENC_MAP_GET_RAW(map, hash, key, keyLength, element); \
+    GENC_MAP_GET_RAW(map, hash, key, keyLength, elem); \
 }
 
 #define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, element) { \
