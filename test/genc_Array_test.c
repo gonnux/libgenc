@@ -14,7 +14,7 @@ static void Integer_Array_toRawArray(struct Integer_Array* array, int** rawArray
     *rawArray = malloc(GENC_ARRAY_ELEMENT_SIZE(array) * GENC_ARRAY_SIZE(array));
     assert_non_null(rawArray);
     GENC_ARRAY_FOR_EACH(array, index) {
-        GENC_ARRAY_GET(array, index, &(*rawArray)[index]);
+        GENC_ARRAY_GET2(array, index, &(*rawArray)[index]);
     }
     *rawArraySize = GENC_ARRAY_SIZE(array); 
     // assertion of arraySize greater than zero is currently omitted.

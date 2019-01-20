@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(libgenc C)
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 enable_testing()
 
 if(CMAKE_VERSION VERSION_LESS "3.1")
@@ -9,6 +10,9 @@ if(CMAKE_VERSION VERSION_LESS "3.1")
 else()
     set(CMAKE_C_STANDARD 11)
 endif()
+
+execute_process(COMMAND git shortlog --all -nse --no-merges HEAD OUTPUT_FILE "${CMAKE_SOURCE_DIR}/AUTHORS")
+add_custom_target(authors ALL git shortlog --all -nse --no-merges HEAD > "${CMAKE_SOURCE_DIR}/AUTHORS")
 
 add_subdirectory(src)
 add_subdirectory(test)
