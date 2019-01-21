@@ -17,4 +17,5 @@ execute_process(COMMAND git shortlog -nse --no-merges origin/master OUTPUT_FILE 
 add_custom_target(authors ALL git shortlog -nse --no-merges origin/master > "${CMAKE_SOURCE_DIR}/AUTHORS")
 
 add_subdirectory(src)
+enable_testing()
 add_subdirectory(test)
