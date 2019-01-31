@@ -119,7 +119,7 @@ do { \
     *(hash) = 0; \
     for(size_t i = 0; i != keyLength; ++i) { \
         *(hash) += key[i]; \
-        *(hash) << 8; \
+        *(hash) = *(hash) << 8; \
     } \
     *(hash) %= GENC_MAP_CAPACITY(map); \
 }
