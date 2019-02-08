@@ -3,6 +3,8 @@
 #define _GENC_MAP_H
 
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include "genc_List.h"
@@ -30,11 +32,11 @@ struct { \
 
 #define GENC_MAP(type) \
 struct { \
-    uint8_t* nonce; \
     type** heads; \
     type** tails; \
     size_t capacity; \
     size_t size; \
+    uint8_t nonce[16]; \
 } genc_Map
 
 #define GENC_MAP_HEADS(map) \
@@ -54,6 +56,9 @@ struct { \
 
 #define GENC_MAP_TAIL(map, index) \
 (map)->genc_Map.tails[index]
+
+#define GENC_MAP_NONCE(map) \
+(map)->genc_Map.nonce
 
 #define GENC_MAP_REALLOC(map, capacity) do { \
     typeof(**GENC_MAP_HEADS(map))* head = NULL; \
@@ -108,6 +113,9 @@ do { \
     GENC_MAP_HEADS(map) = NULL; \
     GENC_MAP_TAILS(map) = NULL; \
     GENC_MAP_REALLOC(map, 10007); \
+    FILE* urandom = fopen("/dev/urandom", "r"); \
+    fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom); \
+    fclose(urandom); \
 }
 
 #define GENC_MAP_INIT2(map, capacity) { \
