@@ -30,6 +30,7 @@ struct { \
 
 #define GENC_MAP(type) \
 struct { \
+    uint8_t* nonce; \
     type** heads; \
     type** tails; \
     size_t capacity; \
