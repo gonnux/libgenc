@@ -132,7 +132,7 @@ do { \
 
 #define GENC_MAP_GET(map, key, keyLength, elem) { \
     uint64_t hash; \
-    GENC_SIPHASH_HASH(key, keyLength, GENC_MAP_NONCE(map), &hash); \
+    GENC_SIPHASH_HASH(((const uint8_t*)key), keyLength, ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
     GENC_MAP_GET_RAW(map, hash % GENC_MAP_CAPACITY(map), key, keyLength, elem); \
 }
 
@@ -188,7 +188,7 @@ do { \
 
 #define GENC_MAP_SET(map, elem, oldElement) { \
     uint64_t hash; \
-    GENC_SIPHASH_HASH(GENC_MAP_ELEMENT_KEY(elem), GENC_MAP_ELEMENT_KEY_LENGTH(elem), GENC_MAP_NONCE(map), &hash); \
+    GENC_SIPHASH_HASH(((const uint8_t*)GENC_MAP_ELEMENT_KEY(elem)), GENC_MAP_ELEMENT_KEY_LENGTH(elem), ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
     GENC_MAP_SET_RAW(map, hash % GENC_MAP_CAPACITY(map), elem, oldElement); \
 }
 
