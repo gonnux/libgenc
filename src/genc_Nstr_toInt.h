@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
 static inline int genc_Nstr_toInt(char* nstr, size_t nstrLength) {
     int integer = 0;
     int multiplier = 1;

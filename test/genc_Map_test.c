@@ -8,48 +8,48 @@
 #include "../src/genc_Map.h"
 
 void GENC_MAP_test(void** state) {
-    struct MyMapElement {
+    struct MyMapElem {
         int value;
-        GENC_MAP_ELEMENT(struct MyMapElement);
+        GENC_MAP_ELEM(struct MyMapElem);
     };
     struct MyMap {
-        GENC_MAP(struct MyMapElement);
+        GENC_MAP(struct MyMapElem);
     };
     struct MyMap map;
     GENC_MAP_INIT(&map);
     assert_int_equal(GENC_MAP_SIZE(&map), 0);
 
-    struct MyMapElement element;
-    struct MyMapElement element2;
+    struct MyMapElem elem;
+    struct MyMapElem elem2;
 
-    struct MyMapElement* oldElement;
+    struct MyMapElem* oldElem;
 
-    GENC_MAP_ELEMENT_INIT(&element);
-    element.value = 100;
-    GENC_MAP_ELEMENT_KEY(&element) = "HELLO";
-    GENC_MAP_ELEMENT_KEY_LENGTH(&element) = 5;
+    GENC_MAP_ELEM_INIT(&elem);
+    elem.value = 100;
+    GENC_MAP_ELEM_KEY(&elem) = "HELLO";
+    GENC_MAP_ELEM_KEY_LENGTH(&elem) = 5;
 
-    GENC_MAP_SET(&map, &element, &oldElement);
+    GENC_MAP_SET(&map, &elem, &oldElem);
 
-    assert_ptr_equal(oldElement, NULL);
+    assert_ptr_equal(oldElem, NULL);
     assert_int_equal(GENC_MAP_SIZE(&map), 1);
 
-    GENC_MAP_ELEMENT_INIT(&element2);
-    element2.value = 200;
-    GENC_MAP_ELEMENT_KEY(&element2) = "HELLO";
-    GENC_MAP_ELEMENT_KEY_LENGTH(&element2) = 5;
+    GENC_MAP_ELEM_INIT(&elem2);
+    elem2.value = 200;
+    GENC_MAP_ELEM_KEY(&elem2) = "HELLO";
+    GENC_MAP_ELEM_KEY_LENGTH(&elem2) = 5;
 
-    GENC_MAP_SET(&map, &element2, &oldElement);
-    assert_ptr_equal(oldElement, &element);
+    GENC_MAP_SET(&map, &elem2, &oldElem);
+    assert_ptr_equal(oldElem, &elem);
     assert_int_equal(GENC_MAP_SIZE(&map), 1);
 
-    struct MyMapElement* elementOut;
-    GENC_MAP_GET(&map, "HELLO", 5, &elementOut);
-    assert_ptr_equal(elementOut, &element2);
+    struct MyMapElem* elemOut;
+    GENC_MAP_GET(&map, "HELLO", 5, &elemOut);
+    assert_ptr_equal(elemOut, &elem2);
 
     for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
         if(GENC_MAP_HEAD(&map, index) != NULL) {
-            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &element2);
+            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &elem2);
             break;
         }
     }
@@ -59,7 +59,7 @@ void GENC_MAP_test(void** state) {
     GENC_MAP_REALLOC(&map, 20007);
     for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
         if(GENC_MAP_HEAD(&map, index) != NULL) {
-            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &element2);
+            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &elem2);
             break;
         }
     }
@@ -70,7 +70,7 @@ void GENC_MAP_test(void** state) {
     GENC_MAP_REALLOC(&map, 2000);
     for(size_t index = 0; index != GENC_MAP_CAPACITY(&map); ++index) {
         if(GENC_MAP_HEAD(&map, index) != NULL) {
-            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &element2);
+            assert_ptr_equal(GENC_MAP_HEAD(&map, index), &elem2);
             break;
         }
     }
