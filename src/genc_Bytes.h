@@ -9,6 +9,6 @@
 }
 
 #define GENC_BYTES_COPY(bytes, size, outBytes) \
-    mempcpy(outBytes, bytes, size);
+    memcpy(outBytes, bytes, size);
 
 #endif

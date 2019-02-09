@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "genc_List.h"
+#include "genc_SipHash.h"
 
 #define GENC_MAP_ELEMENT(type) \
 struct { \
@@ -15,20 +16,20 @@ struct { \
     struct { \
         const char* key; \
         size_t keyLength; \
-    } genc_Map_element; \
+    } genc_Map_elem; \
 }
 
-#define GENC_MAP_ELEMENT_INIT(element) do { \
-    GENC_LIST_ELEMENT_INIT(element); \
-    (element)->genc_Map_element.key = NULL; \
-    (element)->genc_Map_element.keyLength = 0; \
+#define GENC_MAP_ELEMENT_INIT(elem) do { \
+    GENC_LIST_ELEMENT_INIT(elem); \
+    (elem)->genc_Map_elem.key = NULL; \
+    (elem)->genc_Map_elem.keyLength = 0; \
 } while(0)
 
-#define GENC_MAP_ELEMENT_KEY(element) \
-(element)->genc_Map_element.key
+#define GENC_MAP_ELEMENT_KEY(elem) \
+(elem)->genc_Map_elem.key
 
-#define GENC_MAP_ELEMENT_KEY_LENGTH(element) \
-(element)->genc_Map_element.keyLength
+#define GENC_MAP_ELEMENT_KEY_LENGTH(elem) \
+(elem)->genc_Map_elem.keyLength
 
 #define GENC_MAP(type) \
 struct { \
@@ -124,15 +125,6 @@ do { \
     GENC_MAP_REALLOC(map, capacity); \
 }
 
-#define GENC_MAP_GET_HASH(map, key, keyLength, hash) { \
-    *(hash) = 0; \
-    for(size_t i = 0; i != keyLength; ++i) { \
-        *(hash) += key[i]; \
-        *(hash) = *(hash) << 8; \
-    } \
-    *(hash) %= GENC_MAP_CAPACITY(map); \
-}
-
 #define GENC_MAP_GET_RAW(map, hash, key, keyLength, elem) { \
     *(elem) = GENC_MAP_HEAD(map, hash); \
     while(*(elem) != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(*(elem)), keyLength) != 0) \
@@ -140,45 +132,45 @@ do { \
 }
 
 #define GENC_MAP_GET(map, key, keyLength, elem) { \
-    size_t hash; \
-    GENC_MAP_GET_HASH(map, key, keyLength, &hash); \
-    GENC_MAP_GET_RAW(map, hash, key, keyLength, elem); \
+    uint64_t hash; \
+    GENC_SIPHASH_HASH(key, keyLength, GENC_MAP_NONCE(map), &hash); \
+    GENC_MAP_GET_RAW(map, hash % GENC_MAP_CAPACITY(map), key, keyLength, elem); \
 }
 
-#define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, element) { \
-    element = GENC_MAP_HEAD(map, hash); \
-    while(element != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(element), keyLength) != 0) \
-        element = GENC_LIST_ELEMENT_NEXT(element); \
-    if(element != NULL) { \
-        if(element == GENC_MAP_HEAD(map, hash)) \
-            GENC_MAP_HEAD(map, hash) = GENC_LIST_ELEMENT_NEXT(element); \
-        if(element == GENC_MAP_TAIL(map, hash)) \
-            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEMENT_PREVIOUS(element); \
-        GENC_LIST_ELEMENT_REMOVE(element); \
+#define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, elem) { \
+    elem = GENC_MAP_HEAD(map, hash); \
+    while(elem != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(elem), keyLength) != 0) \
+        elem = GENC_LIST_ELEMENT_NEXT(elem); \
+    if(elem != NULL) { \
+        if(elem == GENC_MAP_HEAD(map, hash)) \
+            GENC_MAP_HEAD(map, hash) = GENC_LIST_ELEMENT_NEXT(elem); \
+        if(elem == GENC_MAP_TAIL(map, hash)) \
+            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEMENT_PREVIOUS(elem); \
+        GENC_LIST_ELEMENT_REMOVE(elem); \
         --(GENC_MAP_SIZE(map)); \
     } \
 }
 
-#define GENC_MAP_REMOVE(map, key, keyLength, element) { \
+#define GENC_MAP_REMOVE(map, key, keyLength, elem) { \
     size_t hash; \
     GENC_MAP_GET_HASH(map, key, keyLength, &hash); \
-    GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, element); \
+    GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, elem); \
 }
 
 // test is needed for oldElement
-#define GENC_MAP_SET_RAW(map, hash, element, oldElement) { \
+#define GENC_MAP_SET_RAW(map, hash, elem, oldElement) { \
     *(oldElement) = GENC_MAP_HEAD(map, hash); \
     if(*(oldElement) == NULL) { \
-        GENC_MAP_HEAD(map, hash) = element; \
-        GENC_MAP_TAIL(map, hash) = element; \
+        GENC_MAP_HEAD(map, hash) = elem; \
+        GENC_MAP_TAIL(map, hash) = elem; \
         ++GENC_MAP_SIZE(map); \
     } else { \
         bool foundOldElement = false; \
         for( ; *(oldElement) != NULL; \
             *(oldElement) = GENC_LIST_ELEMENT_NEXT(*(oldElement))) { \
-            if(strncmp(GENC_MAP_ELEMENT_KEY(element), \
+            if(strncmp(GENC_MAP_ELEMENT_KEY(elem), \
                GENC_MAP_ELEMENT_KEY(*(oldElement)), \
-               GENC_MAP_ELEMENT_KEY_LENGTH(element)) == 0) { \
+               GENC_MAP_ELEMENT_KEY_LENGTH(elem)) == 0) { \
                 foundOldElement = true; \
                 break; \
             } \
@@ -186,26 +178,26 @@ do { \
         if(foundOldElement) { \
             GENC_LIST_ELEMENT_REMOVE(*(oldElement)); \
             if(*(oldElement) != GENC_MAP_HEAD(map, hash)) \
-                GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), element); \
+                GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), elem); \
         } else { \
             ++GENC_MAP_SIZE(map); \
-            GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), element); \
+            GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), elem); \
         } \
-        GENC_MAP_HEAD(map, hash) = element; \
+        GENC_MAP_HEAD(map, hash) = elem; \
     } \
 }
 
-#define GENC_MAP_SET(map, element, oldElement) { \
-    size_t hash; \
-    GENC_MAP_GET_HASH(map, GENC_MAP_ELEMENT_KEY(element), GENC_MAP_ELEMENT_KEY_LENGTH(element), &hash); \
-    GENC_MAP_SET_RAW(map, hash, element, oldElement); \
+#define GENC_MAP_SET(map, elem, oldElement) { \
+    uint64_t hash; \
+    GENC_SIPHASH_HASH(GENC_MAP_ELEMENT_KEY(elem), GENC_MAP_ELEMENT_KEY_LENGTH(elem), GENC_MAP_NONCE(map), &hash); \
+    GENC_MAP_SET_RAW(map, hash % GENC_MAP_CAPACITY(map), elem, oldElement); \
 }
 
-#define GENC_MAP_FOR_EACH_BEGIN(map, element) { \
+#define GENC_MAP_FOR_EACH_BEGIN(map, elem) { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
-        for(*(element) = GENC_MAP_HEAD(map, index); \
-            *(element) != NULL; \
-            *(element) = GENC_LIST_ELEMENT_NEXT(*(element))) {
+        for(*(elem) = GENC_MAP_HEAD(map, index); \
+            *(elem) != NULL; \
+            *(elem) = GENC_LIST_ELEMENT_NEXT(*(elem))) {
 
 #define GENC_MAP_FOR_EACH_END \
         } \
