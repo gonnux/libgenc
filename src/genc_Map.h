@@ -1,4 +1,3 @@
-
 #ifndef _GENC_MAP_H
 #define _GENC_MAP_H
 
