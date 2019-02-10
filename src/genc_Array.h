@@ -5,30 +5,30 @@
 
 #define GENC_ARRAY(type) \
 struct { \
-    type* elements; \
+    type* elems; \
     size_t size; \
 } genc_Array
 
 #define GENC_ARRAY_INIT(array, newSize) { \
-    (array)->genc_Array.elements = malloc(newSize * sizeof(*((array)->genc_Array.elements))); \
+    (array)->genc_Array.elems = malloc(newSize * sizeof(*((array)->genc_Array.elems))); \
     (array)->genc_Array.size = newSize; \
 }
 
 #define GENC_ARRAY_SIZE(array) \
 (array)->genc_Array.size
 
-#define GENC_ARRAY_ELEMENT_SIZE(array) \
-sizeof(*(array)->genc_Array.elements)
+#define GENC_ARRAY_ELEM_SIZE(array) \
+sizeof(*(array)->genc_Array.elems)
 
 #define GENC_ARRAY_GET(array, index) \
-(array)->genc_Array.elements[index]
+(array)->genc_Array.elems[index]
 
-#define GENC_ARRAY_GET2(array, index, element) \
-*(element) = (array)->genc_Array.elements[index]
+#define GENC_ARRAY_GET2(array, index, elem) \
+*(elem) = (array)->genc_Array.elems[index]
 
-#define GENC_ARRAY_SET(array, index, element) { \
+#define GENC_ARRAY_SET(array, index, elem) { \
     if(index < (array)->genc_Array.size) \
-        (array)->genc_Array.elements[index] = element; \
+        (array)->genc_Array.elems[index] = elem; \
 }
 
 #define GENC_ARRAY_FOR_EACH(array, index) \

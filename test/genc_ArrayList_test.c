@@ -26,12 +26,12 @@ static void genc_ArrayList_testRealloc(void** state) {
 static void genc_ArrayList_testEmptyInsertion(void** state) {
     /*
     struct Integer_ArrayList arrayList;
-    int elementCount = 3;
+    int elemCount = 3;
     int capacity = 1;
     GENC_ARRAY_LIST_INIT2(&arrayList, capacity);
     assert_int_equal(GENC_ARRAY_LIST_CAPACITY(&arrayList), capacity);
     assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), 0);
-    for(int i = 0; i < elementCount; ++i) {
+    for(int i = 0; i < elemCount; ++i) {
         GENC_ARRAY_LIST_PUSH_EMPTY(&arrayList);
     }
     assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), 3);
@@ -41,18 +41,18 @@ static void genc_ArrayList_testEmptyInsertion(void** state) {
 static void genc_ArrayList_testInsertion(void** state) {
     struct Integer_ArrayList arrayList;
     GENC_ARRAY_LIST_INIT2(&arrayList, 1);
-    struct Integer* element;
+    struct Integer* elem;
 
-    int elementCount = 3;
-    for(int i = 0; i < elementCount; ++i) {
-        element = malloc(sizeof(struct Integer));
-        element->value = i * 100;
-        GENC_ARRAY_LIST_INSERT(&arrayList, 0, element);
+    int elemCount = 3;
+    for(int i = 0; i < elemCount; ++i) {
+        elem = malloc(sizeof(struct Integer));
+        elem->value = i * 100;
+        GENC_ARRAY_LIST_INSERT(&arrayList, 0, elem);
     }
     GENC_ARRAY_LIST_FOR_EACH(&arrayList, index) {
-        element = GENC_ARRAY_LIST_GET(&arrayList, index);
-        assert_int_equal(element->value, (GENC_ARRAY_LIST_SIZE(&arrayList) - index - 1) * 100);
-        free(element);
+        elem = GENC_ARRAY_LIST_GET(&arrayList, index);
+        assert_int_equal(elem->value, (GENC_ARRAY_LIST_SIZE(&arrayList) - index - 1) * 100);
+        free(elem);
     }
     GENC_ARRAY_LIST_FREE(&arrayList);
 }
@@ -60,24 +60,24 @@ static void genc_ArrayList_testInsertion(void** state) {
 static void genc_ArrayList_testRemoval(void** state) {
     struct Integer_ArrayList arrayList;
     GENC_ARRAY_LIST_INIT2(&arrayList, 1);
-    struct Integer* element;
-    int elementCount = 10;
+    struct Integer* elem;
+    int elemCount = 10;
 
-    for(int i = 0; i < elementCount; ++i) {
-        element = malloc(sizeof(struct Integer));
-        element->value = i * 100;
-        GENC_ARRAY_LIST_PUSH(&arrayList, element);
+    for(int i = 0; i < elemCount; ++i) {
+        elem = malloc(sizeof(struct Integer));
+        elem->value = i * 100;
+        GENC_ARRAY_LIST_PUSH(&arrayList, elem);
     }
 
-    for(int i = elementCount - 1; i >= 0; --i) {
+    for(int i = elemCount - 1; i >= 0; --i) {
         if(GENC_ARRAY_LIST_GET(&arrayList, i)->value % 200 != 0)
-            GENC_ARRAY_LIST_REMOVE(&arrayList, i, &element);
+            GENC_ARRAY_LIST_REMOVE(&arrayList, i, &elem);
     }
 
     GENC_ARRAY_LIST_FOR_EACH(&arrayList, index) {
-        element = GENC_ARRAY_LIST_GET(&arrayList, index);
-        assert_int_equal(element->value, index * 2 * 100);
-        free(element);
+        elem = GENC_ARRAY_LIST_GET(&arrayList, index);
+        assert_int_equal(elem->value, index * 2 * 100);
+        free(elem);
     }
     GENC_ARRAY_LIST_FREE(&arrayList);
 }
@@ -87,18 +87,18 @@ static void genc_ArrayList_testStack(void** state) {
     struct Integer_ArrayList arrayList;
     GENC_ARRAY_LIST_INIT(&arrayList);
     GENC_ARRAY_LIST_REALLOC(&arrayList, 1);
-    struct Integer* element;
-    int elementCount = 10;
-    for(int i = 0; i < elementCount; ++i) {
-        element = malloc(sizeof(struct Integer));
-        element->value = i * 100;
-        GENC_ARRAY_LIST_PUSH(&arrayList, element);
+    struct Integer* elem;
+    int elemCount = 10;
+    for(int i = 0; i < elemCount; ++i) {
+        elem = malloc(sizeof(struct Integer));
+        elem->value = i * 100;
+        GENC_ARRAY_LIST_PUSH(&arrayList, elem);
     }
-    for(int i = 0; i < elementCount; ++i) {
-        GENC_ARRAY_LIST_POP(&arrayList, &element);
-        assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), elementCount - i - 1);
-        assert_int_equal(element->value, 100 * (elementCount - i - 1));
-        free(element);
+    for(int i = 0; i < elemCount; ++i) {
+        GENC_ARRAY_LIST_POP(&arrayList, &elem);
+        assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), elemCount - i - 1);
+        assert_int_equal(elem->value, 100 * (elemCount - i - 1));
+        free(elem);
     }
     GENC_ARRAY_LIST_FREE(&arrayList);
 }
@@ -108,19 +108,19 @@ static void genc_ArrayList_testQueue(void** state) {
     GENC_ARRAY_LIST_INIT(&arrayList);
     GENC_ARRAY_LIST_REALLOC(&arrayList, 1);
     
-    struct Integer* element;
-    int elementCount = 10;
-    for(int i = 0; i < elementCount; ++i) {
-        element = malloc(sizeof(struct Integer));
-        element->value = i * 100;
-        GENC_ARRAY_LIST_PUSH(&arrayList, element);
+    struct Integer* elem;
+    int elemCount = 10;
+    for(int i = 0; i < elemCount; ++i) {
+        elem = malloc(sizeof(struct Integer));
+        elem->value = i * 100;
+        GENC_ARRAY_LIST_PUSH(&arrayList, elem);
     }
     
-    for(int i = 0; i < elementCount; ++i) {
-        GENC_ARRAY_LIST_REMOVE(&arrayList, 0, &element);
-        assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), elementCount - i - 1);
-        assert_int_equal(element->value, i * 100);
-        free(element);
+    for(int i = 0; i < elemCount; ++i) {
+        GENC_ARRAY_LIST_REMOVE(&arrayList, 0, &elem);
+        assert_int_equal(GENC_ARRAY_LIST_SIZE(&arrayList), elemCount - i - 1);
+        assert_int_equal(elem->value, i * 100);
+        free(elem);
     }
     GENC_ARRAY_LIST_FREE(&arrayList);
 }

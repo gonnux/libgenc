@@ -9,25 +9,25 @@
 #include "genc_List.h"
 #include "genc_SipHash.h"
 
-#define GENC_MAP_ELEMENT(type) \
+#define GENC_MAP_ELEM(type) \
 struct { \
-    GENC_LIST_ELEMENT(type); \
+    GENC_LIST_ELEM(type); \
     struct { \
         const char* key; \
         size_t keyLength; \
     } genc_Map_elem; \
 }
 
-#define GENC_MAP_ELEMENT_INIT(elem) do { \
-    GENC_LIST_ELEMENT_INIT(elem); \
+#define GENC_MAP_ELEM_INIT(elem) do { \
+    GENC_LIST_ELEM_INIT(elem); \
     (elem)->genc_Map_elem.key = NULL; \
     (elem)->genc_Map_elem.keyLength = 0; \
 } while(0)
 
-#define GENC_MAP_ELEMENT_KEY(elem) \
+#define GENC_MAP_ELEM_KEY(elem) \
 (elem)->genc_Map_elem.key
 
-#define GENC_MAP_ELEMENT_KEY_LENGTH(elem) \
+#define GENC_MAP_ELEM_KEY_LENGTH(elem) \
 (elem)->genc_Map_elem.keyLength
 
 #define GENC_MAP(type) \
@@ -65,7 +65,7 @@ struct { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         if(GENC_MAP_HEAD(map, index) != NULL) { \
             if(head != NULL) { \
-                GENC_LIST_ELEMENT_PREPEND(head, GENC_MAP_TAIL(map, index)); \
+                GENC_LIST_ELEM_PREPEND(head, GENC_MAP_TAIL(map, index)); \
             } \
             head = GENC_MAP_HEAD(map, index); \
             GENC_MAP_HEAD(map, index) = NULL; \
@@ -92,12 +92,12 @@ struct { \
     if(head == NULL) \
         break; \
     typeof(**GENC_MAP_HEADS(map))* elem = head; \
-    typeof(**GENC_MAP_HEADS(map))* nextElem = GENC_LIST_ELEMENT_NEXT(elem); \
+    typeof(**GENC_MAP_HEADS(map))* nextElem = GENC_LIST_ELEM_NEXT(elem); \
     typeof(**GENC_MAP_HEADS(map))* oldElem = NULL; \
     for(; elem != NULL; elem = nextElem) { \
-        GENC_LIST_ELEMENT_REMOVE(elem); \
+        GENC_LIST_ELEM_REMOVE(elem); \
         GENC_MAP_SET(map, elem, &oldElem); \
-        nextElem = GENC_LIST_ELEMENT_NEXT(elem); \
+        nextElem = GENC_LIST_ELEM_NEXT(elem); \
     } \
 } while(0)
 
@@ -126,8 +126,8 @@ do { \
 
 #define GENC_MAP_GET_RAW(map, hash, key, keyLength, elem) { \
     *(elem) = GENC_MAP_HEAD(map, hash); \
-    while(*(elem) != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(*(elem)), keyLength) != 0) \
-        *(elem) = GENC_LIST_ELEMENT_NEXT(*(elem)); \
+    while(*(elem) != NULL && strncmp(key, GENC_MAP_ELEM_KEY(*(elem)), keyLength) != 0) \
+        *(elem) = GENC_LIST_ELEM_NEXT(*(elem)); \
 }
 
 #define GENC_MAP_GET(map, key, keyLength, elem) { \
@@ -138,14 +138,14 @@ do { \
 
 #define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, elem) { \
     elem = GENC_MAP_HEAD(map, hash); \
-    while(elem != NULL && strncmp(key, GENC_MAP_ELEMENT_KEY(elem), keyLength) != 0) \
-        elem = GENC_LIST_ELEMENT_NEXT(elem); \
+    while(elem != NULL && strncmp(key, GENC_MAP_ELEM_KEY(elem), keyLength) != 0) \
+        elem = GENC_LIST_ELEM_NEXT(elem); \
     if(elem != NULL) { \
         if(elem == GENC_MAP_HEAD(map, hash)) \
-            GENC_MAP_HEAD(map, hash) = GENC_LIST_ELEMENT_NEXT(elem); \
+            GENC_MAP_HEAD(map, hash) = GENC_LIST_ELEM_NEXT(elem); \
         if(elem == GENC_MAP_TAIL(map, hash)) \
-            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEMENT_PREVIOUS(elem); \
-        GENC_LIST_ELEMENT_REMOVE(elem); \
+            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEM_PREVIOUS(elem); \
+        GENC_LIST_ELEM_REMOVE(elem); \
         --(GENC_MAP_SIZE(map)); \
     } \
 }
@@ -156,47 +156,47 @@ do { \
     GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, elem); \
 }
 
-// test is needed for oldElement
-#define GENC_MAP_SET_RAW(map, hash, elem, oldElement) { \
-    *(oldElement) = GENC_MAP_HEAD(map, hash); \
-    if(*(oldElement) == NULL) { \
+// test is needed for oldElem
+#define GENC_MAP_SET_RAW(map, hash, elem, oldElem) { \
+    *(oldElem) = GENC_MAP_HEAD(map, hash); \
+    if(*(oldElem) == NULL) { \
         GENC_MAP_HEAD(map, hash) = elem; \
         GENC_MAP_TAIL(map, hash) = elem; \
         ++GENC_MAP_SIZE(map); \
     } else { \
-        bool foundOldElement = false; \
-        for( ; *(oldElement) != NULL; \
-            *(oldElement) = GENC_LIST_ELEMENT_NEXT(*(oldElement))) { \
-            if(strncmp(GENC_MAP_ELEMENT_KEY(elem), \
-               GENC_MAP_ELEMENT_KEY(*(oldElement)), \
-               GENC_MAP_ELEMENT_KEY_LENGTH(elem)) == 0) { \
-                foundOldElement = true; \
+        bool foundOldElem = false; \
+        for( ; *(oldElem) != NULL; \
+            *(oldElem) = GENC_LIST_ELEM_NEXT(*(oldElem))) { \
+            if(strncmp(GENC_MAP_ELEM_KEY(elem), \
+               GENC_MAP_ELEM_KEY(*(oldElem)), \
+               GENC_MAP_ELEM_KEY_LENGTH(elem)) == 0) { \
+                foundOldElem = true; \
                 break; \
             } \
         } \
-        if(foundOldElement) { \
-            GENC_LIST_ELEMENT_REMOVE(*(oldElement)); \
-            if(*(oldElement) != GENC_MAP_HEAD(map, hash)) \
-                GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), elem); \
+        if(foundOldElem) { \
+            GENC_LIST_ELEM_REMOVE(*(oldElem)); \
+            if(*(oldElem) != GENC_MAP_HEAD(map, hash)) \
+                GENC_LIST_ELEM_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), elem); \
         } else { \
             ++GENC_MAP_SIZE(map); \
-            GENC_LIST_ELEMENT_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), elem); \
+            GENC_LIST_ELEM_PREPEND_TO_HEAD(GENC_MAP_HEAD(map, hash), elem); \
         } \
         GENC_MAP_HEAD(map, hash) = elem; \
     } \
 }
 
-#define GENC_MAP_SET(map, elem, oldElement) { \
+#define GENC_MAP_SET(map, elem, oldElem) { \
     uint64_t hash; \
-    GENC_SIPHASH_HASH(((const uint8_t*)GENC_MAP_ELEMENT_KEY(elem)), GENC_MAP_ELEMENT_KEY_LENGTH(elem), ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
-    GENC_MAP_SET_RAW(map, hash % GENC_MAP_CAPACITY(map), elem, oldElement); \
+    GENC_SIPHASH_HASH(((const uint8_t*)GENC_MAP_ELEM_KEY(elem)), GENC_MAP_ELEM_KEY_LENGTH(elem), ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
+    GENC_MAP_SET_RAW(map, hash % GENC_MAP_CAPACITY(map), elem, oldElem); \
 }
 
 #define GENC_MAP_FOR_EACH_BEGIN(map, elem) { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         for(*(elem) = GENC_MAP_HEAD(map, index); \
             *(elem) != NULL; \
-            *(elem) = GENC_LIST_ELEMENT_NEXT(*(elem))) {
+            *(elem) = GENC_LIST_ELEM_NEXT(*(elem))) {
 
 #define GENC_MAP_FOR_EACH_END \
         } \
