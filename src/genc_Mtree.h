@@ -54,7 +54,7 @@ GENC_MAP_FREE(GENC_MTREE_NODE_CHILDREN(self))
 #define GENC_MTREE_NODE_GET(self, key, keyLength, elem) \
 GENC_MAP_GET(GENC_MTREE_NODE_CHILDREN(self), key, keyLength, elem)
 
-#define GENC_MTREE_NODE_CHILD_COUNT(self) \
+#define GENC_MTREE_NODE_SIZE(self) \
 GENC_MAP_SIZE(GENC_MTREE_NODE_CHILDREN(self))
 
 #define GENC_MTREE_NODE_FOR_EACH_BEGIN(self, childNode) \

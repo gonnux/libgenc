@@ -22,7 +22,7 @@ void genc_Tree_test(void** state) {
         node2->value = index * 100;
         GENC_TREE_NODE_ADD(&node, node2);
     }
-    assert_int_equal(GENC_TREE_NODE_CHILD_COUNT(&node), 10);
+    assert_int_equal(GENC_TREE_NODE_SIZE(&node), 10);
     for(size_t index = 0; index != 10; ++index) {
         assert_ptr_equal(GENC_TREE_NODE_RAW_GET(&node, index)->value, index * 100);
         GENC_TREE_NODE_FREE(GENC_TREE_NODE_RAW_GET(&node, index));

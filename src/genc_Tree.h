@@ -48,7 +48,7 @@ GENC_ALIST_RAW_GET(GENC_TREE_NODE_CHILDREN(self), index)
 #define GENC_TREE_NODE_GET(self, index, child) \
 GENC_ALIST_GET(GENC_TREE_NODE_CHILDREN(self), index, child)
 
-#define GENC_TREE_NODE_CHILD_COUNT(self) \
+#define GENC_TREE_NODE_SIZE(self) \
 GENC_ALIST_SIZE(GENC_TREE_NODE_CHILDREN(self))
 
 #define GENC_TREE_NODE_FOR_EACH(self, index) \
