@@ -9,38 +9,38 @@ struct { \
     size_t size; \
 } genc_Array
 
-#define GENC_ARRAY_INIT(array, newSize) { \
-    (array)->genc_Array.elems = malloc(newSize * sizeof(*((array)->genc_Array.elems))); \
-    (array)->genc_Array.size = newSize; \
+#define GENC_ARRAY_INIT(self, newSize) { \
+    (self)->genc_Array.elems = malloc(newSize * sizeof(*((self)->genc_Array.elems))); \
+    (self)->genc_Array.size = newSize; \
 }
 
-#define GENC_ARRAY_SIZE(array) \
-(array)->genc_Array.size
+#define GENC_ARRAY_SIZE(self) \
+(self)->genc_Array.size
 
-#define GENC_ARRAY_ELEM_SIZE(array) \
-sizeof(*(array)->genc_Array.elems)
+#define GENC_ARRAY_ELEM_SIZE(self) \
+sizeof(*(self)->genc_Array.elems)
 
-#define GENC_ARRAY_GET(array, index) \
-(array)->genc_Array.elems[index]
+#define GENC_ARRAY_GET(self, index) \
+(self)->genc_Array.elems[index]
 
-#define GENC_ARRAY_GET2(array, index, elem) \
-*(elem) = (array)->genc_Array.elems[index]
+#define GENC_ARRAY_GET2(self, index, elem) \
+*(elem) = (self)->genc_Array.elems[index]
 
-#define GENC_ARRAY_SET(array, index, elem) { \
-    if(index < (array)->genc_Array.size) \
-        (array)->genc_Array.elems[index] = elem; \
+#define GENC_ARRAY_SET(self, index, elem) { \
+    if(index < (self)->genc_Array.size) \
+        (self)->genc_Array.elems[index] = elem; \
 }
 
-#define GENC_ARRAY_FOR_EACH(array, index) \
-for(size_t index = 0; index != (array)->genc_Array.size; ++index)
+#define GENC_ARRAY_FOR_EACH(self, index) \
+for(size_t index = 0; index != (self)->genc_Array.size; ++index)
 
-#define GENC_ARRAY_REVERSE_FOR_EACH(array, index) \
-for(size_t index = (array)->genc_Array.size - 1; index != -1; --index)
+#define GENC_ARRAY_REVERSE_FOR_EACH(self, index) \
+for(size_t index = (self)->genc_Array.size - 1; index != -1; --index)
 
-#define GENC_ARRAY_SUBSET_FOR_EACH(array, index, start, end) \
+#define GENC_ARRAY_SUBSET_FOR_EACH(self, index, start, end) \
 for(size_t index = start; index != end; ++index)
 
-#define GENC_ARRAY_REVERSE_SUBSET_FOR_EACH(array, index, end, start) \
+#define GENC_ARRAY_REVERSE_SUBSET_FOR_EACH(self, index, end, start) \
 for(size_t index = end; index != start; --index)
 
 #endif

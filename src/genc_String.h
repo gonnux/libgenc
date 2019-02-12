@@ -11,32 +11,32 @@ struct genc_String {
     bool freeable;
 };
 
-#define GENC_STRING_GET_CHARS(string) \
-(string)->chars
+#define GENC_STRING_GET_CHARS(self) \
+(self)->chars
 
-#define GENC_STRING_GET_LENGTH(string) \
-(string)->length
+#define GENC_STRING_GET_LENGTH(self) \
+(self)->length
 
-#define GENC_STRING_IS_FREEABLE(string) \
-(string)->freeable
+#define GENC_STRING_IS_FREEABLE(self) \
+(self)->freeable
 
-#define GENC_STRING_SET(string, _chars, _freeable) { \
-    (string)->chars = _chars; \
-    (string)->length = strlen((string)->chars); \
-    (string)->freeable = _freeable; \
+#define GENC_STRING_SET(self, _chars, _freeable) { \
+    (self)->chars = _chars; \
+    (self)->length = strlen((self)->chars); \
+    (self)->freeable = _freeable; \
 }
 
-#define GENC_STRING_SET2(string, _chars, _length, _freeable) { \
-    (string)->chars = _chars; \
-    (string)->length = _length; \
-    (string)->freeable = _freeable; \
+#define GENC_STRING_SET2(self, _chars, _length, _freeable) { \
+    (self)->chars = _chars; \
+    (self)->length = _length; \
+    (self)->freeable = _freeable; \
 }
 
-#define GENC_STRING_FREE(string) { \
-    if(GENC_STRING_IS_FREEABLE(string)) { \
-        free((string)->chars); \
-        (string)->chars = NULL; \
-        (string)->freeable = false; \
+#define GENC_STRING_FREE(self) { \
+    if(GENC_STRING_IS_FREEABLE(self)) { \
+        free((self)->chars); \
+        (self)->chars = NULL; \
+        (self)->freeable = false; \
     } \
 }
 
