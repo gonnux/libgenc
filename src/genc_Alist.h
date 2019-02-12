@@ -133,16 +133,16 @@ GENC_ALIST_INSERT(self, GENC_ALIST_SIZE(self), elem)
 #define GENC_ALIST_POP(self, elem) \
 GENC_ALIST_REMOVE(self, GENC_ALIST_SIZE(self) - 1, elem)
 
-#define GENC_ALIST_FOR_EACH(self, index) \
+#define GENC_ALIST_FOREACH(self, index) \
 for(size_t index = 0; index != GENC_ALIST_SIZE(self); ++index)
 
-#define GENC_ALIST_REVERSE_FOR_EACH(self, index) \
+#define GENC_ALIST_REV_FOREACH(self, index) \
 for(size_t index = GENC_ALIST_SIZE(self) - 1; index != -1; --index)
 
-#define GENC_ALIST_SUBSET_FOR_EACH(self, index, start, end) \
+#define GENC_ALIST_SUB_FOREACH(self, index, start, end) \
 for(size_t index = start; index != end; ++index)
 
-#define GENC_ALIST_REVERSE_SUBSET_FOR_EACH(self, index, end, start) \
+#define GENC_ALIST_REV_SUB_FOREACH(self, index, end, start) \
 for(size_t index = end; index != start; --index)
 
 #endif

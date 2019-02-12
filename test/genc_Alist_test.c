@@ -49,7 +49,7 @@ static void genc_Alist_testInsertion(void** state) {
         elem->value = i * 100;
         GENC_ALIST_INSERT(&alist, 0, elem);
     }
-    GENC_ALIST_FOR_EACH(&alist, index) {
+    GENC_ALIST_FOREACH(&alist, index) {
         elem = GENC_ALIST_RAW_GET(&alist, index);
         assert_int_equal(elem->value, (GENC_ALIST_SIZE(&alist) - index - 1) * 100);
         free(elem);
@@ -74,7 +74,7 @@ static void genc_Alist_testRemoval(void** state) {
             GENC_ALIST_REMOVE(&alist, i, &elem);
     }
 
-    GENC_ALIST_FOR_EACH(&alist, index) {
+    GENC_ALIST_FOREACH(&alist, index) {
         elem = GENC_ALIST_RAW_GET(&alist, index);
         assert_int_equal(elem->value, index * 2 * 100);
         free(elem);

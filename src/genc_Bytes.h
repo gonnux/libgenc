@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-#define GENC_BYTES_REVERSE_COPY(bytes, size, outBytes) { \
+#define GENC_BYTES_REV_COPY(bytes, size, outBytes) { \
     for(size_t index = 0; index != size; ++index) \
         (outBytes)[index] = (bytes)[size - index - 1]; \
 }

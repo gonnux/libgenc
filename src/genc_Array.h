@@ -31,16 +31,16 @@ sizeof(*(self)->genc_Array.elems)
         (self)->genc_Array.elems[index] = elem; \
 }
 
-#define GENC_ARRAY_FOR_EACH(self, index) \
+#define GENC_ARRAY_FOREACH(self, index) \
 for(size_t index = 0; index != (self)->genc_Array.size; ++index)
 
-#define GENC_ARRAY_REVERSE_FOR_EACH(self, index) \
+#define GENC_ARRAY_REV_FOREACH(self, index) \
 for(size_t index = (self)->genc_Array.size - 1; index != -1; --index)
 
-#define GENC_ARRAY_SUBSET_FOR_EACH(self, index, start, end) \
+#define GENC_ARRAY_SUB_FOREACH(self, index, start, end) \
 for(size_t index = start; index != end; ++index)
 
-#define GENC_ARRAY_REVERSE_SUBSET_FOR_EACH(self, index, end, start) \
+#define GENC_ARRAY_REV_SUB_FOREACH(self, index, end, start) \
 for(size_t index = end; index != start; --index)
 
 #endif

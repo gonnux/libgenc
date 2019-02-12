@@ -144,7 +144,7 @@ do { \
         if(elem == GENC_MAP_HEAD(map, hash)) \
             GENC_MAP_HEAD(map, hash) = GENC_LIST_ELEM_NEXT(elem); \
         if(elem == GENC_MAP_TAIL(map, hash)) \
-            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEM_PREVIOUS(elem); \
+            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEM_PREV(elem); \
         GENC_LIST_ELEM_REMOVE(elem); \
         --(GENC_MAP_SIZE(map)); \
     } \
@@ -192,13 +192,13 @@ do { \
     GENC_MAP_SET_RAW(map, hash % GENC_MAP_CAPACITY(map), elem, oldElem); \
 }
 
-#define GENC_MAP_FOR_EACH_BEGIN(map, elem) { \
+#define GENC_MAP_FOREACH_BEGIN(map, elem) { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         for(*(elem) = GENC_MAP_HEAD(map, index); \
             *(elem) != NULL; \
             *(elem) = GENC_LIST_ELEM_NEXT(*(elem))) {
 
-#define GENC_MAP_FOR_EACH_END \
+#define GENC_MAP_FOREACH_END \
         } \
     } \
 }
