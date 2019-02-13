@@ -19,7 +19,7 @@ static void Integer_List_toRawArray(struct Integer_List* integerList, int** rawA
     *rawArray = malloc(GENC_LIST_SIZE(integerList) * sizeof(int));
     assert_non_null(rawArray);
     int index = 0;
-    GENC_LIST_FOR_EACH(integerList, elem) {
+    GENC_LIST_FOREACH(integerList, elem) {
         (*rawArray)[index++] = elem->value;
         printf("value %d\n", elem->value);
     }
@@ -40,7 +40,7 @@ void GENC_LIST_ELEM_INIT_test(void** state) {
     struct Integer integer;
     GENC_LIST_ELEM_INIT(&integer);
     assert_null(GENC_LIST_ELEM_NEXT(&integer));
-    assert_null(GENC_LIST_ELEM_PREVIOUS(&integer));
+    assert_null(GENC_LIST_ELEM_PREV(&integer));
 }
 
 void GENC_LIST_ELEM_PREPEND_test(void** state) {
@@ -49,7 +49,7 @@ void GENC_LIST_ELEM_PREPEND_test(void** state) {
     struct Integer integer2 = {.value = 2};
     GENC_LIST_ELEM_INIT(&integer2);
     GENC_LIST_ELEM_PREPEND(&integer1, &integer2);
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer1), &integer2);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer1), &integer2);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer2), &integer1);
 }
 
@@ -60,7 +60,7 @@ void GENC_LIST_ELEM_APPEND_test(void** state) {
     GENC_LIST_ELEM_INIT(&integer2);
     GENC_LIST_ELEM_APPEND(&integer1, &integer2);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer1), &integer2);
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer2), &integer1);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer2), &integer1);
 }
 
 void GENC_LIST_INSERT_BEFORE_test(void** state) {
@@ -71,12 +71,12 @@ void GENC_LIST_INSERT_BEFORE_test(void** state) {
     GENC_LIST_INSERT_BEFORE(&integerList, GENC_LIST_HEAD(&integerList), &integer1);
 
     assert_non_null(GENC_LIST_HEAD(&integerList));
-    assert_null(GENC_LIST_ELEM_PREVIOUS(GENC_LIST_HEAD(&integerList)));
+    assert_null(GENC_LIST_ELEM_PREV(GENC_LIST_HEAD(&integerList)));
     assert_null(GENC_LIST_ELEM_NEXT(GENC_LIST_HEAD(&integerList)));
     assert_int_equal(GENC_LIST_HEAD(&integerList)->value, 1);
 
     assert_non_null(GENC_LIST_TAIL(&integerList));
-    assert_null(GENC_LIST_ELEM_PREVIOUS(GENC_LIST_TAIL(&integerList)));
+    assert_null(GENC_LIST_ELEM_PREV(GENC_LIST_TAIL(&integerList)));
     assert_null(GENC_LIST_ELEM_NEXT(GENC_LIST_TAIL(&integerList)));
     assert_int_equal(GENC_LIST_TAIL(&integerList)->value, 1);
 
@@ -160,7 +160,7 @@ void GENC_LIST_REMOVE_test(void** state) {
     GENC_LIST_ELEM_REMOVE(&integer1);
 
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer1), NULL);
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer1), NULL);
 }
 
 void GENC_LIST_REMOVE_test2(void** state) {
@@ -173,9 +173,9 @@ void GENC_LIST_REMOVE_test2(void** state) {
     GENC_LIST_ELEM_REMOVE(&integer1);
 
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer1), NULL);
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer1), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer2), NULL);
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer2), NULL);
 }
 
 void GENC_LIST_REMOVE_test3(void** state) {
@@ -188,9 +188,9 @@ void GENC_LIST_REMOVE_test3(void** state) {
     GENC_LIST_ELEM_REMOVE(&integer2);
 
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer2), NULL);
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer2), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer1), NULL);
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer1), NULL);
 }
 
 void GENC_LIST_REMOVE_test4(void** state) {
@@ -205,13 +205,13 @@ void GENC_LIST_REMOVE_test4(void** state) {
     GENC_LIST_ELEM_APPEND(&integer2, &integer3);
     GENC_LIST_ELEM_REMOVE(&integer1);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer1), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer1), NULL);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer2), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer2), &integer3);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer3), &integer2);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer3), &integer2);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer3), NULL);
 }
 
@@ -227,13 +227,13 @@ void GENC_LIST_REMOVE_test5(void** state) {
     GENC_LIST_ELEM_APPEND(&integer2, &integer3);
     GENC_LIST_ELEM_REMOVE(&integer2);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer1), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer1), &integer3);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer2), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer2), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer2), NULL);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer3), &integer1);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer3), &integer1);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer3), NULL);
 }
 
@@ -249,13 +249,13 @@ void GENC_LIST_REMOVE_test6(void** state) {
     GENC_LIST_ELEM_APPEND(&integer2, &integer3);
     GENC_LIST_ELEM_REMOVE(&integer3);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer1), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer1), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer1), &integer2);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer2), &integer1);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer2), &integer1);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer2), NULL);
 
-    assert_ptr_equal(GENC_LIST_ELEM_PREVIOUS(&integer3), NULL);
+    assert_ptr_equal(GENC_LIST_ELEM_PREV(&integer3), NULL);
     assert_ptr_equal(GENC_LIST_ELEM_NEXT(&integer3), NULL);
 }
 

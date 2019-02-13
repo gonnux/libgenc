@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "genc_List.h"
 #include "genc_SipHash.h"
 
@@ -61,7 +62,7 @@ struct { \
 (map)->genc_Map.nonce
 
 #define GENC_MAP_REALLOC(map, capacity) do { \
-    typeof(**GENC_MAP_HEADS(map))* head = NULL; \
+    __typeof__(**GENC_MAP_HEADS(map))* head = NULL; \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         if(GENC_MAP_HEAD(map, index) != NULL) { \
             if(head != NULL) { \
@@ -91,9 +92,9 @@ struct { \
     GENC_MAP_CAPACITY(map) = capacity; \
     if(head == NULL) \
         break; \
-    typeof(**GENC_MAP_HEADS(map))* elem = head; \
-    typeof(**GENC_MAP_HEADS(map))* nextElem = GENC_LIST_ELEM_NEXT(elem); \
-    typeof(**GENC_MAP_HEADS(map))* oldElem = NULL; \
+    __typeof__(**GENC_MAP_HEADS(map))* elem = head; \
+    __typeof__(**GENC_MAP_HEADS(map))* nextElem = GENC_LIST_ELEM_NEXT(elem); \
+    __typeof__(**GENC_MAP_HEADS(map))* oldElem = NULL; \
     for(; elem != NULL; elem = nextElem) { \
         GENC_LIST_ELEM_REMOVE(elem); \
         GENC_MAP_SET(map, elem, &oldElem); \
@@ -108,14 +109,20 @@ do { \
 } while(0)
 
 #define GENC_MAP_INIT(map) { \
+    FILE* urandom = fopen("/dev/urandom", "r"); \
+    if(urandom != NULL) { \
+        if(fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom) < 16 * sizeof(uint8_t)) { \
+            unsigned int state = time(NULL); \
+            for(size_t index = 0; index < sizeof(GENC_MAP_NONCE(map)); ++index) \
+                GENC_MAP_NONCE(map)[index] = (uint8_t)rand_r(&state); \
+        } \
+        fclose(urandom); \
+    } \
     GENC_MAP_SIZE(map) = 0; \
     GENC_MAP_CAPACITY(map) = 0; \
     GENC_MAP_HEADS(map) = NULL; \
     GENC_MAP_TAILS(map) = NULL; \
     GENC_MAP_REALLOC(map, 10007); \
-    FILE* urandom = fopen("/dev/urandom", "r"); \
-    fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom); \
-    fclose(urandom); \
 }
 
 #define GENC_MAP_INIT2(map, capacity) { \
@@ -124,7 +131,7 @@ do { \
     GENC_MAP_REALLOC(map, capacity); \
 }
 
-#define GENC_MAP_GET_RAW(map, hash, key, keyLength, elem) { \
+#define GENC_MAP_RAW_GET(map, hash, key, keyLength, elem) { \
     *(elem) = GENC_MAP_HEAD(map, hash); \
     while(*(elem) != NULL && strncmp(key, GENC_MAP_ELEM_KEY(*(elem)), keyLength) != 0) \
         *(elem) = GENC_LIST_ELEM_NEXT(*(elem)); \
@@ -133,7 +140,7 @@ do { \
 #define GENC_MAP_GET(map, key, keyLength, elem) { \
     uint64_t hash; \
     GENC_SIPHASH_HASH(((const uint8_t*)key), keyLength, ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
-    GENC_MAP_GET_RAW(map, hash % GENC_MAP_CAPACITY(map), key, keyLength, elem); \
+    GENC_MAP_RAW_GET(map, hash % GENC_MAP_CAPACITY(map), key, keyLength, elem); \
 }
 
 #define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, elem) { \
@@ -144,7 +151,7 @@ do { \
         if(elem == GENC_MAP_HEAD(map, hash)) \
             GENC_MAP_HEAD(map, hash) = GENC_LIST_ELEM_NEXT(elem); \
         if(elem == GENC_MAP_TAIL(map, hash)) \
-            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEM_PREVIOUS(elem); \
+            GENC_MAP_TAIL(map, hash) = GENC_LIST_ELEM_PREV(elem); \
         GENC_LIST_ELEM_REMOVE(elem); \
         --(GENC_MAP_SIZE(map)); \
     } \
@@ -157,7 +164,7 @@ do { \
 }
 
 // test is needed for oldElem
-#define GENC_MAP_SET_RAW(map, hash, elem, oldElem) { \
+#define GENC_MAP_RAW_SET(map, hash, elem, oldElem) { \
     *(oldElem) = GENC_MAP_HEAD(map, hash); \
     if(*(oldElem) == NULL) { \
         GENC_MAP_HEAD(map, hash) = elem; \
@@ -189,16 +196,16 @@ do { \
 #define GENC_MAP_SET(map, elem, oldElem) { \
     uint64_t hash; \
     GENC_SIPHASH_HASH(((const uint8_t*)GENC_MAP_ELEM_KEY(elem)), GENC_MAP_ELEM_KEY_LENGTH(elem), ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
-    GENC_MAP_SET_RAW(map, hash % GENC_MAP_CAPACITY(map), elem, oldElem); \
+    GENC_MAP_RAW_SET(map, hash % GENC_MAP_CAPACITY(map), elem, oldElem); \
 }
 
-#define GENC_MAP_FOR_EACH_BEGIN(map, elem) { \
+#define GENC_MAP_FOREACH_BEGIN(map, elem) { \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         for(*(elem) = GENC_MAP_HEAD(map, index); \
             *(elem) != NULL; \
             *(elem) = GENC_LIST_ELEM_NEXT(*(elem))) {
 
-#define GENC_MAP_FOR_EACH_END \
+#define GENC_MAP_FOREACH_END \
         } \
     } \
 }
