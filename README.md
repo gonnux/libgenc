@@ -1,1 +1,1 @@
-# libgenc [![Build Status](https://travis-ci.org/vinbero/libgenc.svg?branch=master)](https://travis-ci.org/vinbero/libgenc)
+# libgenc [![Build Status](https://travis-ci.org/gonapps-org/libgenc.svg?branch=master)](https://travis-ci.org/gonapps-org/libgenc)
