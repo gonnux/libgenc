@@ -8,7 +8,6 @@
 #include "../src/genc_Map.h"
 
 void GENC_MAP_test(void** state) {
-    int ret;
     struct MyMapElem {
         int value;
         GENC_MAP_ELEM(struct MyMapElem);
@@ -17,7 +16,7 @@ void GENC_MAP_test(void** state) {
         GENC_MAP(struct MyMapElem);
     };
     struct MyMap map;
-    GENC_MAP_INIT(&map, &ret);
+    GENC_MAP_INIT(&map);
     assert_int_equal(GENC_MAP_SIZE(&map), 0);
 
     struct MyMapElem elem;

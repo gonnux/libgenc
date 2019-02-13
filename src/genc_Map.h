@@ -107,24 +107,17 @@ do { \
         GENC_MAP_REALLOC(map, (GENC_MAP_CAPACITY(map) + 1) * 2); \
 } while(0)
 
-#define GENC_MAP_INIT(map, ret) do { \
-    FILE* urandom = fopen("/dev/urandom", "r"); \
-    if(urandom = NULL) { \
-        *(ret) = -1; \
-        break; \
-    } \
-    if(fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom) < 16 * sizeof(uint8_t)) { \
-        *(ret) = -1; \
-        fclose(urandom); \
-        break; \
-    } \
-    fclose(urandom); \
+#define GENC_MAP_INIT(map) { \
     GENC_MAP_SIZE(map) = 0; \
     GENC_MAP_CAPACITY(map) = 0; \
     GENC_MAP_HEADS(map) = NULL; \
     GENC_MAP_TAILS(map) = NULL; \
     GENC_MAP_REALLOC(map, 10007); \
-} while(0)
+    FILE* urandom = fopen("/dev/urandom", "r"); \
+    size_t ret = fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom); \
+    ret = 0; \
+    fclose(urandom); \
+}
 
 #define GENC_MAP_INIT2(map, capacity) { \
     GENC_MAP_SIZE(map) = 0; \

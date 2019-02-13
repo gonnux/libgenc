@@ -32,8 +32,8 @@ GENC_MAP_ELEM_KEY(self)
 #define GENC_MTREE_NODE_KEY_LENGTH(self) \
 GENC_MAP_ELEM_KEY_LENGTH(self)
 
-#define GENC_MTREE_NODE_INIT(self, ret) { \
-    GENC_MAP_INIT(GENC_MTREE_NODE_CHILDREN(self), ret); \
+#define GENC_MTREE_NODE_INIT(self) { \
+    GENC_MAP_INIT(GENC_MTREE_NODE_CHILDREN(self)); \
 }
 
 #define GENC_MTREE_NODE_INIT2(self, childCapacity) { \
