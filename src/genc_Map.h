@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "genc_List.h"
 #include "genc_SipHash.h"
 
@@ -108,15 +109,20 @@ do { \
 } while(0)
 
 #define GENC_MAP_INIT(map) { \
+    FILE* urandom = fopen("/dev/urandom", "r"); \
+    if(urandom != NULL) { \
+        if(fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom) < 16 * sizeof(uint8_t)) { \
+            unsigned int state = time(NULL); \
+            for(size_t index = 0; index < sizeof(GENC_MAP_NONCE(map)); ++index) \
+                GENC_MAP_NONCE(map)[index] = (uint8_t)rand_r(&state); \
+        } \
+        fclose(urandom); \
+    } \
     GENC_MAP_SIZE(map) = 0; \
     GENC_MAP_CAPACITY(map) = 0; \
     GENC_MAP_HEADS(map) = NULL; \
     GENC_MAP_TAILS(map) = NULL; \
     GENC_MAP_REALLOC(map, 10007); \
-    FILE* urandom = fopen("/dev/urandom", "r"); \
-    size_t ret = fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom); \
-    ret = 0; \
-    fclose(urandom); \
 }
 
 #define GENC_MAP_INIT2(map, capacity) { \
