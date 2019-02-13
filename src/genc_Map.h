@@ -114,7 +114,8 @@ do { \
     GENC_MAP_TAILS(map) = NULL; \
     GENC_MAP_REALLOC(map, 10007); \
     FILE* urandom = fopen("/dev/urandom", "r"); \
-    fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom); \
+    size_t ret = fread(GENC_MAP_NONCE(map), 16, sizeof(uint8_t), urandom); \
+    ret = 0; \
     fclose(urandom); \
 }
 
