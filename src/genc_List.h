@@ -21,10 +21,10 @@ GENC_LIST_ELEM_PREV(self) = GENC_LIST_ELEM_NEXT(self) = NULL
 sizeof(*(self)->genc_List.head)
 
 #define GENC_LIST_ELEM_TYPE(self) \
-typeof(*(self))
+__typeof__(*(self))
 
-#define GENC_LIST_ELEM_TYPE2(self) \
-typeof(*(self)->genc_List.head)
+#define GENC_LIST_TYPEOF_ELEM(self) \
+__typeof__(*(self)->genc_List.head)
 
 #define GENC_LIST(type) \
 struct { \
@@ -149,7 +149,7 @@ for(GENC_LIST_ELEM_TYPE(self)* elem = self; elem != NULL; elem = GENC_LIST_ELEM_
 for(GENC_LIST_ELEM_TYPE(self)* elem = tail; elem != NULL; elem = GENC_LIST_ELEM_PREV(elem))
 
 #define GENC_LIST_FOREACH(self, elem) \
-for(GENC_LIST_ELEM_TYPE2(self)* elem = GENC_LIST_HEAD(self); elem != NULL; elem = GENC_LIST_ELEM_NEXT(elem))
+for(GENC_LIST_TYPEOF_ELEM(self)* elem = GENC_LIST_HEAD(self); elem != NULL; elem = GENC_LIST_ELEM_NEXT(elem))
 
 #define GENC_LIST_FOREACH2(self, elem) \
 for(elem = GENC_LIST_HEAD(self); elem != NULL; elem = GENC_LIST_ELEM_NEXT(elem))

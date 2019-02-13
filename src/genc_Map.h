@@ -61,7 +61,7 @@ struct { \
 (map)->genc_Map.nonce
 
 #define GENC_MAP_REALLOC(map, capacity) do { \
-    typeof(**GENC_MAP_HEADS(map))* head = NULL; \
+    __typeof__(**GENC_MAP_HEADS(map))* head = NULL; \
     for(size_t index = 0; index != GENC_MAP_CAPACITY(map); ++index) { \
         if(GENC_MAP_HEAD(map, index) != NULL) { \
             if(head != NULL) { \
@@ -91,9 +91,9 @@ struct { \
     GENC_MAP_CAPACITY(map) = capacity; \
     if(head == NULL) \
         break; \
-    typeof(**GENC_MAP_HEADS(map))* elem = head; \
-    typeof(**GENC_MAP_HEADS(map))* nextElem = GENC_LIST_ELEM_NEXT(elem); \
-    typeof(**GENC_MAP_HEADS(map))* oldElem = NULL; \
+    __typeof__(**GENC_MAP_HEADS(map))* elem = head; \
+    __typeof__(**GENC_MAP_HEADS(map))* nextElem = GENC_LIST_ELEM_NEXT(elem); \
+    __typeof__(**GENC_MAP_HEADS(map))* oldElem = NULL; \
     for(; elem != NULL; elem = nextElem) { \
         GENC_LIST_ELEM_REMOVE(elem); \
         GENC_MAP_SET(map, elem, &oldElem); \
@@ -124,7 +124,7 @@ do { \
     GENC_MAP_REALLOC(map, capacity); \
 }
 
-#define GENC_MAP_GET_RAW(map, hash, key, keyLength, elem) { \
+#define GENC_MAP_RAW_GET(map, hash, key, keyLength, elem) { \
     *(elem) = GENC_MAP_HEAD(map, hash); \
     while(*(elem) != NULL && strncmp(key, GENC_MAP_ELEM_KEY(*(elem)), keyLength) != 0) \
         *(elem) = GENC_LIST_ELEM_NEXT(*(elem)); \
@@ -133,7 +133,7 @@ do { \
 #define GENC_MAP_GET(map, key, keyLength, elem) { \
     uint64_t hash; \
     GENC_SIPHASH_HASH(((const uint8_t*)key), keyLength, ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
-    GENC_MAP_GET_RAW(map, hash % GENC_MAP_CAPACITY(map), key, keyLength, elem); \
+    GENC_MAP_RAW_GET(map, hash % GENC_MAP_CAPACITY(map), key, keyLength, elem); \
 }
 
 #define GENC_MAP_REMOVE_RAW(map, hash, key, keyLength, elem) { \
@@ -157,7 +157,7 @@ do { \
 }
 
 // test is needed for oldElem
-#define GENC_MAP_SET_RAW(map, hash, elem, oldElem) { \
+#define GENC_MAP_RAW_SET(map, hash, elem, oldElem) { \
     *(oldElem) = GENC_MAP_HEAD(map, hash); \
     if(*(oldElem) == NULL) { \
         GENC_MAP_HEAD(map, hash) = elem; \
@@ -189,7 +189,7 @@ do { \
 #define GENC_MAP_SET(map, elem, oldElem) { \
     uint64_t hash; \
     GENC_SIPHASH_HASH(((const uint8_t*)GENC_MAP_ELEM_KEY(elem)), GENC_MAP_ELEM_KEY_LENGTH(elem), ((const uint8_t*)GENC_MAP_NONCE(map)), &hash); \
-    GENC_MAP_SET_RAW(map, hash % GENC_MAP_CAPACITY(map), elem, oldElem); \
+    GENC_MAP_RAW_SET(map, hash % GENC_MAP_CAPACITY(map), elem, oldElem); \
 }
 
 #define GENC_MAP_FOREACH_BEGIN(map, elem) { \

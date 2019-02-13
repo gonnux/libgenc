@@ -12,6 +12,9 @@ struct { \
     size_t size; \
 } genc_Alist
 
+#define GENC_ALIST_TYPEOF_ELEM(self) \
+__typeof__(**(self)->genc_Alist.elems)
+
 #define GENC_ALIST_ELEM_SIZE(self) \
 sizeof(*(GENC_ALIST_ELEMS(self)))
 
@@ -144,5 +147,26 @@ for(size_t index = start; index != end; ++index)
 
 #define GENC_ALIST_REV_SUB_FOREACH(self, index, end, start) \
 for(size_t index = end; index != start; --index)
+
+#define GENC_ALIST_SWAP(self, index, index2) do { \
+    GENC_ALIST_TYPEOF_ELEM(self)* elem; \
+    GENC_ALIST_TYPEOF_ELEM(self)* elem2; \
+    GENC_ALIST_GET(self, index, &elem); \
+    GENC_ALIST_GET(self, index2, &elem2); \
+    GENC_ALIST_RAW_SET(self, index2, elem);\
+    GENC_ALIST_RAW_SET(self, index, elem2); \
+} while(0)
+
+#define GENC_ALIST_SORT(self, isBigger) do { \
+    size_t index; \
+    size_t index2; \
+    GENC_ALIST_FOREACH(self, index) { \
+        GENC_ALIST_SUB_FOREACH(self, index2, 0, GENC_ALIST_SIZE(self)) { \
+            if(isBigger(GENC_ALIST_RAW_GET(self, index), GENC_ALIST_RAW_GET(self, index2))) { \
+                GENC_ALIST_SWAP(self, index, index2); \
+            } \
+        } \
+    } \
+} while(0) \
 
 #endif
