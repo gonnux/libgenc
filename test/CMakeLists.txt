@@ -1,3 +1,4 @@
+include (CTest)
 file(GLOB test_srcs RELATIVE ${CMAKE_SOURCE_DIR}/test *.c)
 foreach(test_src_path ${test_srcs})
     get_filename_component(test_name ${test_src_path} NAME_WE)
