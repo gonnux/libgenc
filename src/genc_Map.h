@@ -137,6 +137,8 @@ do { \
 #define GENC_MAP_INIT2(self, capacity) { \
     GENC_MAP_SIZE(self) = 0; \
     GENC_MAP_CAPACITY(self) = 0; \
+    GENC_MAP_HEADS(self) = NULL; \
+    GENC_MAP_TAILS(self) = NULL; \
     GENC_MAP_REALLOC(self, capacity); \
 }
 
@@ -227,6 +229,7 @@ do { \
 }
 
 #define GENC_MAP_FREE_HEADS(self) \
+free(GENC_MAP_HEADS(self))
 
 #define GENC_MAP_FREE_TAILS(self) \
 free(GENC_MAP_TAILS(self))
@@ -236,10 +239,12 @@ free(GENC_MAP_TAILS(self))
         free(GENC_MAP_HEADS(self)); \
         GENC_MAP_HEADS(self) = NULL; \
     } \
-    if(GENC_MAP_HEADS(self) != NULL) { \
+    if(GENC_MAP_TAILS(self) != NULL) { \
         free(GENC_MAP_TAILS(self)); \
         GENC_MAP_TAILS(self) = NULL; \
     } \
+    GENC_MAP_SIZE(self) = 0; \
+    GENC_MAP_CAPACITY(self) = 0; \
 }
 
 #endif
