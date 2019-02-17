@@ -9,7 +9,7 @@ branches:
     - dev
 before_install:
 install:
-  - sudo apt-get install -y libcmocka-dev
+  - sudo apt-get install -y valgrind libcmocka-dev
 before_script:
   - cmake -version
   - make --version 
@@ -17,4 +17,4 @@ before_script:
   - mkdir build
   - cd build
   - cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
-script: make && ctest --verbose
+script: make && ctest -V -T memcheck && cat Testing/Temporary/MemoryChecker.*.log
