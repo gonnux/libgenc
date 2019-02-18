@@ -148,11 +148,11 @@ do { \
         *(elem) = GENC_LIST_ELEM_NEXT(*(elem)); \
 }
 
-#define GENC_MAP_GET(self, key, keyLength, elem) { \
+#define GENC_MAP_GET(self, key, keyLength, elem) do { \
     uint64_t hash; \
     GENC_SIPHASH_HASH(((const uint8_t*)key), keyLength, ((const uint8_t*)GENC_MAP_NONCE(self)), &hash); \
     GENC_MAP_RAW_GET(self, hash % GENC_MAP_CAPACITY(self), key, keyLength, elem); \
-}
+} while(0)
 
 #define GENC_MAP_REMOVE_RAW(self, hash, key, keyLength, elem) { \
     elem = GENC_MAP_HEAD(self, hash); \
