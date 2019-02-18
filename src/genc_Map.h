@@ -83,20 +83,19 @@ __typeof__(**GENC_MAP_TAILS(self))
         } \
     } \
     GENC_MAP_SIZE(self) = 0; \
-    const size_t capacityDiff = capacity - GENC_MAP_CAPACITY(self); \
     if(GENC_MAP_HEADS(self) == NULL) \
         GENC_MAP_HEADS(self) = calloc(capacity, sizeof(*GENC_MAP_HEADS(self))); \
     else { \
         GENC_MAP_HEADS(self) = realloc(GENC_MAP_HEADS(self), capacity * sizeof(*(GENC_MAP_HEADS(self)))); \
         if(capacity > GENC_MAP_CAPACITY(self)) \
-            memset(GENC_MAP_HEADS(self) + GENC_MAP_CAPACITY(self), 0, capacityDiff); \
+            memset(GENC_MAP_HEADS(self) + GENC_MAP_CAPACITY(self), 0, capacity - GENC_MAP_CAPACITY(self)); \
     } \
     if(GENC_MAP_TAILS(self) == NULL) \
         GENC_MAP_TAILS(self) = calloc(capacity, sizeof(*GENC_MAP_TAILS(self))); \
     else { \
         GENC_MAP_TAILS(self) = realloc(GENC_MAP_TAILS(self), capacity * sizeof(*(GENC_MAP_TAILS(self)))); \
         if(capacity > GENC_MAP_CAPACITY(self)) \
-            memset(GENC_MAP_TAILS(self) + GENC_MAP_CAPACITY(self), 0, capacityDiff); \
+            memset(GENC_MAP_TAILS(self) + GENC_MAP_CAPACITY(self), 0, capacity - GENC_MAP_CAPACITY(self)); \
     } \
     GENC_MAP_CAPACITY(self) = capacity; \
     if(head == NULL) \
