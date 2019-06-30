@@ -7,7 +7,6 @@ struct { \
     type* next; \
 } genc_List_elem
 
-
 #define GENC_LIST_ELEM_PREV(self) \
 (self)->genc_List_elem.prev
 
@@ -154,26 +153,26 @@ for(GENC_LIST_TYPEOF_ELEM(self)* elem = GENC_LIST_HEAD(self); elem != NULL; elem
 #define GENC_LIST_FOREACH2(self, elem) \
 for(elem = GENC_LIST_HEAD(self); elem != NULL; elem = GENC_LIST_ELEM_NEXT(elem))
 
-#define GENC_LIST_REV_FOREACH(self, type, elem) \
-for(type* elem = GENC_LIST_TAIL(self); elem != NULL; elem = GENC_LIST_ELEM_PREV(elem))
+#define GENC_LIST_REV_FOREACH(self, elem) \
+for(GENC_LIST_TYPEOF_ELEM(self)* elem = GENC_LIST_TAIL(self); elem != NULL; elem = GENC_LIST_ELEM_PREV(elem))
 
 #define GENC_LIST_REV_FOREACH2(self, elem) \
 for(elem = GENC_LIST_TAIL(self); elem != NULL; elem = GENC_LIST_ELEM_PREV(elem))
 
-#define GENC_LIST_SUBSET_FOREACH(self, type, elem, start, end) \
-for(type* elem = start; elem != end; elem = GENC_LIST_ELEM_NEXT(elem))
+#define GENC_LIST_SUBSET_FOREACH(self, elem, start, end) \
+for(GENC_LIST_TYPEOF_ELEM(self)* elem = start; elem != end; elem = GENC_LIST_ELEM_NEXT(elem))
 
 #define GENC_LIST_SUBSET_FOREACH2(self, elem, start, end) \
 for(elem = start; elem != end; elem = GENC_LIST_ELEM_NEXT(elem))
 
-#define GENC_LIST_REV_SUBSET_FOREACH(self, type, elem, end, start) \
-for(type* elem = end; elem != start; elem = GENC_LIST_ELEM_PREV(elem))
+#define GENC_LIST_REV_SUBSET_FOREACH(self, elem, end, start) \
+for(GENC_LIST_TYPEOF_ELEM(self)* elem = end; elem != start; elem = GENC_LIST_ELEM_PREV(elem))
 
 #define GENC_LIST_REV_SUBSET_FOREACH2(self, elem, end, start) \
 for(elem = end; elem != start; elem = GENC_LIST_ELEM_PREV(elem))
 
-#define GENC_LIST_REMOVE_FOREACH(self, type, elem) \
-for(type* elem = GENC_LIST_HEAD(self); GENC_LIST_SIZE(self) != 0; elem = GENC_LIST_HEAD(self))
+#define GENC_LIST_REMOVE_FOREACH(self, elem) \
+for(GENC_LIST_TYPEOF_ELEM(self)* elem = GENC_LIST_HEAD(self); GENC_LIST_SIZE(self) != 0; elem = GENC_LIST_HEAD(self))
 
 #define GENC_LIST_BEFORE(self, elem, _offset) \
 for(size_t offset = 0; offset < _offset && elem != NULL; ++offset) \
