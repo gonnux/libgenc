@@ -14,7 +14,7 @@ struct Integer {
 struct Integer_List {
     GENC_LIST(struct Integer);
 };
-
+/*
 static void Integer_List_toRawArray(struct Integer_List* integerList, int** rawArray, int* rawArraySize) {
     *rawArray = malloc(GENC_LIST_SIZE(integerList) * sizeof(int));
     assert_non_null(rawArray);
@@ -27,7 +27,7 @@ static void Integer_List_toRawArray(struct Integer_List* integerList, int** rawA
     assert_true(*rawArraySize >= 0);
     // assertion of arraySize greater than zero is currently omitted.
 }
-
+*/
 static void GENC_LIST_INIT_test(void** state) {
     struct Integer_List integerList; 
     GENC_LIST_INIT(&integerList);

@@ -14,7 +14,7 @@
 struct { \
     GENC_LIST_ELEM(type); \
     struct { \
-        const char* key; \
+        const uint8_t* key; \
         size_t keyLength; \
     } genc_Map_elem; \
 }
@@ -143,7 +143,7 @@ do { \
 
 #define GENC_MAP_RAW_GET(self, hash, key, keyLength, elem) { \
     *(elem) = GENC_MAP_HEAD(self, hash); \
-    while(*(elem) != NULL && strncmp(key, GENC_MAP_ELEM_KEY(*(elem)), keyLength) != 0) \
+    while(*(elem) != NULL && strncmp((const char*)key, (const char*)GENC_MAP_ELEM_KEY(*(elem)), keyLength) != 0) \
         *(elem) = GENC_LIST_ELEM_NEXT(*(elem)); \
 }
 
@@ -155,7 +155,7 @@ do { \
 
 #define GENC_MAP_REMOVE_RAW(self, hash, key, keyLength, elem) { \
     elem = GENC_MAP_HEAD(self, hash); \
-    while(elem != NULL && strncmp(key, GENC_MAP_ELEM_KEY(elem), keyLength) != 0) \
+    while(elem != NULL && strncmp((const char*)key, (const char*)GENC_MAP_ELEM_KEY(elem), keyLength) != 0) \
         elem = GENC_LIST_ELEM_NEXT(elem); \
     if(elem != NULL) { \
         if(elem == GENC_MAP_HEAD(self, hash)) \
@@ -184,8 +184,8 @@ do { \
         bool foundOldElem = false; \
         for( ; *(oldElem) != NULL; \
             *(oldElem) = GENC_LIST_ELEM_NEXT(*(oldElem))) { \
-            if(strncmp(GENC_MAP_ELEM_KEY(elem), \
-               GENC_MAP_ELEM_KEY(*(oldElem)), \
+            if(strncmp((const char*)GENC_MAP_ELEM_KEY(elem), \
+               (const char*)GENC_MAP_ELEM_KEY(*(oldElem)), \
                GENC_MAP_ELEM_KEY_LENGTH(elem)) == 0) { \
                 foundOldElem = true; \
                 break; \
