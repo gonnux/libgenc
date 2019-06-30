@@ -20,27 +20,27 @@ struct { \
 #define GENC_ARRAY_ELEM_SIZE(self) \
 sizeof(*(self)->genc_Array.elems)
 
-#define GENC_ARRAY_GET(self, index) \
-(self)->genc_Array.elems[index]
+#define GENC_ARRAY_GET(self, idx) \
+(self)->genc_Array.elems[idx]
 
-#define GENC_ARRAY_GET2(self, index, elem) \
-*(elem) = (self)->genc_Array.elems[index]
+#define GENC_ARRAY_GET2(self, idx, elem) \
+*(elem) = (self)->genc_Array.elems[idx]
 
-#define GENC_ARRAY_SET(self, index, elem) { \
-    if(index < (self)->genc_Array.size) \
-        (self)->genc_Array.elems[index] = elem; \
+#define GENC_ARRAY_SET(self, idx, elem) { \
+    if(idx < (self)->genc_Array.size) \
+        (self)->genc_Array.elems[idx] = elem; \
 }
 
-#define GENC_ARRAY_FOREACH(self, index) \
-for(size_t index = 0; index != (self)->genc_Array.size; ++index)
+#define GENC_ARRAY_FOREACH(self, idx) \
+for(size_t idx = 0; idx != (self)->genc_Array.size; ++idx)
 
-#define GENC_ARRAY_REV_FOREACH(self, index) \
-for(size_t index = (self)->genc_Array.size - 1; index != -1; --index)
+#define GENC_ARRAY_REV_FOREACH(self, idx) \
+for(size_t idx = (self)->genc_Array.size - 1; idx != -1; --idx)
 
-#define GENC_ARRAY_SUB_FOREACH(self, index, start, end) \
-for(size_t index = start; index != end; ++index)
+#define GENC_ARRAY_SUB_FOREACH(self, idx, start, end) \
+for(size_t idx = start; idx != end; ++idx)
 
-#define GENC_ARRAY_REV_SUB_FOREACH(self, index, end, start) \
-for(size_t index = end; index != start; --index)
+#define GENC_ARRAY_REV_SUB_FOREACH(self, idx, end, start) \
+for(size_t idx = end; idx != start; --idx)
 
 #endif

@@ -61,25 +61,25 @@ __typeof__(**GENC_MAP_TAILS(self))
 #define GENC_MAP_SIZE(self) \
 (self)->genc_Map.size
 
-#define GENC_MAP_HEAD(self, index) \
-(self)->genc_Map.heads[index]
+#define GENC_MAP_HEAD(self, idx) \
+(self)->genc_Map.heads[idx]
 
-#define GENC_MAP_TAIL(self, index) \
-(self)->genc_Map.tails[index]
+#define GENC_MAP_TAIL(self, idx) \
+(self)->genc_Map.tails[idx]
 
 #define GENC_MAP_NONCE(self) \
 (self)->genc_Map.nonce
 
 #define GENC_MAP_REALLOC(self, capacity) do { \
     GENC_MAP_HEADS_TYPE(self)* head = NULL; \
-    for(size_t index = 0; index != GENC_MAP_CAPACITY(self); ++index) { \
-        if(GENC_MAP_HEAD(self, index) != NULL) { \
+    for(size_t idx = 0; idx != GENC_MAP_CAPACITY(self); ++idx) { \
+        if(GENC_MAP_HEAD(self, idx) != NULL) { \
             if(head != NULL) { \
-                GENC_LIST_ELEM_PREPEND(head, GENC_MAP_TAIL(self, index)); \
+                GENC_LIST_ELEM_PREPEND(head, GENC_MAP_TAIL(self, idx)); \
             } \
-            head = GENC_MAP_HEAD(self, index); \
-            GENC_MAP_HEAD(self, index) = NULL; \
-            GENC_MAP_TAIL(self, index) = NULL; \
+            head = GENC_MAP_HEAD(self, idx); \
+            GENC_MAP_HEAD(self, idx) = NULL; \
+            GENC_MAP_TAIL(self, idx) = NULL; \
         } \
     } \
     GENC_MAP_SIZE(self) = 0; \
@@ -121,8 +121,8 @@ do { \
     if(urandom != NULL) { \
         if(fread(GENC_MAP_NONCE(self), 16, sizeof(uint8_t), urandom) < 16 * sizeof(uint8_t)) { \
             unsigned int state = time(NULL); \
-            for(size_t index = 0; index < sizeof(GENC_MAP_NONCE(self)); ++index) \
-                GENC_MAP_NONCE(self)[index] = (uint8_t)rand_r(&state); \
+            for(size_t idx = 0; idx < sizeof(GENC_MAP_NONCE(self)); ++idx) \
+                GENC_MAP_NONCE(self)[idx] = (uint8_t)rand_r(&state); \
         } \
         fclose(urandom); \
     } \
@@ -212,8 +212,8 @@ do { \
 #define GENC_MAP_FOREACH_BEGIN(self, elem) { \
     GENC_MAP_HEADS_TYPE(self)* elem; \
     GENC_MAP_HEADS_TYPE(self)* genc_Map_nextElem = NULL; \
-    for(size_t genc_Map_index = 0; genc_Map_index != GENC_MAP_CAPACITY(self); ++genc_Map_index) { \
-        elem = GENC_MAP_HEAD(self, genc_Map_index); \
+    for(size_t genc_Map_idx = 0; genc_Map_idx != GENC_MAP_CAPACITY(self); ++genc_Map_idx) { \
+        elem = GENC_MAP_HEAD(self, genc_Map_idx); \
         if(elem != NULL) \
             genc_Map_nextElem = GENC_LIST_ELEM_NEXT(elem); \
         do { \
