@@ -87,22 +87,22 @@ GENC_ALIST_RAW_REALLOC(self, GENC_ALIST_SIZE(self)); \
     GENC_ALIST_INIT(self); \
 } while(0)
 
-#define GENC_ALIST_RAW_GET(self, index) \
-(GENC_ALIST_ELEMS(self)[index])
+#define GENC_ALIST_RAW_GET(self, idx) \
+(GENC_ALIST_ELEMS(self)[idx])
 
-#define GENC_ALIST_GET(self, index, elem) do{ \
-    if(index < GENC_ALIST_SIZE(self)) \
-        *(elem) = GENC_ALIST_RAW_GET(self, index); \
+#define GENC_ALIST_GET(self, idx, elem) do{ \
+    if(idx < GENC_ALIST_SIZE(self)) \
+        *(elem) = GENC_ALIST_RAW_GET(self, idx); \
     else \
         *(elem) = NULL; \
 } while(0)
 
-#define GENC_ALIST_RAW_SET(self, index, elem) \
-GENC_ALIST_ELEMS(self)[index] = elem
+#define GENC_ALIST_RAW_SET(self, idx, elem) \
+GENC_ALIST_ELEMS(self)[idx] = elem
 
-#define GENC_ALIST_SET(self, index, elem) do { \
-    if(index < GENC_ALIST_SIZE(self)) \
-        GENC_ALIST_RAW_SET(self, index, elem); \
+#define GENC_ALIST_SET(self, idx, elem) do { \
+    if(idx < GENC_ALIST_SIZE(self)) \
+        GENC_ALIST_RAW_SET(self, idx, elem); \
 } while(0)
 
 #define GENC_ALIST_RAW_PEEK(self) \
@@ -111,59 +111,57 @@ GENC_ALIST_GET(self, GENC_ALIST_SIZE(self) - 1)
 #define GENC_ALIST_PEEK(self, elem)  \
 GENC_ALIST_GET(self, GENC_ALIST_SIZE(self) - 1, elem)
 
-#define GENC_ALIST_INSERT(self, index, elem) do { \
-    if(index > GENC_ALIST_SIZE(self)) \
+#define GENC_ALIST_INSERT(self, idx, elem) do { \
+    if(idx > GENC_ALIST_SIZE(self)) \
         break; \
     GENC_ALIST_REALLOC2(self); \
-    if(index < GENC_ALIST_SIZE(self)) \
-        GENC_ALIST_RAW_MOVE(self, index, index + 1, GENC_ALIST_SIZE(self) - index); \
-    GENC_ALIST_RAW_SET(self, index, elem); \
+    if(idx < GENC_ALIST_SIZE(self)) \
+        GENC_ALIST_RAW_MOVE(self, idx, idx + 1, GENC_ALIST_SIZE(self) - idx); \
+    GENC_ALIST_RAW_SET(self, idx, elem); \
     ++GENC_ALIST_SIZE(self); \
 } while(0)
 
 #define GENC_ALIST_PUSH(self, elem) \
 GENC_ALIST_INSERT(self, GENC_ALIST_SIZE(self), elem)
 
-#define GENC_ALIST_REMOVE(self, index, elem) do { \
-    if(index > GENC_ALIST_SIZE(self) - 1) \
+#define GENC_ALIST_REMOVE(self, idx, elem) do { \
+    if(idx > GENC_ALIST_SIZE(self) - 1) \
         break; \
-    *elem = GENC_ALIST_RAW_GET(self, index); \
-    if(index < GENC_ALIST_SIZE(self) - 1) \
-        GENC_ALIST_RAW_MOVE(self, index + 1, index, GENC_ALIST_SIZE(self) - index - 1); \
+    *elem = GENC_ALIST_RAW_GET(self, idx); \
+    if(idx < GENC_ALIST_SIZE(self) - 1) \
+        GENC_ALIST_RAW_MOVE(self, idx + 1, idx, GENC_ALIST_SIZE(self) - idx - 1); \
     --GENC_ALIST_SIZE(self); \
 } while(0)
 
 #define GENC_ALIST_POP(self, elem) \
 GENC_ALIST_REMOVE(self, GENC_ALIST_SIZE(self) - 1, elem)
 
-#define GENC_ALIST_FOREACH(self, index) \
-for(size_t index = 0; index != GENC_ALIST_SIZE(self); ++index)
+#define GENC_ALIST_FOREACH(self, idx) \
+for(size_t idx = 0; idx != GENC_ALIST_SIZE(self); ++idx)
 
-#define GENC_ALIST_REV_FOREACH(self, index) \
-for(size_t index = GENC_ALIST_SIZE(self) - 1; index != -1; --index)
+#define GENC_ALIST_REV_FOREACH(self, idx) \
+for(size_t idx = GENC_ALIST_SIZE(self) - 1; idx != -1; --idx)
 
-#define GENC_ALIST_SUB_FOREACH(self, index, start, end) \
-for(size_t index = start; index != end; ++index)
+#define GENC_ALIST_SUB_FOREACH(self, idx, start, end) \
+for(size_t idx = start; idx != end; ++idx)
 
-#define GENC_ALIST_REV_SUB_FOREACH(self, index, end, start) \
-for(size_t index = end; index != start; --index)
+#define GENC_ALIST_REV_SUB_FOREACH(self, idx, end, start) \
+for(size_t idx = end; idx != start; --idx)
 
-#define GENC_ALIST_SWAP(self, index, index2) do { \
+#define GENC_ALIST_SWAP(self, idx, idx2) do { \
     GENC_ALIST_TYPEOF_ELEM(self)* elem; \
     GENC_ALIST_TYPEOF_ELEM(self)* elem2; \
-    GENC_ALIST_GET(self, index, &elem); \
-    GENC_ALIST_GET(self, index2, &elem2); \
-    GENC_ALIST_RAW_SET(self, index2, elem);\
-    GENC_ALIST_RAW_SET(self, index, elem2); \
+    GENC_ALIST_GET(self, idx, &elem); \
+    GENC_ALIST_GET(self, idx2, &elem2); \
+    GENC_ALIST_RAW_SET(self, idx2, elem);\
+    GENC_ALIST_RAW_SET(self, idx, elem2); \
 } while(0)
 
 #define GENC_ALIST_SORT(self, isBigger) do { \
-    size_t index; \
-    size_t index2; \
-    GENC_ALIST_FOREACH(self, index) { \
-        GENC_ALIST_SUB_FOREACH(self, index2, 0, GENC_ALIST_SIZE(self)) { \
-            if(isBigger(GENC_ALIST_RAW_GET(self, index), GENC_ALIST_RAW_GET(self, index2))) { \
-                GENC_ALIST_SWAP(self, index, index2); \
+    GENC_ALIST_FOREACH(self, idx) { \
+        GENC_ALIST_SUB_FOREACH(self, idx2, 0, GENC_ALIST_SIZE(self)) { \
+            if(isBigger(GENC_ALIST_RAW_GET(self, idx), GENC_ALIST_RAW_GET(self, idx2))) { \
+                GENC_ALIST_SWAP(self, idx, idx2); \
             } \
         } \
     } \
