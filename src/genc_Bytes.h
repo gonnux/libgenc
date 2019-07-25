@@ -4,8 +4,8 @@
 #include <string.h>
 
 #define GENC_BYTES_REV_COPY(bytes, size, outBytes) { \
-    for(size_t index = 0; index != size; ++index) \
-        (outBytes)[index] = (bytes)[size - index - 1]; \
+    for(size_t idx = 0; idx != size; ++idx) \
+        (outBytes)[idx] = (bytes)[size - idx - 1]; \
 }
 
 #define GENC_BYTES_COPY(bytes, size, outBytes) \

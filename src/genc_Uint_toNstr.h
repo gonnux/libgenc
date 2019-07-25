@@ -14,12 +14,12 @@ static inline size_t genc_Uint_toNstr(int _uInteger, int base, char** string) {
         uInteger = _uInteger;
 
         *string = malloc(length * sizeof(char));
-        for(size_t index = 0; index != length; ++index) {
+        for(size_t idx = 0; idx != length; ++idx) {
             int remainder = uInteger % base;
             if(remainder < 10)
-                (*string)[length - index - 1] = '0' + remainder;
+                (*string)[length - idx - 1] = '0' + remainder;
             else
-                (*string)[length - index - 1] = 'A' + remainder - 10;
+                (*string)[length - idx - 1] = 'A' + remainder - 10;
             uInteger /= base;
         }
     }

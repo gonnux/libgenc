@@ -41,7 +41,7 @@
     for(uint64_t block; inputVar != end; inputVar += sizeof(uint64_t)) { \
         GENC_BYTES_COPY(inputVar, sizeof(uint64_t), &block); \
         v3 ^= block; \
-        for(size_t index = 0; index < 2; ++index) \
+        for(size_t idx = 0; idx < 2; ++idx) \
             GENC_SIPHASH_ROUND(v0, v1, v2, v3); \
         v0 ^= block; \
     } \
@@ -66,11 +66,11 @@
         break; \
     } \
     v3 ^= *(hash); \
-    for(size_t index = 0; index < 2; ++index) \
+    for(size_t idx = 0; idx < 2; ++idx) \
         GENC_SIPHASH_ROUND(v0, v1, v2, v3); \
     v0 ^= *(hash); \
     v2 ^= 0xff; \
-    for(size_t index = 0; index < 4; ++index) \
+    for(size_t idx = 0; idx < 4; ++idx) \
         GENC_SIPHASH_ROUND(v0, v1, v2, v3); \
     *(hash) = v0 ^ v1 ^ v2 ^ v3; \
 }

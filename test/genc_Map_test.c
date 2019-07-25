@@ -27,7 +27,7 @@ void GENC_MAP_test(void** state) {
 
     GENC_MAP_ELEM_INIT(&elem);
     elem.value = 100;
-    GENC_MAP_ELEM_KEY(&elem) = "HELLO";
+    GENC_MAP_ELEM_KEY(&elem) = (const uint8_t*)"HELLO";
     GENC_MAP_ELEM_KEY_LENGTH(&elem) = 5;
 
     GENC_MAP_SET(&map, &elem, &oldElem);
@@ -37,7 +37,7 @@ void GENC_MAP_test(void** state) {
 
     GENC_MAP_ELEM_INIT(&elem2);
     elem2.value = 200;
-    GENC_MAP_ELEM_KEY(&elem2) = "HELLO";
+    GENC_MAP_ELEM_KEY(&elem2) = (const uint8_t*)"HELLO";
     GENC_MAP_ELEM_KEY_LENGTH(&elem2) = 5;
 
     GENC_MAP_SET(&map, &elem2, &oldElem);
