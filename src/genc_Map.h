@@ -139,6 +139,7 @@ do { \
     GENC_MAP_TAILS(self) = NULL; \
     if(capacity <= 0) \
         capacity = 1; \
+    GENC_MAP_CAPACITY(self) = capacity; \
     GENC_MAP_REALLOC(self, capacity); \
 }
 
