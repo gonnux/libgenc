@@ -135,7 +135,7 @@ do { \
 
 #define GENC_MAP_INIT2(self, capacity) { \
     GENC_MAP_SIZE(self) = 0; \
-    GENC_MAP_CAPACITY(self) = 0; \
+    GENC_MAP_CAPACITY(self) = 1; \
     GENC_MAP_HEADS(self) = NULL; \
     GENC_MAP_TAILS(self) = NULL; \
     GENC_MAP_REALLOC(self, capacity); \
