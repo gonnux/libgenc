@@ -4,6 +4,9 @@
 union genc_Generic {
     int integer;
     unsigned int uInteger;
+    double real;
+    char character;
+    unsigned char uCharacter;
     void* pointer;
     void** array;
 };
